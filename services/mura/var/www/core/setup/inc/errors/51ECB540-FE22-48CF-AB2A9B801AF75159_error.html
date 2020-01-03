@@ -1,0 +1,173 @@
+
+    
+<!-- ==start== dump {ts '2020-01-02 10:02:54'} format: html -->
+<div id="x1i" class="-lucee-dump"><style>
+.-lucee-dump .disp-none { display: none; }
+</style>
+<script>
+window.__Lucee = { initialized : false,
+				addEventListeners : function(selector, event, handler, useCapture){
+					useCapture = useCapture || false;
+					Array.prototype.forEach.call(
+						 document.querySelectorAll(selector)
+						,function(el, ix) {
+						  el.addEventListener(event, handler, useCapture);
+						}
+					);
+				}
+				,getNextSiblings   : function(el){
+					var  orig = el
+						,result = [];
+					while (el && el.nodeType === Node.ELEMENT_NODE) {
+						if (el !== orig)
+							result.push(el);
+						el = el.nextElementSibling || el.nextSibling;
+					}
+					return result;
+				}
+				,onDocumentReady		   : function(){
+					var L = window.__Lucee;
+					if (L.initialized)
+						return;
+					L.addEventListeners(".collapse-trigger", "click", function(evt){
+						var tr = evt.target.closest("tr");
+						var siblings = L.getNextSiblings(tr);
+						siblings.forEach(function(el, ix){
+							el.classList.toggle("disp-none");
+						});
+					});
+					L.initialized = true;
+				}
+			}
+			
+document.addEventListener("DOMContentLoaded", __Lucee.onDocumentReady);
+</script>
+<style type="text/css">
+div#x1i table {font-family:Verdana, Geneva, Arial, Helvetica, sans-serif; font-size:11px; empty-cells:show; color:#000; border-collapse:collapse;}
+div#x1i td {border:1px solid #000; vertical-align:top; padding:2px; empty-cells:show;}
+div#x1i td span {font-weight:bold;}
+div#x1i td.luceeN0 {color:#333399;border-color:#333399;background-color:#ccf;}
+div#x1i td.luceeH0 {color:#333399;border-color:#333399;background-color:#99f;}
+div#x1i td.luceeN1 {color:#990000;border-color:#990000;background-color:#fc9;}
+div#x1i td.luceeH1 {color:#990000;border-color:#990000;background-color:#f60;}
+div#x1i td.luceeN2 {color:#336600;border-color:#336600;background-color:#cf3;}
+div#x1i td.luceeH2 {color:#336600;border-color:#336600;background-color:#9c3;}
+</style>
+<table title="/var/www/core/setup/inc/_udf.cfm:97"><tr><td class="collapse-trigger luceeH0" colspan="3" style="cursor:pointer;"><span>Catch</span><br>Entries: 15</td></tr><tr><td class="luceeH0">additional</td><td class="luceeN0"><table><tr><td class="collapse-trigger luceeH0" colspan="0" style="cursor:pointer;"><span>Struct (ordered)</span></td></tr></table></td></tr><tr><td class="luceeH0">DataSource</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1"></td></tr></table></td></tr><tr><td class="luceeH0">Detail</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1"></td></tr></table></td></tr><tr><td class="luceeH0">ErrorCode</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">0</td></tr></table></td></tr><tr><td class="luceeH0">Extended_Info</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1"></td></tr></table></td></tr><tr><td class="luceeH0">ExtendedInfo</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1"></td></tr></table></td></tr><tr><td class="luceeH0">Message</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.</td></tr></table></td></tr><tr><td class="luceeH0">NativeErrorCode</td><td class="luceeN0"><table><tr><td class="luceeH1">number</td><td class="luceeN1">0</td></tr></table></td></tr><tr><td class="luceeH0">queryError</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1"></td></tr></table></td></tr><tr><td class="luceeH0">Sql</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1"></td></tr></table></td></tr><tr><td class="luceeH0">SQLState</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">08S01</td></tr></table></td></tr><tr><td class="luceeH0">StackTrace</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">lucee.runtime.exp.DatabaseException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+	at com.mysql.cj.jdbc.exceptions.SQLError.createCommunicationsException(SQLError.java:174)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:64)
+	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:835)
+	at com.mysql.cj.jdbc.ConnectionImpl.&lt;init&gt;(ConnectionImpl.java:455)
+	at com.mysql.cj.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:240)
+	at com.mysql.cj.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:199)
+	at lucee.runtime.db.DataSourceSupport._getConnection(DataSourceSupport.java:110)
+	at lucee.runtime.db.DataSourceSupport.getConnection(DataSourceSupport.java:91)
+	at lucee.runtime.db.DatasourceConnectionPool.loadDatasourceConnection(DatasourceConnectionPool.java:134)
+	at lucee.runtime.db.DatasourceConnectionPool.getDatasourceConnection(DatasourceConnectionPool.java:101)
+	at lucee.runtime.db.DatasourceManagerImpl.getConnection(DatasourceManagerImpl.java:73)
+	at lucee.runtime.tag.Query.executeDatasoure(Query.java:1038)
+	at lucee.runtime.tag.Query._doEndTag(Query.java:655)
+	at lucee.runtime.tag.Query.doEndTag(Query.java:537)
+	at core.setup.inc._process_cfm$cf.call(/muraWRM/core/setup/inc/_process.cfm:79)
+	at lucee.runtime.PageContextImpl._doInclude(PageContextImpl.java:942)
+	at lucee.runtime.PageContextImpl._doInclude(PageContextImpl.java:834)
+	at lucee.runtime.PageContextImpl.doInclude(PageContextImpl.java:816)
+	at core.setup.index_cfm$cf.call(/muraWRM/core/setup/index.cfm:68)
+	at lucee.runtime.PageContextImpl._doInclude(PageContextImpl.java:942)
+	at lucee.runtime.PageContextImpl._doInclude(PageContextImpl.java:834)
+	at lucee.runtime.PageContextImpl.doInclude(PageContextImpl.java:816)
+	at core.appcfc.onrequeststart_include_cfm$cf.call(/muraWRM/core/appcfc/onRequestStart_include.cfm:111)
+	at lucee.runtime.PageContextImpl._doInclude(PageContextImpl.java:942)
+	at lucee.runtime.PageContextImpl._doInclude(PageContextImpl.java:834)
+	at lucee.runtime.PageContextImpl.doInclude(PageContextImpl.java:816)
+	at core.appcfc.onrequeststart_scriptprotect_method_cfm$cf.udfCall(/core/appcfc/onRequestStart_scriptProtect_method.cfm:47)
+	at lucee.runtime.type.UDFImpl.implementation(UDFImpl.java:106)
+	at lucee.runtime.type.UDFImpl._call(UDFImpl.java:342)
+	at lucee.runtime.type.UDFImpl.call(UDFImpl.java:215)
+	at lucee.runtime.ComponentImpl._call(ComponentImpl.java:682)
+	at lucee.runtime.ComponentImpl._call(ComponentImpl.java:570)
+	at lucee.runtime.ComponentImpl.call(ComponentImpl.java:1918)
+	at lucee.runtime.listener.ModernAppListener.call(ModernAppListener.java:436)
+	at lucee.runtime.listener.ModernAppListener._onRequest(ModernAppListener.java:132)
+	at lucee.runtime.listener.MixedAppListener.onRequest(MixedAppListener.java:42)
+	at lucee.runtime.PageContextImpl.execute(PageContextImpl.java:2409)
+	at lucee.runtime.PageContextImpl._execute(PageContextImpl.java:2399)
+	at lucee.runtime.PageContextImpl.executeCFML(PageContextImpl.java:2374)
+	at lucee.runtime.engine.Request.exe(Request.java:43)
+	at lucee.runtime.engine.CFMLEngineImpl._service(CFMLEngineImpl.java:1037)
+	at lucee.runtime.engine.CFMLEngineImpl.serviceCFML(CFMLEngineImpl.java:983)
+	at lucee.loader.engine.CFMLEngineWrapper.serviceCFML(CFMLEngineWrapper.java:97)
+	at lucee.loader.servlet.CFMLServlet.service(CFMLServlet.java:51)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:741)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:200)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:490)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.valves.AbstractAccessLogValve.invoke(AbstractAccessLogValve.java:678)
+	at org.apache.catalina.valves.RemoteIpValve.invoke(RemoteIpValve.java:679)
+	at org.apache.catalina.valves.rewrite.RewriteValve.invoke(RewriteValve.java:556)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:408)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:836)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1839)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+</td></tr></table></td></tr><tr><td class="luceeH0">TagContext</td><td class="luceeN0"><table><tr><td class="collapse-trigger luceeH2" colspan="3" style="cursor:pointer;"><span>Array</span></td></tr><tr><td class="luceeH2">1</td><td class="luceeN2"><table><tr><td class="collapse-trigger luceeH0" colspan="3" style="cursor:pointer;"><span>Struct</span></td></tr><tr><td class="luceeH0">codePrintHTML</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">77:         SELECT COUNT( contentid )&lt;br&gt;
+78:         FROM tcontent&lt;br&gt;
+&lt;b&gt;79:       &amp;lt;/cfquery&amp;gt;&lt;/b&gt;&lt;br&gt;
+80:       &amp;lt;!--- state that the db is already created ---&amp;gt;&lt;br&gt;
+81:       &amp;lt;cfset dbCreated = true /&amp;gt;&lt;br&gt;
+</td></tr></table></td></tr><tr><td class="luceeH0">codePrintPlain</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">77:         SELECT COUNT( contentid )
+78:         FROM tcontent
+79:       &lt;/cfquery&gt;
+80:       &lt;!--- state that the db is already created ---&gt;
+81:       &lt;cfset dbCreated = true /&gt;
+</td></tr></table></td></tr><tr><td class="luceeH0">column</td><td class="luceeN0"><table><tr><td class="luceeH1">number</td><td class="luceeN1">0</td></tr></table></td></tr><tr><td class="luceeH0">id</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">??</td></tr></table></td></tr><tr><td class="luceeH0">line</td><td class="luceeN0"><table><tr><td class="luceeH1">number</td><td class="luceeN1">79</td></tr></table></td></tr><tr><td class="luceeH0">Raw_Trace</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">core.setup.inc._process_cfm$cf.call(/muraWRM/core/setup/inc/_process.cfm:79)</td></tr></table></td></tr><tr><td class="luceeH0">template</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">/var/www/core/setup/inc/_process.cfm</td></tr></table></td></tr><tr><td class="luceeH0">type</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">cfml</td></tr></table></td></tr></table></td></tr><tr><td class="luceeH2">2</td><td class="luceeN2"><table><tr><td class="collapse-trigger luceeH0" colspan="3" style="cursor:pointer;"><span>Struct</span></td></tr><tr><td class="luceeH0">codePrintHTML</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">66: if ( form.action == 'doSetup' ) {&lt;br&gt;
+67: 	include &amp;quot;inc/_udf.cfm&amp;quot;;&lt;br&gt;
+&lt;b&gt;68: 	include &amp;quot;inc/_process.cfm&amp;quot;;&lt;/b&gt;&lt;br&gt;
+69: }&lt;br&gt;
+70: /* --------------------------------------------------------------------&lt;br&gt;
+</td></tr></table></td></tr><tr><td class="luceeH0">codePrintPlain</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">66: if ( form.action == 'doSetup' ) {
+67: 	include &quot;inc/_udf.cfm&quot;;
+68: 	include &quot;inc/_process.cfm&quot;;
+69: }
+70: /* --------------------------------------------------------------------
+</td></tr></table></td></tr><tr><td class="luceeH0">column</td><td class="luceeN0"><table><tr><td class="luceeH1">number</td><td class="luceeN1">0</td></tr></table></td></tr><tr><td class="luceeH0">id</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">??</td></tr></table></td></tr><tr><td class="luceeH0">line</td><td class="luceeN0"><table><tr><td class="luceeH1">number</td><td class="luceeN1">68</td></tr></table></td></tr><tr><td class="luceeH0">Raw_Trace</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">core.setup.index_cfm$cf.call(/muraWRM/core/setup/index.cfm:68)</td></tr></table></td></tr><tr><td class="luceeH0">template</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">/var/www/core/setup/index.cfm</td></tr></table></td></tr><tr><td class="luceeH0">type</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">cfml</td></tr></table></td></tr></table></td></tr><tr><td class="luceeH2">3</td><td class="luceeN2"><table><tr><td class="collapse-trigger luceeH0" colspan="3" style="cursor:pointer;"><span>Struct</span></td></tr><tr><td class="luceeH0">codePrintHTML</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">109: 		//  go to the index.cfm page (setup)&lt;br&gt;
+110: 		include &amp;quot;/muraWRM/core/appcfc/setup_check.cfm&amp;quot;;&lt;br&gt;
+&lt;b&gt;111: 		include &amp;quot;/muraWRM/core/setup/index.cfm&amp;quot;;&lt;/b&gt;&lt;br&gt;
+112: 		abort;&lt;br&gt;
+113: 	}&lt;br&gt;
+</td></tr></table></td></tr><tr><td class="luceeH0">codePrintPlain</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">109: 		//  go to the index.cfm page (setup)
+110: 		include &quot;/muraWRM/core/appcfc/setup_check.cfm&quot;;
+111: 		include &quot;/muraWRM/core/setup/index.cfm&quot;;
+112: 		abort;
+113: 	}
+</td></tr></table></td></tr><tr><td class="luceeH0">column</td><td class="luceeN0"><table><tr><td class="luceeH1">number</td><td class="luceeN1">0</td></tr></table></td></tr><tr><td class="luceeH0">id</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">??</td></tr></table></td></tr><tr><td class="luceeH0">line</td><td class="luceeN0"><table><tr><td class="luceeH1">number</td><td class="luceeN1">111</td></tr></table></td></tr><tr><td class="luceeH0">Raw_Trace</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">core.appcfc.onrequeststart_include_cfm$cf.call(/muraWRM/core/appcfc/onRequestStart_include.cfm:111)</td></tr></table></td></tr><tr><td class="luceeH0">template</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">/var/www/core/appcfc/onRequestStart_include.cfm</td></tr></table></td></tr><tr><td class="luceeH0">type</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">cfml</td></tr></table></td></tr></table></td></tr><tr><td class="luceeH2">4</td><td class="luceeN2"><table><tr><td class="collapse-trigger luceeH0" colspan="3" style="cursor:pointer;"><span>Struct</span></td></tr><tr><td class="luceeH0">codePrintHTML</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">45: &lt;br&gt;
+46: boolean function onRequestStart() output=false {&lt;br&gt;
+&lt;b&gt;47: 	include &amp;quot;/muraWRM/core/appcfc/onRequestStart_include.cfm&amp;quot;;&lt;/b&gt;&lt;br&gt;
+48: 	include &amp;quot;/muraWRM/core/appcfc/scriptProtect_include.cfm&amp;quot;;&lt;br&gt;
+49: 	return true;&lt;br&gt;
+</td></tr></table></td></tr><tr><td class="luceeH0">codePrintPlain</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">45: 
+46: boolean function onRequestStart() output=false {
+47: 	include &quot;/muraWRM/core/appcfc/onRequestStart_include.cfm&quot;;
+48: 	include &quot;/muraWRM/core/appcfc/scriptProtect_include.cfm&quot;;
+49: 	return true;
+</td></tr></table></td></tr><tr><td class="luceeH0">column</td><td class="luceeN0"><table><tr><td class="luceeH1">number</td><td class="luceeN1">0</td></tr></table></td></tr><tr><td class="luceeH0">id</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">??</td></tr></table></td></tr><tr><td class="luceeH0">line</td><td class="luceeN0"><table><tr><td class="luceeH1">number</td><td class="luceeN1">47</td></tr></table></td></tr><tr><td class="luceeH0">Raw_Trace</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">core.appcfc.onrequeststart_scriptprotect_method_cfm$cf.udfCall(/core/appcfc/onRequestStart_scriptProtect_method.cfm:47)</td></tr></table></td></tr><tr><td class="luceeH0">template</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">/var/www/core/appcfc/onRequestStart_scriptProtect_method.cfm</td></tr></table></td></tr><tr><td class="luceeH0">type</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">cfml</td></tr></table></td></tr></table></td></tr></table></td></tr><tr><td class="luceeH0">type</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">database</td></tr></table></td></tr><tr><td class="luceeH0">where</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1"></td></tr></table></td></tr></table></div>
+<!-- ==stop== dump -->
+
+  

@@ -1,0 +1,139 @@
+/**************************************************************
+* Text areas
+**************************************************************/
+
+/***************
+* List styling
+***************/
+%textarea--bullets {
+    display: block;
+    margin-bottom: 19px;
+    padding-left: 0;
+
+    li {
+        background: transparent;
+        display: list-item;
+        list-style: none !important;
+        padding-left: 30px;
+        position: relative;
+
+        &::before {
+            content: "\25A0";
+            color: #007154;
+            display: inline-block;
+            font-weight: bold;
+            position: absolute 0 * * 0;
+            width: 1em;
+        }
+
+        ul, ol {
+            margin-bottom: 0;
+            padding-top: 13px;
+        }
+
+        &:not(:last-of-type) { margin-bottom: 12px; }
+
+        p:last-of-type { margin-bottom: 0; }
+
+    }
+
+}
+
+
+/***************
+* Textarea
+***************/
+%textarea--1 {
+
+    /**
+    * Headers
+    */
+    h2, h3, h4, h5, h6 { color: $c--24; }
+    h2, h3, h5, h6 {
+        font-family: $ff--1;
+        font-weight: $fw--semibold;
+    }
+
+    h2 {
+        font-size: 32px;
+        margin-bottom: 21px;
+    }
+
+    h3 {
+        font-size: 22px;
+        margin-bottom: 20px;
+    }
+
+    h4 {
+        font-family: $ff--3;
+        font-size: 20px;
+        font-weight: $fw--semi;
+        margin-bottom: 20px;
+    }
+
+    h5 {
+        font-size: 18px;
+        margin-bottom: 12px;
+    }
+
+    h6  {
+        font-size: 17px;
+        margin-bottom: 9px;
+    }
+
+    /**
+    * Paragraph text
+    */
+    p {
+        display: block;
+        margin-bottom: 32px;
+    }
+
+    /**
+    * Formatting
+    */
+    b, strong {
+        color: $c--black;
+        font-weight: $fw--bold;
+    }
+    i { font-style: italic; }
+    u { text-decoration: underline; }
+
+    /**
+    * Anchors
+    */
+    a {
+        color: $c--21;
+        text-decoration: underline;
+        transition: all .2s ease-in-out;
+
+        /* Hover */
+        &:hover { opacity: .6; }
+
+    }
+
+    /**
+    * Lists
+    */
+    ul, ol { @extend %textarea--bullets; }
+
+    ol {
+        padding-left: 17px;
+
+        > li {
+            list-style: decimal !important;
+            padding-left: 13px;
+
+            &::before { display: none; }
+
+        }
+
+        ol li {  list-style: lower-latin !important; }
+
+    }
+
+}
+
+
+
+/* END OF DOCUMENT */

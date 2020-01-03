@@ -1,0 +1,240 @@
+/**************************************************************
+* Programme content
+**************************************************************/
+
+section.programme-body {
+    display: block;
+    width: 100%;
+
+    /***************
+    * Containers
+    ***************/
+    > .container {
+        @extend %wrapper--1;
+        width: 100%;
+
+		@media (--lg-xxxl) { padding: 0 50px; }
+
+        > .inner {
+            display: block;
+			width: 100%;
+
+    		@media (--lg-up) {
+    			align-items: flex-start;
+    			display: flex;
+    			flex-wrap: nowrap;
+    			justify-content: flex-start;
+    		}
+
+        	/***************
+        	* Content
+        	***************/
+            > main.content {
+        		display: block;
+                position: relative;
+
+                @media (--xl-up) { padding-right: 90px; }
+
+                @media (--lg-xl) { padding-right: 30px; }
+
+                @media (--lg-up) {
+            		display: inline-block;
+                    flex: 1 1 calc(100% - 330px);
+                    max-width: calc(100% - 330px);
+                    vertical-align: top;
+                }
+
+                > section:not(:last-of-type) { margin-bottom: 50px; }
+
+        	}
+
+            /***************
+            * Sidebar
+            ***************/
+            > aside.sidebar {
+                display: block;
+                margin-bottom: 40px;
+                padding-top: 14px;
+                position: relative;
+
+                @media (--lg-up) {
+                    display: inline-block;
+                    flex: 0 0 330px;
+                    margin-bottom: 0;
+                    max-width: 330px;
+                    min-width: 330px;
+                    padding-top: 0;
+                    vertical-align: top;
+                }
+
+                @media (--lg-down) {
+                    &.hide-mobile { display: none; }
+                }
+
+                /**
+                * Blocks
+                */
+                .sidebar-block {
+
+                    &:not(:first-of-type) { margin-top: 45px; }
+
+                    /* Title */
+                    .block-title {
+                        @extend %ts--15;
+                        color: $c--24;
+                        display: block;
+                        font-family: $ff--1;
+                        font-weight: $fw--semibold;
+                        letter-spacing: -.33px;
+                        margin-bottom: 20px;
+                    }
+
+                }
+
+            }
+
+		}
+
+    }
+
+    /***************
+    * Programme colours
+    ***************/
+    &.programme--undergrad {
+        section.textarea h2,
+        section.thumb-testimonial-index header .title,
+        section.blog-article-index header > .title,
+        section.testimonial-tabs header .title,
+        section.application-steps>header .title,
+        section.appointment-index>header .title,
+        section.case-study-index header>.title {
+            color: $c--programme-undergrad;
+        }
+        section.programme-table-steps .buttons a:not(.primary) {
+            border-color: $c--programme-undergrad;
+            color: $c--programme-undergrad;
+            &:hover { color: #fff $c--programme-undergrad; }
+        }
+        section.programme-table-steps .buttons a.primary {
+            background-image: linear-gradient(to left, $c--programme-undergrad 0%, $c--programme-undergrad--dark 100%);
+            background-color: $c--programme-undergrad;
+            &:hover { background-image: none; }
+        }
+        section.simple-testimonial .quote { color: $c--programme-undergrad; }
+    }
+    &.programme--postgrad {
+        section.textarea h2,
+        section.thumb-testimonial-index header .title,
+        section.blog-article-index header > .title,
+        section.testimonial-tabs header .title,
+        section.application-steps>header .title,
+        section.appointment-index>header .title,
+        section.case-study-index header>.title {
+            color: $c--programme-postgrad;
+        }
+        section.programme-table-steps .buttons a:not(.primary) {
+            border-color: $c--programme-postgrad;
+            color: $c--programme-postgrad;
+            &:hover { color: #fff $c--programme-postgrad; }
+        }
+        section.programme-table-steps .buttons a.primary {
+            background-image: linear-gradient(to left, $c--programme-postgrad 0%, $c--programme-postgrad--dark 100%);
+            background-color: $c--programme-postgrad;
+            &:hover { background-image: none; }
+        }
+        section.simple-testimonial .quote { color: $c--programme-postgrad; }
+    }
+    &.programme--mba {
+        section.textarea h2,
+        section.thumb-testimonial-index header .title,
+        section.blog-article-index header > .title,
+        section.testimonial-tabs header .title,
+        section.application-steps>header .title,
+        section.appointment-index>header .title,
+        section.case-study-index header>.title {
+            color: $c--programme-mba;
+        }
+        section.programme-table-steps .buttons a:not(.primary) {
+            border-color: $c--programme-mba;
+            color: $c--programme-mba;
+            &:hover { color: #fff $c--programme-mba; }
+        }
+        section.programme-table-steps .buttons a.primary {
+            background-image: linear-gradient(to left, $c--programme-mba 0%, $c--programme-mba--dark 100%);
+            background-color: $c--programme-mba;
+            &:hover { background-image: none; }
+        }
+        section.simple-testimonial .quote { color: $c--programme-mba; }
+    }
+    &.programme--doctoral {
+        section.textarea h2,
+        section.thumb-testimonial-index header .title,
+        section.blog-article-index header > .title,
+        section.testimonial-tabs header .title,
+        section.application-steps>header .title,
+        section.appointment-index>header .title,
+        section.case-study-index header>.title {
+            color: $c--programme-doctoral;
+        }
+        section.programme-table-steps .buttons a:not(.primary) {
+            border-color: $c--programme-doctoral;
+            color: $c--programme-doctoral;
+            &:hover { color: #fff $c--programme-doctoral; }
+        }
+        section.programme-table-steps .buttons a.primary {
+            background-image: linear-gradient(to left, $c--programme-doctoral 0%, $c--programme-doctoral--dark 100%);
+            background-color: $c--programme-doctoral;
+            &:hover { background-image: none; }
+        }
+        section.simple-testimonial .quote { color: $c--programme-doctoral; }
+    }
+    &.programme--exec {
+        section.textarea h2,
+        section.thumb-testimonial-index header .title,
+        section.blog-article-index header > .title,
+        section.testimonial-tabs header .title,
+        section.application-steps>header .title,
+        section.appointment-index>header .title,
+        section.case-study-index header>.title {
+            color: $c--programme-exec;
+        }
+        section.programme-table-steps .buttons a:not(.primary) {
+            border-color: $c--programme-exec;
+            color: $c--programme-exec;
+            &:hover { color: #fff $c--programme-exec; }
+        }
+        section.programme-table-steps .buttons a.primary {
+            background-image: linear-gradient(to left, $c--programme-exec 0%, $c--programme-exec--dark 100%);
+            background-color: $c--programme-exec;
+            &:hover { background-image: none; }
+        }
+        section.simple-testimonial .quote { color: $c--programme-exec; }
+    }
+    &.programme--london {
+        section.textarea h2,
+        section.thumb-testimonial-index header .title,
+        section.blog-article-index header > .title,
+        section.testimonial-tabs header .title,
+        section.application-steps>header .title,
+        section.appointment-index>header .title,
+        section.case-study-index header>.title {
+            color: $c--programme-london;
+        }
+        section.programme-table-steps .buttons a:not(.primary) {
+            border-color: $c--programme-london;
+            color: $c--programme-london;
+            &:hover { color: #fff $c--programme-london; }
+        }
+        section.programme-table-steps .buttons a.primary {
+            background-image: linear-gradient(to left, $c--1 0%, $c--programme-london 100%);
+            background-color: $c--programme-london;
+            &:hover { background-image: none; }
+        }
+        section.simple-testimonial .quote { color: $c--programme-london; }
+    }
+
+}
+
+
+
+/* END OF DOCUMENT */

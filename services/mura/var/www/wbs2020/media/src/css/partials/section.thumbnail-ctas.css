@@ -1,0 +1,168 @@
+/**************************************************************
+* Thumbnail call-to-actions
+**************************************************************/
+
+section.thumbnail-ctas {
+    display: block;
+    margin-bottom: 30px;
+    width: 100%;
+
+    /**
+    * Container
+    */
+    .container {
+        @extend %wrapper--1;
+        width: 100%;
+
+		@media (--lg-xxxl) { padding: 0 50px; }
+
+        @media (--md-xl) {
+            > .inner { flex-wrap: wrap !important; }
+        }
+
+		@media (--md-up) {
+            margin-bottom: 80px;
+
+            > .inner {
+                align-items: stretch;
+                display: flex;
+                flex-wrap: nowrap;
+                justify-content: flex-start;
+                margin: 0 -20px;
+                width: calc(100% + 40px);
+            }
+
+        }
+
+    }
+
+		/***************
+		* Thumbnail
+		***************/
+        article.thumbnail {
+			display: block;
+            height: auto;
+            margin-bottom: 2px;
+            overflow: hidden;
+            padding-bottom: 50%;
+            position: relative;
+            width: 100%;
+
+            /* Title */
+            .title {
+				@extend %ts--5;
+                color: #fff rgba(0,0,0,.5);
+				font-family: $ff--1;
+                font-weight: $fw--bold;
+				letter-spacing: .1025rem;
+                min-height: 48px;
+                padding: 18px 25px 16px;
+                position: absolute * 0 0;
+                text-align: center;
+				text-transform: uppercase;
+                width: 100%;
+                z-index: 1;
+            }
+
+            /* Image */
+            figure.image {
+                @extend %absolute-fill;
+                @extend %cover-bg;
+                transform: scale(1);
+                transition: all .25s ease-in-out;
+                z-index: 0;
+            }
+
+            /* Anchor */
+            a.permalink {
+                @extend %absolute-anchor;
+                z-index: 2;
+            }
+
+			@media (--xl-up) {
+                height: 300px;
+                max-width: 590px;
+                min-width: 275px;
+                padding-bottom: 0;
+
+                /**
+                * Hover
+                */
+                &:hover {
+
+                    /* Image */
+                    figure.image { transform: scale(1.075); }
+
+                }
+
+            }
+
+			@media (--md-xl) {
+                max-width: calc(50% - 40px);
+                padding-bottom: 22%;
+            }
+
+			@media (--md-up) {
+                display: inline-block;
+				flex: 1 1 auto;
+                margin: 0 20px 20px;
+				vertical-align: top;
+			}
+
+		}
+
+    /***************
+    * In sidebar
+    ***************/
+    &.in-sidebar {
+        margin-bottom: 0;
+
+        .container {
+            margin-bottom: 0;
+            padding: 0 !important;
+        }
+
+        @media (--xl-up) {
+            article.thumbnail { height: 180px; }
+        }
+
+		@media (--md-up) {
+
+            .container > .inner {
+                display: block;
+                margin: 0;
+                width: 100%;
+            }
+
+            article.thumbnail {
+                display: block;
+                flex: none;
+                margin: 0;
+
+                &:not(:last-of-type) { margin-bottom: 3px; }
+
+            }
+
+        }
+
+    }
+
+    /***************
+	* Lazy-loading
+	***************/
+	&.view-detect {
+		opacity: 0;
+		transition: all 1.2s ease-in-out-quart 0s;
+
+		/**
+		* Loaded
+		*/
+		&.viewed { opacity: 1; }
+
+	}
+
+}
+
+
+
+/* END OF DOCUMENT */

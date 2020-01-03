@@ -1,0 +1,77 @@
+/**************************************************************
+* Media queries
+**************************************************************/
+
+/**
+* Lost Grid
+* http://lostgrid.org/docs.html#global-grid-settings
+*/
+@lost gutter 40px;
+
+
+/**
+* Media query helpers (standard breakpoints)
+* https://github.com/postcss/postcss-custom-media
+*/
+
+/* Larger */
+@custom-media --xs-up (width > 480px);
+@custom-media --xls-up (width > 574px);
+@custom-media --xsm-up (width > 700px);
+@custom-media --sm-up (width > 768px);
+@custom-media --md-up (width > 960px);
+@custom-media --lg-up (width > 1024px);
+@custom-media --xl-up (width > 1230px);
+@custom-media --xxl-up (width > 1400px);
+@custom-media --xxxl-up (width > 1440px);
+
+
+/* Between (range) */
+@custom-media --xs-xls (480px <= width <= 574px);
+@custom-media --xs-sm (480px <= width <= 768px);
+@custom-media --xs-md (480px <= width <= 960px);
+@custom-media --xs-lg (480px <= width <= 1024px);
+@custom-media --xs-xl (480px <= width <= 1230px);
+@custom-media --xs-xxl (480px <= width <= 1400px);
+@custom-media --xs-xxxl (480px <= width <= 1440px);
+@custom-media --xls-sm (574px <= width <= 768px);
+@custom-media --xls-md (574px <= width <= 960px);
+@custom-media --xls-lg (574px <= width <= 1024px);
+@custom-media --xls-xl (574px <= width <= 1230px);
+@custom-media --xls-xxl (574px <= width <= 1400px);
+@custom-media --xls-xxxl (574px <= width <= 1440px);
+@custom-media --sm-md (768px <= width <= 960px);
+@custom-media --sm-lg (768px <= width <= 1024px);
+@custom-media --sm-xl (768px <= width <= 1230px);
+@custom-media --sm-xxl (768px <= width <= 1400px);
+@custom-media --sm-xxxl (768px <= width <= 1440px);
+@custom-media --md-lg (960px <= width <= 1024px);
+@custom-media --md-xl (960px <= width <= 1230px);
+@custom-media --md-xxl (960px <= width <= 1400px);
+@custom-media --md-xxxl (960px <= width <= 1440px);
+@custom-media --lg-xl (1024px <= width <= 1230px);
+@custom-media --lg-xxl (1024px <= width <= 1400px);
+@custom-media --lg-xxxl (1024px <= width <= 1440px);
+@custom-media --xl-xxl (1230px <= width <= 1400px);
+@custom-media --xl-xxxl (1230px <= width <= 1440px);
+@custom-media --xxl-xxl (1400px <= width <= 1440px);
+
+/* Smaller */
+@custom-media --xxxl-down (width < 1440px);
+@custom-media --xxl-down (width < 1400px);
+@custom-media --xl-down (width < 1230px);
+@custom-media --lg-down (width < 1024px);
+@custom-media --md-down (width < 960px);
+@custom-media --sm-down (width < 768px);
+@custom-media --xsm-down (width < 700px);
+@custom-media --xls-down (width < 574px);
+@custom-media --xs-down (width < 480px);
+
+/* Classes */
+@media (--lg-down) {
+    .hidden-md { display: none; }
+    .visible-md { display: block; }
+}
+
+
+/* END OF DOCUMENT */

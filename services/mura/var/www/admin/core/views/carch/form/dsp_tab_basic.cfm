@@ -28,13 +28,10 @@ Your custom code
 • May not alter the default display of the Mura CMS logo within Mura CMS and
 • Must not alter any files in the following directories.
 
- /admin/
- /tasks/
- /config/
- /requirements/mura/
- /Application.cfc
- /index.cfm
- /MuraProxy.cfc
+	/admin/
+	/core/
+	/Application.cfc
+	/index.cfm
 
 You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
 under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
@@ -74,15 +71,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			    	data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.title"))#"
 			    	>
 			    	#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.title")# <i class="mi-question-circle"></i></span>
-			    </label>
-			   	<cfset hasSEOTab=rc.moduleid eq '00000000000000000000000000000000000' and (not len(tabAssignments) or listFindNocase(tabAssignments,'SEO'))>
+		    </label>
+		   	<cfset hasSEOTab=rc.moduleid eq '00000000000000000000000000000000000' and (not len(tabAssignments) or listFindNocase(tabAssignments,'SEO'))>
+
 				<input type="text" id="title" name="title" value="#esapiEncode('html_attr',rc.contentBean.gettitle())#"  maxlength="255" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#" <cfif hasSEOTab and not rc.contentBean.getIsNew()>onkeypress="openDisplay('editAdditionalTitles','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');"</cfif>>
-				<div class="mura-control justify">
-					<button type="button" id="showTitles" name="showTitles" class="btn">Show Additional Content Titles</button>
-				</div>
-				<div id="alertTitleSuccess" class="help-block" style="display:none;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.seotitlescleared')# </div>
 
 				<cfif hasSEOTab>
+					<div class="mura-control justify">
+						<button type="button" id="showTitles" name="showTitles" class="btn">Show Additional Content Titles</button>
+					</div>
+
+					<div id="alertTitleSuccess" class="help-block" style="display:none;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.seotitlescleared')# </div>
+
 					<div class="help-block" id="editAdditionalTitles" style="display:none;">
 						<p>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.AdditionalTitlesnote")#</p><br />
 						<button type="button" id="resetTitles" name="resetTitles" class="btn">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.clearseotitles')#</button>
@@ -124,7 +124,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					    	data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.htmlTitle"))#"
 					    	data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.htmltitle"))#"
 					    	>
-					    				#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.htmltitle")#
+					    		#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.htmltitle")#
 							 <i class="mi-question-circle"></i>
 						</label>
 						<input type="text" id="htmlTitle" name="htmlTitle" value="#esapiEncode('html_attr',rc.contentBean.getHTMLTitle())#"  maxlength="255">
@@ -390,15 +390,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 	</cfif>
 
-	<cfif rc.type eq 'Form'>
-		<!---
-		<div class="mura-control-group body-container" style="display:none">
+		<cfif rc.type eq 'Form'>
+		<cfif application.configBean.getValue(property='formpolls',defaultValue=false)>
+		<div class="mura-control-group">
 			<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formpresentation')#</label>
-			<label for="rc" class="checkbox">
-      			<input name="responseChart" id="rc" type="CHECKBOX" value="1" <cfif rc.contentBean.getresponseChart() eq 1>checked </cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.ispoll')#
-      		</label>
+			<div class="mura-control justify">
+				<label for="rc" class="checkbox inline">
+							<input name="responseChart" id="rc" type="checkbox" value="1" <cfif rc.contentBean.getresponseChart() eq 1>checked </cfif> class="checkbox">
+					#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.ispoll')#
+				</label>
+			</div>
 		</div>
-		--->
+		</cfif>
 		<div class="mura-control-group body-container" style="display:none">
 			<label>
 			 	#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.confirmationmessage')#

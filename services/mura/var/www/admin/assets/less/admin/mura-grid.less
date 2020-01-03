@@ -20,6 +20,7 @@
 #filter-view .dropdown-menu {
 
 	padding: 10px;
+	min-width: 112px;
 
 	form {
 		margin-bottom: 0;
@@ -48,7 +49,6 @@
 	}
 
 }
-
 
 #sitemgr-reorder {
 
@@ -681,7 +681,7 @@
 			margin-left: 4px;		
 
 				> i{
-					color: #ff3405 !important;
+					color: @mura-red !important;
 					font-size: 11px;
 					margin-left: 5px;
 				}		
@@ -1701,7 +1701,7 @@
 	    position: absolute;
 				left: -7px;
 				top: -1px;
-	    width: 160px;
+	    min-width: 160px;
 	    z-index: 20;
 
 	    	ul.actions-list{
@@ -1735,6 +1735,17 @@
 					    }
 			    	}
 	    		}
+
+				li > a:hover {
+					color: #545454;
+					text-decoration: none;
+
+					i {
+						 color: #545454; 
+						}
+
+					}
+
 	    	} 
 	    	// /.actions-menu
 	} 
@@ -1786,7 +1797,6 @@
 		padding-bottom: 1px !important;
 		padding-top: 0 !important;
 	}
-
 
 	a > i {
 
@@ -1894,7 +1904,7 @@ p + .mura-table-grid { margin-top: 12px;}
 				border-top: 0; 
 			}
 		}
-
+		
 	li > a {
 		display: block;
 		text-decoration: none;
@@ -1910,16 +1920,17 @@ p + .mura-table-grid { margin-top: 12px;}
 				position: relative;
 			}
 
-			&#newZoom i { top: 0; }
+			&#newZoom i { 
+				top: 0; 
+			}
 
-		}
+			&:hover {
+				color: #545454;
+				text-decoration: none;
 
-	li > a:hover {
-		color: #545454;
-		text-decoration: none;
-
-		i {
-			 color: #545454; 
+				i {
+					 color: #545454; 
+					}
 			}
 
 		}
@@ -2157,7 +2168,7 @@ table.cfdebug td a {
 .table tbody tr:hover th,
 #mura-nodes dl:hover,
 .mura-row:hover {
-  background-color: #eaf4fd;
+  background-color: @tableBackgroundHover;
 }
 
 .mura-row.alt {

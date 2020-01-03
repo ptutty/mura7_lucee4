@@ -28,13 +28,10 @@ Your custom code
 • May not alter the default display of the Mura CMS logo within Mura CMS and
 • Must not alter any files in the following directories.
 
- /admin/
- /tasks/
- /config/
- /requirements/mura/
- /Application.cfc
- /index.cfm
- /MuraProxy.cfc
+	/admin/
+	/core/
+	/Application.cfc
+	/index.cfm
 
 You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
 under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
@@ -53,6 +50,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	//data=structNew();
 
 	$=application.serviceFactory.getBean("MuraScope");
+
+	if(!isNumeric($.event('page'))){
+			$.event('page',1);
+	}
+
 	rsTypes=application.configBean.getClassExtensionManager().getSubTypes(siteid=session.siteid,activeOnly=true);
 
 	filterSubtypes=!poweruser;
@@ -72,6 +74,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		$.event('sortby','lastupdate');
 	}
 
+	if(!structKeyExists(session.flatViewArgs,"#rc.siteID#")){
+		session.flatViewArgs["#rc.siteID#"]={};
+	}
 	session.flatViewArgs["#rc.siteID#"].moduleid=$.event("moduleid");
 	session.flatViewArgs["#rc.siteID#"].sortBy=$.event("sortby");
 	session.flatViewArgs["#rc.siteID#"].sortDirection=$.event("sortdirection");
@@ -399,7 +404,7 @@ if(len($.siteConfig('customTagGroups'))){
 		<cfset showingLabel = application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.all")>
 	</cfif>
 	<span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports")#:</span>
-	<a id="navReportsToggle" class="dropdown-toggle" data-toggle="dropdown">#showingLabel#<i class="mi-chevron-down"></i></a>
+	<a id="navReportsToggle" class="dropdown-toggle" data-toggle="dropdown">#esapiEncode('html',showingLabel)#<i class="mi-chevron-down"></i></a>
 		<ul id="navReports" class="dropdown-menu">
 			<li><a href="" data-report=""<cfif not len($.event("report"))> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.all")#<!---<span class="badge">#$.getBean('contentGateway').getPageCount(siteid=session.siteid).counter#</span>---></a></li>
 			<cfset draftCount=$.getBean('contentManager').getMyDraftsCount(siteid=session.siteid, startdate=dateAdd('m',-3,now()))>
@@ -617,6 +622,10 @@ if(len($.siteConfig('customTagGroups'))){
 						</cfswitch>
 						</cfif>
 						 <li class="version-history"><a title="Version History" href="./?muraAction=cArch.hist&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getparentID()#&topid=#esapiEncode('url',topid)#&siteid=#esapiEncode('url',item.getSiteID())#&moduleid=#item.getmoduleid()#&startrow=#esapiEncode('url',$.event('startrow'))#"><i class="mi-history"></i></a></li>
+
+						<cfif item.getType() eq 'Form'>
+				 			<li class="manage-data"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.managedata")#"  href="./?muraAction=cArch.datamanager&contentid=#esapiEncode('url',item.getContentID())#&siteid=#esapiEncode('url',item.getSiteid())#&topid=#esapiEncode('url',topid)#&moduleid=#esapiEncode('url',item.getModuleID())#&type=Form&parentid=#esapiEncode('url',item.getParentID())#"><i class="mi-wrench"></i></a></li>
+				 		</cfif>
 
 					    <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(item.getSiteID()).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
 					        <li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions')#" href="./?muraAction=cPerm.main&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getparentID()#&topid=#esapiEncode('url',topID)#&siteid=#esapiEncode('url',item.getSiteID())#&moduleid=#item.getmoduleid()#&startrow=#esapiEncode('url',$.event('startrow'))#"><i class="mi-group"></i></a></li>

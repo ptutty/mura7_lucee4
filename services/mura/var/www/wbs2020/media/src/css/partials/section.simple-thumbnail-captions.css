@@ -1,0 +1,32 @@
+/**************************************************************
+* Simple thumbnail captions (usually in sidebars)
+**************************************************************/
+
+section.simple-thumbnail-captions {
+
+    article.captioned-thumbnail {
+        display: block;
+
+        &:not(:last-of-type) { margin-bottom: 20px; }
+
+    }
+
+    /***************
+    * Lazy-loading
+    ***************/
+    &.view-detect {
+        opacity: 0;
+        transition: all 1.2s ease-in-out-quart 0s;
+
+        /**
+        * Loaded
+        */
+        &.viewed { opacity: 1; }
+
+    }
+    
+}
+
+
+
+/* END OF DOCUMENT */

@@ -1,0 +1,46 @@
+/**************************************************************
+* Contained text area
+**************************************************************/
+
+section.contained-textarea {
+    @extend %textarea--1;
+    display: block;
+    width: 100%;
+
+    /**
+    * Container
+    */
+    .container {
+        background: $c--tone-4;
+        padding: 24px $gutter--mobile 45px;
+
+        @media (--lg-up) { padding: 22px 40px 45px; }
+        @media (--md-lg) { padding: 22px $gutter--tablet 45px; }
+
+    }
+
+        /* Buttons */
+        a.button { @extend %btn--1; }
+
+        /* Data table */
+        .data-table { @extend %table--1; }
+
+    /***************
+	* Lazy-loading
+	***************/
+	&.view-detect {
+		opacity: 0;
+		transition: all 1.2s ease-in-out-quart 0s;
+
+		/**
+		* Loaded
+		*/
+		&.viewed { opacity: 1; }
+
+	}
+
+}
+
+
+
+/* END OF DOCUMENT */

@@ -29,13 +29,10 @@
   • May not alter the default display of the Mura CMS logo within Mura CMS and
   • Must not alter any files in the following directories.
 
-   /admin/
-   /tasks/
-   /config/
-   /requirements/mura/
-   /Application.cfc
-   /index.cfm
-   /MuraProxy.cfc
+  	/admin/
+	/core/
+	/Application.cfc
+	/index.cfm
 
   You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
   under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
@@ -47,7 +44,7 @@
 --->
 <cfif session.siteid neq ''>
 
-  <cfif not application.configBean.getSessionHistory() or application.configBean.getSessionHistory() gte 30>
+  <cfif not application.configBean.getSessionHistory() or application.configBean.getSessionHistory() gte 180>
     <cfparam name="session.dashboardSpan" default="30">
   <cfelse>
     <cfparam name="session.dashboardSpan" default="#application.configBean.getSessionHistory()#">
@@ -56,7 +53,7 @@
     <li id="admin-nav-modules">
       <a class="nav-submenu <cfif not listFindNoCase('carch,cchain,cusers,csettings,cdashboard,ceditprofile,nmessage,ctrash,clogin,cextend,cfilemanager,cfeed,ccategory,cchangesets,cplugins',rc.originalcircuit) and not (rc.moduleID eq '00000000000000000000000000000000000' and rc.originalcircuit eq 'cPerm')> active</cfif>" data-toggle="nav-submenu" href="./">
         <i class="mi-th-large"></i>
-        <span class="sidebar-mini-hide">#application.rbFactory.getKeyValue(session.rb,"layout.modules")#</span>
+        <span class="sidebar-mini-hide">#rc.$.rbKey("layout.modules")#</span>
       </a>
 
       <ul>
@@ -66,7 +63,7 @@
             <li>
               <a<cfif rc.originalcircuit eq 'cAdvertising' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000006')> class="active"</cfif> href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cAdvertising.listAdvertisers&amp;siteid=#session.siteid#&amp;moduleid=00000000000000000000000000000000006">
                 <i class="mi-cog"></i>
-                #application.rbFactory.getKeyValue(session.rb,"layout.advertising")#
+                #rc.$.rbKey("layout.advertising")#
               </a>
             </li>
           </cfif>
@@ -77,7 +74,7 @@
             <li>
               <a<cfif rc.originalcircuit eq 'cEmail' or (rc.originalcircuit eq 'cPerm' and rc.moduleid eq '00000000000000000000000000000000005')> class="active"</cfif> href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cEmail.list&amp;siteid=#session.siteid#">
                 <i class="mi-cog"></i>
-                #application.rbFactory.getKeyValue(session.rb,"layout.emailbroadcaster")#
+                #rc.$.rbKey("layout.emailbroadcaster")#
               </a>
             </li>
           </cfif>
@@ -88,7 +85,7 @@
             <li>
               <a<cfif rc.originalcircuit eq 'cMailingList' or (rc.originalcircuit eq 'cPerm' and rc.moduleid eq '00000000000000000000000000000000009')> class="active"</cfif> href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cMailingList.list&amp;siteid=#session.siteid#">
                 <i class="mi-cog"></i>
-                #application.rbFactory.getKeyValue(session.rb,"layout.mailinglists")#
+                #rc.$.rbKey("layout.mailinglists")#
               </a>
             </li>
           </cfif>

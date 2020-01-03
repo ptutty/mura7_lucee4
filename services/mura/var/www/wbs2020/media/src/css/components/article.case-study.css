@@ -1,0 +1,125 @@
+/**************************************************************
+* Case study
+**************************************************************/
+
+article.case-study {
+
+	/**
+    * Image
+    */
+    figure.image {
+        display: block;
+        overflow: hidden;
+        padding-bottom: 54.55%;
+        position: relative;
+        size: 100% 0;
+
+        /* Play button */
+        .play {
+            @extend %ts--9;
+            background: rgba(#354045, .63) url('../img/captioned-thumbnail-cta-play.svg') no-repeat center left 20px / 8px;
+            color: #fff;
+            cursor: pointer;
+            font-family: $ff--1;
+            font-weight: $fw--bold;
+            letter-spacing: .72px;
+            padding: 16px 25px 17px 45px;
+            position: absolute * * 0 0;
+            text-transform: uppercase;
+            user-select: none;
+            z-index: 1;
+        }
+
+        /* Image & link */
+        a.src {
+            @extend %absolute-fill;
+            @extend %cover-bg;
+            display: block;
+            transform: none;
+            transition: all .2s ease-in-out;
+            z-index: 0;
+
+            /* Hover */
+            &:hover { transform: scale(1.1); }
+
+        }
+
+    }
+
+    /**
+    * Caption
+    */
+    .text {
+        display: block;
+        padding: 26px 0 0;
+        width: 100%;
+
+        /* Title */
+        > span.title {
+            @extend %ts--3;
+            color: $c--22;
+    		display: block;
+    		font-family: $ff--1;
+    		font-weight: $fw--bold;
+    		letter-spacing: .10175em;
+            margin-bottom: 18px;
+    		text-transform: uppercase;
+        }
+
+        /* Description */
+        .description {
+            @extend %ts--8;
+            color: $c--5;
+            display: block;
+            font-family: $ff--3;
+        }
+
+            /* Paragraph text */
+            p {
+                display: block;
+
+                &:not(:last-of-type) { margin-bottom: 32px; }
+
+            }
+
+            /* Formatting */
+            b, strong {
+                color: $c--black;
+                font-weight: $fw--bold;
+            }
+            i { font-style: italic; }
+            u { text-decoration: underline; }
+
+        /* Person */
+        .person {
+            display: inline-block;
+            font-size: 0;
+            margin-top: 26px;
+            vertical-align: top;
+            width: calc(100% - 67px);
+
+            .title {
+                color: $c--black;
+                font-size: 13px 17px;
+                font-weight: $fw--bold;
+                display: block;
+                margin-bottom: 5px;
+                letter-spacing: -.16px;
+            }
+
+            .sub {
+                color: $c--5;
+                display: block;
+                font-size: 14px 20px;
+                font-weight: $fw--reg;
+                letter-spacing: -.17px;
+            }
+
+        }
+
+    }
+
+}
+
+
+/* END OF DOCUMENT */

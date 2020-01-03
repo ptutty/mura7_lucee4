@@ -1,0 +1,109 @@
+/**************************************************************
+* Programme table with buttons
+**************************************************************/
+
+section.programme-table-steps {
+    background: $c--tone-6;
+    display: block;
+    padding: 29px 10px 30px;
+    width: 100%;
+
+    @media (--lg-up) {
+        box-shadow: 0 1px 0 0 #ADBAC1;
+        padding: 29px 24px 30px;
+
+        &.hide-desktop { display: none; }
+
+    }
+
+    @media (--lg-down) {
+        &.hide-mobile { display: none; }
+    }
+
+    /**
+    * List (table)
+    */
+    ul.list {
+		@extend %ts--8;
+		display: block;
+		font-family: $ff--3;
+		letter-spacing: -.18px;
+		user-select: none;
+
+		/* Row */
+		li.row {
+			align-items: flex-start;
+            background: #fff;
+			display: flex;
+			flex-wrap: nowrap;
+			justify-content: space-between;
+			padding: 10px 12px;
+
+			span {
+				display: inline-block;
+				flex-grow: 1;
+				flex-shrink: 0;
+				vertical-align: top;
+
+				&.label {
+					color: $c--black;
+    				flex-basis: calc(38% - 10px);
+    				max-width: calc(38% - 10px);
+                    font-weight: $fw--bold;
+					text-align: left;
+				}
+
+				&.value {
+					color: $c--5;
+    				flex-basis: calc(62% - 10px);
+    				max-width: calc(62% - 10px);
+					text-align: right;
+				}
+
+			}
+
+			&:not(:last-of-type) { margin-bottom: 3px; }
+
+		}
+
+    }
+
+    /**
+    * Buttons
+    */
+    .buttons {
+        padding-top: 26px;
+        text-align: center;
+
+        a {
+            width: 100%;
+
+            &:not(.primary) { @extend %btn--2; }
+
+            &.primary { @extend %btn--3--external; }
+
+            &:not(:last-of-type) { margin-bottom: 10px; }
+
+        }
+
+    }
+
+    /***************
+	* Lazy-loading
+	***************/
+	&.view-detect {
+		opacity: 0;
+		transition: all 1.2s ease-in-out-quart 0s;
+
+		/**
+		* Loaded
+		*/
+		&.viewed { opacity: 1; }
+
+	}
+    
+}
+
+
+
+/* END OF DOCUMENT */

@@ -28,13 +28,10 @@ Your custom code
 • May not alter the default display of the Mura CMS logo within Mura CMS and
 • Must not alter any files in the following directories.
 
- /admin/
- /tasks/
- /config/
- /requirements/mura/
- /Application.cfc
- /index.cfm
- /MuraProxy.cfc
+	/admin/
+	/core/
+	/Application.cfc
+	/index.cfm
 
 You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
 under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
@@ -66,15 +63,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			   	<label>
 			   		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.defaulttags')#
 			   	</label>
-				<input type="text" name="tags">
-				<cfif len(rc.contentBean.getTags())>
-					<cfloop list="#rc.contentBean.getTags()#" index="i">
-						<span class="tag">
-							#esapiEncode('html',i)# <a><i class="mi-times-circle"></i></a>
-						<input name="tags" type="hidden" value="#esapiEncode('html_attr',i)#">
-						</span>
-					</cfloop>
-				</cfif>
+  				<input type="text" name="tags">
+  				<cfif len(rc.contentBean.getTags())>
+  					<cfloop list="#rc.contentBean.getTags()#" index="i">
+  						<span class="tag">
+  							#esapiEncode('html',i)# <a><i class="mi-times-circle"></i></a>
+  						  <input name="tags" type="hidden" value="#esapiEncode('html_attr',i)#">
+  						</span>
+  					</cfloop>
+  				</cfif>
 			</div> <!--- /.mura-control-group --->
 		</div> <!--- /.mura-control .tagSelector --->
 
@@ -106,8 +103,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			   		#g# #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.tags')#
 			   	</label>
 				<input type="text" name="#g#tags">
-				<cfif len(rc.contentBean.getTags())>
-					<cfloop list="#rc.contentBean.getTags()#" index="i">
+				<cfif len(rc.contentBean.getValue('#g#tags'))>
+					<cfloop list="#rc.contentBean.getValue('#g#tags')#" index="i">
 						<span class="tag">
 							#esapiEncode('html',i)# <a><i class="mi-times-circle"></i></a>
 						    <input name="#g#tags" type="hidden" value="#esapiEncode('html_attr',i)#">

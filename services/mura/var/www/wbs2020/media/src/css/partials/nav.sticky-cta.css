@@ -1,0 +1,235 @@
+/**************************************************************
+* Sticky call-to-actions
+**************************************************************/
+
+nav.sticky-cta {
+	background: #EAECF0;
+	display: block;
+	padding: 0;
+	position: fixed * 0 0;
+	width: 100%;
+	z-index: 1002;
+
+	/* Label */
+	.label {
+		align-items: center;
+		color: $c--26;
+		display: none;
+		font-family: $ff--1;
+		font-size: 13px 1.175em;
+		font-weight: $fw--bold;
+		flex: 1 1 auto;
+		justify-content: flex-start;
+		height: 100%;
+    	letter-spacing: .0175em;
+		padding: 2px 30px 0 0;
+		text-transform: uppercase;
+		vertical-align: top;
+
+		@media (--xl-up) { font-size: 14px; }
+
+	}
+
+	/* Buttons */
+	ul.buttons {
+		size: 100%;
+		vertical-align: top;
+	}
+
+		/* Button */
+		li.button {
+			display: inline-block;
+			vertical-align: top;
+
+	        a {
+				display: block;
+				size: 100%;
+				text-align: center;
+
+				@media (--xl-up) { padding: 30px; }
+
+			}
+
+		}
+
+	@media only screen and (min-width: 1023px) {
+		align-items: center;
+		background: #F0F3F4;
+		display: flex;
+		justify-content: space-between;
+		min-height: 80px;
+		padding: 10px 60px;
+
+		/* Label */
+		.label { display: inline-flex; }
+
+		/* Buttons */
+		ul.buttons {
+			display: inline-flex;
+			width: auto;
+		}
+
+			/* Button */
+			li.button {
+				flex-basis: auto;
+				flex: 1 1 auto;
+				max-width: none;
+
+				&:not(:first-of-type) { margin-left: 14px; }
+
+		        a {
+					min-height: 50px !important;
+		            size: 100%;
+
+		            &:not(.primary) {
+		            	@extend %btn--2;
+						line-height: .85rem;
+						padding: 11px 18px !important;
+		            }
+
+		            &.primary:not(.external) {
+						@extend %btn--3;
+	    				padding: 20px 36px;
+					}
+
+		            &.primary.external {
+						@extend %btn--3--external;
+	    				padding: 13px 40px 13px 36px;
+					}
+
+		        }
+
+			}
+
+	}
+
+	@media (--lg-up) {
+		display: none;
+
+		&.on-scroll { display: flex; }
+
+	}
+
+	@media (--lg-down) {
+
+		/* Buttons */
+		ul.buttons {
+			align-items: stretch;
+			display: flex;
+			justify-content: space-between;
+			min-height: 62px;
+		}
+
+			/* Button */
+			li.button {
+				flex: 0 0 33.3333%;
+				max-width: 33.3333%;
+
+				&:not(:first-of-type) { border-left: 1px solid #fff; }
+
+				a {
+					align-items: flex-end;
+					color: $c--5;
+					display: flex;
+					font-family: $ff--1;
+					font-size: 8px 1em;
+					font-weight: $fw--bold;
+					justify-content: center;
+					letter-spacing: -.01px;
+					padding: 0 10px 12px;
+					text-transform: uppercase;
+
+					&.enquiry { background: transparent url('../img/sticky-cta--enquiry.svg') no-repeat center top 10px / 16px 20px; }
+					&.download-brochure { background: transparent url('../img/sticky-cta--download.svg') no-repeat center top 10px / 18px 20px; }
+					&.apply { background: transparent url('../img/sticky-cta--apply.svg') no-repeat center top 10px / 21px; }
+
+				}
+
+			}
+
+	}
+
+    /***************
+    * Programme colours
+    ***************/
+	@media (--lg-up) {
+
+	    &.programme--undergrad {
+	        li.button a:not(.primary) {
+	            border-color: $c--programme-undergrad;
+	            color: $c--programme-undergrad;
+	            &:hover { color: #fff $c--programme-undergrad; }
+	        }
+	        li.button a.primary {
+	            background-image: linear-gradient(to left, $c--programme-undergrad 0%, $c--programme-undergrad--dark 100%);
+	            background-color: $c--programme-undergrad;
+	            &:hover { background-image: none; }
+	        }
+	    }
+	    &.programme--postgrad {
+	        li.button a:not(.primary) {
+	            border-color: $c--programme-postgrad;
+	            color: $c--programme-postgrad;
+	            &:hover { color: #fff $c--programme-postgrad; }
+	        }
+	        li.button a.primary {
+	            background-image: linear-gradient(to left, $c--programme-postgrad 0%, $c--programme-postgrad--dark 100%);
+	            background-color: $c--programme-postgrad;
+	            &:hover { background-image: none; }
+	        }
+	    }
+	    &.programme--mba {
+	        li.button a:not(.primary) {
+	            border-color: $c--programme-mba;
+	            color: $c--programme-mba;
+	            &:hover { color: #fff $c--programme-mba; }
+	        }
+	        li.button a.primary {
+	            background-image: linear-gradient(to left, $c--programme-mba 0%, $c--programme-mba--dark 100%);
+	            background-color: $c--programme-mba;
+	            &:hover { background-image: none; }
+	        }
+	    }
+	    &.programme--doctoral {
+	        li.button a:not(.primary) {
+	            border-color: $c--programme-doctoral;
+	            color: $c--programme-doctoral;
+	            &:hover { color: #fff $c--programme-doctoral; }
+	        }
+	        li.button a.primary {
+	            background-image: linear-gradient(to left, $c--programme-doctoral 0%, $c--programme-doctoral--dark 100%);
+	            background-color: $c--programme-doctoral;
+	            &:hover { background-image: none; }
+	        }
+	    }
+	    &.programme--exec {
+	        li.button a:not(.primary) {
+	            border-color: $c--programme-exec;
+	            color: $c--programme-exec;
+	            &:hover { color: #fff $c--programme-exec; }
+	        }
+	        li.button a.primary {
+	            background-image: linear-gradient(to left, $c--programme-exec 0%, $c--programme-exec--dark 100%);
+	            background-color: $c--programme-exec;
+	            &:hover { background-image: none; }
+	        }
+	    }
+	    &.programme--london {
+	        li.button a:not(.primary) {
+	            border-color: $c--programme-london;
+	            color: $c--programme-london;
+	            &:hover { color: #fff $c--programme-london; }
+	        }
+	        li.button a.primary {
+	            background-image: linear-gradient(to left, $c--1 0%, $c--programme-london 100%);
+	            background-color: $c--programme-london;
+	            &:hover { background-image: none; }
+	        }
+	    }
+
+	}
+
+}
+
+
+/* END OF DOCUMENT */

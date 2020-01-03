@@ -1,0 +1,120 @@
+/**************************************************************
+* Branding
+**************************************************************/
+
+/***************
+* Gutters
+***************/
+$gutter: 40px;
+$gutter--mobile: 11px;
+$gutter--tablet: 20px;
+
+
+/***************
+* Colours
+* @note: append integers ('-1') for tones
+***************/
+
+/**
+* Primary
+*/
+$c--1: #51AAFF;
+$c--2: #000066;
+$c--3: #0054A4;
+$c--4: #313334;
+$c--5: #494949;
+$c--6: #272727;
+$c--7: #354045;
+$c--8: #0D1C23;
+$c--9: #161616;
+$c--10: #464647;
+$c--11: #0F0F0F;
+$c--12: #456D86;
+$c--13: #4B6D76;
+$c--14: #137625;
+$c--15: #71760a;
+$c--16: #05766a;
+$c--17: #337602;
+$c--18: #763323;
+$c--19: #222576;
+$c--20: #6c0476;
+$c--21: #0B63AF;
+$c--22: #0254A7;
+$c--23: #125496;
+$c--24: #111111;
+$c--25: #979797;
+$c--26: #007154;
+$c--27: #03ADEF;
+
+/**
+* Monochrome
+*/
+$c--black: #000;
+$c--white: #fff;
+
+/**
+* Tones
+*/
+$c--tone-1: #859297;
+$c--tone-2: #E6EDF4;
+$c--tone-3: #F0F2F3;
+$c--tone-4: #F5F6F8;
+$c--tone-5: #FDFDFD;
+$c--tone-6: #F3F4F6;
+$c--tone-7: #DBDBDB;
+
+/**
+* Highlight text
+*/
+$c--highlight-bg: #333;
+$c--highlight-text: #fff;
+
+/**
+* Programme
+*/
+/* Undergraduate */
+$c--programme-undergrad: #e6007e;
+$c--programme-undergrad--dark: #70257b;
+
+/* Postgraduate */
+$c--programme-postgrad: #00b1ab;
+$c--programme-postgrad--dark: #007155;
+
+/* MBA */
+$c--programme-mba: #a71680;
+$c--programme-mba--dark: #312a6f;
+
+/* Doctoral */
+$c--programme-doctoral: #80c0d3;
+$c--programme-doctoral--dark: #2384b4;
+
+/* Executive education */
+$c--programme-exec: #6f8372;
+$c--programme-exec--dark: #a2c616;
+
+/* London */
+$c--programme-london: #004899;
+
+
+/***************
+* Typography defaults
+***************/
+$base--bg-colour: #fff;
+$base--text-colour: $c--5;
+$base--font-family: 'Montserrat', -apple-system, linkMacSystemFont, Helvetica Neue, Segoe UI, Roboto, Arial, sans-serif;
+$base--font-size: 16px;
+$base--font-weight: 400;
+$base--line-height: 1.75;
+
+
+/***************
+* Lost Grid (settings)
+* http://lostgrid.org/docs.html#global-grid-settings
+***************/
+@lost gutter 40px;
+@lost flexbox flex;
+
+
+
+
+/* END OF DOCUMENT */

@@ -1,0 +1,96 @@
+/**************************************************************
+* Typography
+**************************************************************/
+
+/***************
+* Fonts
+***************/
+$ff--1: 'Montserrat', sans-serif;
+$ff--2: 'Aleo', serif;
+$ff--3: 'Niramit', sans-serif;
+
+
+/***************
+* Weights
+***************/
+$fw--light: 300;
+$fw--reg: 400;
+$fw--semi: 500;
+$fw--semibold: 600;
+$fw--bold: 700;
+$fw--extrabold: 800;
+
+
+/***************
+* Styles
+- It is recommended to NOT include margins, paddings, colours, weights or letter spacing.
+- These should be applied in components or partials for greater flexibility.
+***************/
+%ts--1 {
+    font-size: 32px 40px;
+    font-weight: $fw--semibold;
+}
+
+%ts--2 { font-size: 26px 1.2em; }
+
+%ts--3 { font-size: 15px 1.2em; }
+
+%ts--4 { font-size: 13px 1.2em; }
+
+%ts--5 { font-size: 12px 1.2em; }
+
+%ts--6 {
+    font-size: responsive 26px 32px;
+    font-range: 420px 1280px;
+    line-height: 1.37em;
+}
+
+%ts--7 {
+    font-size: responsive 18px 26px;
+    font-range: 420px 1280px;
+    line-height: 1.39em;
+}
+
+%ts--8 { font-size: 14px 1.7em; }
+
+%ts--9 { font-size: 11px .9rem; }
+
+%ts--10 { font-size: 10px .9rem; }
+
+%ts--11 { font-size: 16px 1.525rem; }
+
+%ts--12 {
+    font-size: responsive 16px 22px;
+    font-range: 420px 1280px;
+    line-height: 1.39em;
+}
+
+%ts--13 {
+    font-size: responsive 18px 32px;
+    font-range: 420px 1280px;
+    line-height: 1.37em;
+}
+
+%ts--14 { font-size: 9px .9rem; }
+
+%ts--15 { font-size: 22px 1.2em; }
+
+%ts--16 { font-size: 15px 1.625em; }
+
+%ts--17 { font-size: 18px 1.645em; }
+
+%ts--18 { font-size: 40px 1.645em; }
+
+%ts--19 { font-size: 22px 1.645em; }
+
+%ts--20 {
+    font-size: responsive 18px 22px;
+    font-range: 420px 1280px;
+    line-height: 1.37em;
+}
+
+%ts--21 { font-size: 17px 1.645em; }
+
+
+
+/* END OF DOCUMENT */

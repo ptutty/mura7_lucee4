@@ -28,13 +28,10 @@ Your custom code
 • May not alter the default display of the Mura CMS logo within Mura CMS and
 • Must not alter any files in the following directories.
 
- /admin/
- /tasks/
- /config/
- /requirements/mura/
- /Application.cfc
- /index.cfm
- /MuraProxy.cfc
+	/admin/
+	/core/
+	/Application.cfc
+	/index.cfm
 
 You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
 under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
@@ -44,8 +41,12 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfset tabLabelList="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.basic')#,#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.usagereport')#">
-<cfset tabList="tabBasic,tabUsagereport">
+<cfif application.configBean.getValue(property='showUsageTabs',defaultValue=true)>
+	<cfset tabList="tabBasic,tabUsagereport">
+	<cfset tabLabelList="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.basic')#,#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.usagereport')#">
+<cfelse>
+	<cfset tabList="tabBasic">
+</cfif>
 <cfoutput>
 <div class="mura-header">
 	<h1>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager')#</h1>
@@ -58,6 +59,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif rc.listBean.getispurge() neq 1>
 	<cfif rc.mlid eq ''>
+	<div class="block block-bordered">
+		<div class="block-content">
 		<div class="mura-control-group">
 			<label>
 				#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.name')#
@@ -131,7 +134,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div>
 
 	<div class="mura-control-group">
-	<label>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.uploadlistmaintenancefile')#</dt>
+		<label>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.uploadlistmaintenancefile')#</label>
 		<label for="da" class="radio inline">
 			<input type="radio" name="direction" id="da" value="add" checked>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.addaddressestolist')#
 		</label>
@@ -149,34 +152,39 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div>
 
 	<cfif rc.mlid neq ''>
-	<div class="mura-control-group">
-		<label for="cm" class="checkbox inline">
-		<input type="checkbox" id="cm" name="clearMembers" value="1" /> #application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.clearoutexistingmembers')#
-		</label>
-	</div>
-	</cfif>
+		<div class="mura-control-group">
+			<label for="cm" class="checkbox inline">
+			<input type="checkbox" id="cm" name="clearMembers" value="1" /> #application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.clearoutexistingmembers')#
+			</label>
+		</div>
 
+
+			</div> <!-- /.block-content -->
+		</div> <!-- /.block-bordered -->
+
+		</div> <!-- /.tab-pane -->
+	<cfelse>
 		</div> <!-- /.block-content -->
 	</div> <!-- /.block-bordered -->
-</div> <!-- /.tab-pane -->
+	</cfif>
 
 
-<cfif rc.mlid neq ''>
+<cfif application.configBean.getValue(property='showUsageTabs',defaultValue=true) and rc.mlid neq ''>
 	<cfinclude template="dsp_tab_usage.cfm">
 </cfif>
 
-	</div>
+
 
 	<div class="mura-actions">
 		<div class="form-actions">
 			<cfif rc.mlid eq ''>
-				<button class="btn mura-primary" onclick="submitForm(document.forms.form1,'add');"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.add')#</button>
+				<button type="button" class="btn mura-primary" onclick="submitForm(document.forms.form1,'add');"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.add')#</button>
 				<input type=hidden name="mlid" value="#createuuid()#">
 			<cfelse>
 				<cfif not rc.listBean.getispurge()>
-					<button class="btn" onclick="submitForm(document.forms.form1,'delete','#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.deleteconfirm'))#');"><i class="mi-trash"></i>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.delete')#</button>
+					<button type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.deleteconfirm'))#');"><i class="mi-trash"></i>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.delete')#</button>
 				</cfif>
-				<button class="btn mura-primary" onclick="submitForm(document.forms.form1,'update');"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.update')#</button>
+				<button type="button" class="btn mura-primary" onclick="submitForm(document.forms.form1,'update');"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.update')#</button>
 				<input type=hidden name="mlid" value="#rc.listBean.getmlid()#">
 			</cfif>
 			<input type="hidden" name="action" value="">

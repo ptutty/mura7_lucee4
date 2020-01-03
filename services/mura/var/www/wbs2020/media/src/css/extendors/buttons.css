@@ -1,0 +1,136 @@
+/**************************************************************
+* Buttons
+**************************************************************/
+
+/**
+* View all link
+*/
+%btn--1 {
+    background-image: url('/wbs2020/media/dist/img/link.svg');
+    background-repeat: no-repeat;
+    background-position: right center;
+	color: rgba($c--black, .81);
+    display: inline-block;
+    font-family: $ff--1;
+    font-size: 13px 1.5em;
+    font-weight: $fw--bold;
+	letter-spacing: .1025em;
+	min-height: 30px;
+    padding: 6px 55px 0 0;
+    opacity: 1;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: all .2s ease-in-out;
+
+    &:hover { opacity: .6; }
+}
+
+%btn--1--white {
+	background-image: url('/wbs2020/media/dist/img/link-inverse.svg');
+    color: #fff;
+    opacity: 1;
+}
+
+/**
+* Outline
+*/
+%btn--2 {
+	@extend %ts--9;
+	align-items: center;
+	border: 2px solid $c--22;
+	color: $c--22;
+	display: flex;
+	font-family: $ff--1;
+	font-weight: $fw--bold;
+	justify-content: center;
+	letter-spacing: .72px;
+	min-height: 52px;
+	padding: 20px;
+	text-align: center;
+	text-transform: uppercase;
+    transition: all .2s ease-in-out;
+}
+
+/**
+* Solid
+*/
+%btn--3 {
+	@extend %ts--9;
+	align-items: center;
+	color: #fff $c--22;
+	display: flex;
+	font-family: $ff--1;
+	font-weight: $fw--bold;
+	justify-content: center;
+	letter-spacing: .72px;
+	min-height: 63px;
+	padding: 20px;
+	text-align: center;
+	text-transform: uppercase;
+    transition: all .2s ease-in-out;
+}
+
+%btn--3--external {
+	@extend %btn--3;
+
+	span {
+		overflow: visible;
+		position: relative;
+
+        &::after {
+            background: transparent url('../img/button-external.svg') no-repeat center / 6px;
+            content: "";
+            position: absolute 0px -10px * *;
+            size: 6px;
+        }
+	}
+
+}
+
+/**
+* Simple with left arrow
+*/
+%btn--4 {
+    @extend %ts--9;
+    background: transparent url('/wbs2020/media/dist/img/header-subpane-arrow-desktop.svg') no-repeat left top / 10px 15px;
+    color: $c--black;
+    display: inline-flex;
+    font-family: $ff--1;
+    font-weight: $fw--bold;
+    justify-content: flex-start;
+    min-height: 15px;
+    padding: 0 0 0 30px;
+    letter-spacing: .72px;
+    text-transform: uppercase;
+    transition: all .2s ease-in-out;
+}
+
+/**
+* Solid with arrow
+*/
+%btn--5 {
+	@extend %ts--9;
+	align-items: center;
+	color: #fff;
+    background: $c--22 url('/wbs2020/media/dist/img/solid-button-arrow-white.svg') no-repeat left 20px center / 10px 15px;
+	display: inline-flex;
+	font-family: $ff--1;
+	font-weight: $fw--bold;
+	justify-content: center;
+	letter-spacing: .72px;
+	min-height: 63px;
+	padding: 20px 20px 20px 48px;
+	text-align: center;
+	text-transform: uppercase;
+    transition: all .2s ease-in-out;
+
+    @media (--md-up) {
+        background-position: left 55px center;
+        padding: 20px 55px 20px 75px;
+    }
+
+}
+
+
+
+/* END OF DOCUMENT */

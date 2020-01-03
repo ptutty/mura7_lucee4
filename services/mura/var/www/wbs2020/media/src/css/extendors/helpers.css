@@ -1,0 +1,45 @@
+/**************************************************************
+* Misc. helpers
+**************************************************************/
+
+/**
+* Absolute space fill
+*/
+%absolute-fill {
+    overflow: hidden;
+    position: absolute 0;
+    size: 100%;
+}
+
+
+/**
+* Contained images
+*/
+%cover-bg {
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+}
+
+%cover-img {
+	@extend %absolute-fill;
+	object-fit: cover;
+	object-position: center;
+}
+
+
+/**
+* Absolute anchor
+*/
+%absolute-anchor {
+	@extend %absolute-fill;
+    color: transparent;
+    font-size: 0;
+    overflow: hidden;
+    text-indent: -999px;
+    z-index: 1;
+}
+
+
+
+/* END OF DOCUMENT */

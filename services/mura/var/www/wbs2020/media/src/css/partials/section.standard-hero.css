@@ -1,0 +1,307 @@
+/**************************************************************
+* Hero: Standard
+**************************************************************/
+
+section.standard-hero {
+	color: #fff;
+	display: block;
+	overflow: hidden;
+	position: relative;
+	width: 100%;
+
+	@media (--sm-up) {
+		background: transparent;
+		align-items: flex-start;
+		display: flex;
+		justify-content: flex-start;
+		height: 440px;
+		padding-bottom: 0;
+	}
+
+	/**
+	* Title
+	*/
+	header.title {
+		padding: 18px $gutter--mobile 0;
+
+		.inner { position: relative; }
+
+			.text {
+				position: relative;
+
+				h1 {
+					@extend %ts--6;
+					color: #000;
+					font-family: $ff--2;
+					opacity: .9;
+				}
+
+				h2 {
+					color: $c--5;
+					font-family: $ff--3;
+					margin-top: 8px;
+				}
+
+			}
+
+			svg {
+				display: none;
+				position: absolute 0 * 0 0;
+				size: 327px 328px;
+				z-index: 0;
+			}
+
+		@media (--xxxl-up) { padding-left: 165px; }
+
+		@media (--lg-xxxl) { padding-left: 50px; }
+
+		@media (--sm-lg) { padding-left: $gutter--tablet; }
+
+		@media (--sm-up) {
+			align-items: center;
+			display: inline-flex;
+		    flex: 0 0 auto;
+			height: 440px;
+			justify-content: flex-start;
+			order: 0;
+			padding: 0 0 0 *;
+			z-index: 1;
+
+			.inner {
+				overflow: visible;
+				size: 277px 328px;
+			}
+
+				.text {
+					height: 100%;
+					padding: 43px 40px 30px 47px;
+					z-index: 1;
+
+					h2 { margin-bottom: 26px; }
+
+				}
+
+				svg { display: block; }
+
+		}
+
+	}
+
+	/**
+	* Image
+	*/
+	figure.image {
+		flex: 1 0 auto;
+		order: 1;
+		overflow: hidden;
+		position: relative;
+		size: 100% 150px;
+		z-index: 0;
+
+		.src {
+			@extend %absolute-fill;
+			@extend %cover-bg;
+			z-index: 0;
+		}
+
+		&::before {
+			border-color: transparent transparent #fff;
+			border-style: solid;
+			border-width: 0 0 60px 60px;
+			content: '';
+			display: inline-block;
+			position: absolute * 0 0 *;
+			size: 0;
+			z-index: 1;
+		}
+
+		@media (--sm-up) {
+			size: auto 440px;
+
+			&::before {
+				border-color: #fff transparent transparent;
+				border-width: 105px 105px 0 0;
+				position: 0 auto auto 0;
+			}
+
+		}
+
+		@media (--xs-sm) { height: 320px; }
+
+	}
+
+	/* Change image size if side text exists */
+	@media (--xl-up) {
+		&.has--side-text figure.image .src {
+			right: auto;
+			width: calc(100% - 390px);
+		}
+	}
+
+	/**
+	* Side text
+	*/
+	aside.side-text {
+		display: block;
+		margin: 25px auto 40px;
+		padding: 0 $gutter--mobile;
+		z-index: 1;
+
+		.inner {
+			background-color: $c--3;
+			background-image: linear-gradient(270deg, #258DC7 0%, #105496 100%);
+			padding: 20px 18px 28px;
+		}
+
+			.title {
+				@extend %ts--7;
+				font-family: $ff--1;
+				font-weight: $fw--semibold;
+			}
+
+			.description {
+				@extend %ts--8;
+				display: block;
+				font-family: $ff--3;
+				margin-top: 12px;
+				opacity: .67;
+			}
+
+			a.button {
+				@extend %btn--1;
+				@extend %btn--1--white;
+				margin-top: 10px;
+			}
+
+		@media (--xl-up) {
+			align-items: center;
+			background-color: $c--3;
+			background-image: linear-gradient(270deg, #258DC7 0%, #105496 100%);
+			display: flex;
+			justify-content: flex-start;
+			margin: 0;
+			max-width: 390px;
+			padding: 0;
+			position: absolute 0 0 0 *;
+			size: 100%;
+
+			.inner {
+				background: transparent;
+				padding: 60px 70px 60px 66px;
+			}
+
+				.description { max-width: 235px; }
+
+				a.button { margin-top: 34px; }
+
+		}
+
+		@media (--sm-xl) { display: none; }
+
+	}
+
+	/**
+	* Buttons
+	*/
+	aside.buttons {
+		display: none;
+		font-size: 0;
+		float: right;
+		position: absolute * 0 0 *;
+		text-align: right;
+		z-index: 2;
+
+		a {
+			@extend %ts--9;
+			box-sizing: border-box;
+			display: inline-block;
+			font-family: $ff--1;
+			font-size: 11px;
+			font-weight: $fw--bold;
+			letter-spacing: .72px;
+			min-width: 225px;
+			padding: 18px 35px 20px;
+			text-align: center;
+			text-transform: uppercase;
+			text-decoration: none;
+			transition: all .3s ease-in-out;
+
+			&.download {
+				background-colaor: transparent;
+				background-position: center left 36px;
+				background-repeat: no-repeat;
+				background-size: 9px 12px;
+				min-width: 0;
+				padding-left: 58px;
+			}
+
+			&:first-of-type {
+				color: #fff $c--22;
+
+				&.download { background-image: url('/wbs2020/media/dist/img/hero-download-icon--white.svg'); }
+
+				&:hover { background-color: $c--25; }
+
+			}
+
+			&:last-of-type {
+				color: $c--22 #fff;
+
+				&.download { background-image: url('/wbs2020/media/dist/img/hero-download-icon--blue.svg'); }
+
+				&:hover {
+					color: #fff $c--25;
+
+					&.download { background-image: url('/wbs2020/media/dist/img/hero-download-icon--white.svg'); }
+
+				}
+
+			}
+
+		}
+
+		@media (--sm-up) { display: block; }
+
+	}
+
+	/**
+	* Colours
+	*/
+	&.programme--undergrad {
+		aside.side-text { background-image: linear-gradient(to left, $c--programme-undergrad 0%, $c--programme-undergrad--dark 100%); background-color: $c--programme-undergrad; }
+	}
+	&.programme--postgrad {
+		aside.side-text { background-image: linear-gradient(to left, $c--programme-postgrad 0%, $c--programme-postgrad--dark 100%); background-color: $c--programme-postgrad; }
+	}
+	&.programme--mba {
+		aside.side-text { background-image: linear-gradient(to left, $c--programme-mba 0%, $c--programme-mba--dark 100%); background-color: $c--programme-mba; }
+	}
+	&.programme--doctoral {
+		aside.side-text { background-image: linear-gradient(to left, $c--programme-doctoral 0%, $c--programme-doctoral--dark 100%); background-color: $c--programme-doctoral; }
+	}
+	&.programme--exec {
+		aside.side-text { background-image: linear-gradient(to left, $c--programme-exec 0%, $c--programme-exec--dark 100%); background-color: $c--programme-exec; }
+	}
+	&.programme--london {
+		aside.side-text { background-image: linear-gradient(to left, $c--1 0%, $c--programme-london 100%); background-color: $c--programme-london; }
+	}
+
+	/***************
+	* Lazy-loading
+	***************/
+	&.view-detect {
+		opacity: 0;
+		transition: all 1.2s ease-in-out-quart 0s;
+
+		/**
+		* Loaded
+		*/
+		&.viewed { opacity: 1; }
+
+	}
+
+}
+
+
+
+/* END OF DOCUMENT */

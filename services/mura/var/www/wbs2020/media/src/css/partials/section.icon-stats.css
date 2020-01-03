@@ -1,0 +1,116 @@
+/**************************************************************
+* Icon statistics
+**************************************************************/
+
+section.icon-stats {
+    margin-bottom: 40px !important;
+
+    /**
+    * Container
+    */
+    .container {
+
+        @media (--md-up) {
+            align-items: stretch;
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+        }
+
+    }
+
+        /**
+        * Stat
+        */
+        article.stat {
+            background: $c--tone-6;
+            box-shadow: 0 1px 0 0 #ADBAC1;
+            display: block;
+            margin-bottom: 3px;
+            padding: 24px 24px 22px;
+            width: 100%;
+
+            /* Icon */
+            i.icon {
+                display: inline-block;
+                margin: 4px 15px 0 0;
+                min-width: 64px;
+                user-select: none;
+                vertical-align: top;
+
+                img {
+                    display: block;
+                    margin: 0 auto;
+                    text-align: center;
+                }
+
+            }
+
+            /* Text */
+            .text {
+                display: inline-block;
+                vertical-align: top;
+            }
+
+                /* Text */
+                span {
+                    display: block;
+
+                    /* Figure */
+                    &.figure {
+                        @extend %ts--1;
+                        color: #9C9D9C;
+                        font-family: $ff--2;
+                        font-size: 32px 1.95rem;
+                        font-weight: $fw--bold;
+                    }
+
+                    /* Label */
+                    &.label {
+                		@extend %ts--8;
+                        color: $c--5;
+                		font-family: $ff--3;
+                		letter-spacing: -.18px;
+                    }
+
+                }
+
+            @media (--md-up) {
+                display: inline-block;
+                flex: 0 0 calc(33.3333% - 2px);
+                vertical-align: top;
+
+                /* Icon */
+                i.icon {
+                    min-width: 0;
+
+                    img {
+                        margin: 0;
+                        text-align: left;
+                    }
+
+                }
+
+            }
+
+        }
+
+    /***************
+	* Lazy-loading
+	***************/
+	&.view-detect {
+		opacity: 0;
+		transition: all 1.2s ease-in-out-quart 0s;
+
+		/**
+		* Loaded
+		*/
+		&.viewed { opacity: 1; }
+
+	}
+
+}
+
+
+
+/* END OF DOCUMENT */

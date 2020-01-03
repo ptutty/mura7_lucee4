@@ -1,0 +1,95 @@
+/**************************************************************
+* Forms
+**************************************************************/
+
+/**
+* Form
+*/
+%form {
+
+    /* Input */
+    & input[type='text'],
+    & input[type='tel'],
+    & input[type='email'],
+    & input[type='url'],
+    & input[type='password'],
+    & textarea {
+
+    }
+
+    /* Textarea */
+    & textarea {
+        height: 0;
+        max-height: 400px;
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    /* Hover/focus */
+    & input[type='text'],
+    & input[type='tel'],
+    & input[type='email'],
+    & input[type='url'],
+    & input[type='password'],
+    & textarea {
+
+        &:hover,
+        &:hover:focus {
+
+        }
+
+    }
+
+}
+
+
+/**
+* Radio / checkbox input
+*/
+%input--filter {
+    margin-bottom: 6px;
+    overflow: hidden;
+    position: relative;
+
+    input {
+        cursor: pointer;
+        margin: 0;
+        opacity: 0;
+        padding: 0;
+        position: absolute 0 0;
+        size: 100% !important;
+
+        &:checked + label {
+            border-color: $c--27;
+            color: #fff $c--27;
+        }
+
+        &:hover + label { border-color: $c--27; }
+
+    }
+
+    label {
+        @extend %ts--9;
+        align-items: center;
+        border: 1px solid #fff;
+        box-shadow: 0 3px 7px 0 rgba(0,0,0,0.03);
+        color: #1C1E20 #fff;
+        display: inline-flex;
+        font-family: 'Montserrat';
+        font-weight: 700;
+        height: 100%;
+        justify-content: center;
+        letter-spacing: .72px;
+        margin: 0;
+        text-align: center;
+        text-transform: uppercase;
+        transition: all .2s ease-in-out;
+        padding: 6px 20px 8px;
+        width: 100%;
+    }
+
+}
+
+
+
+/* END OF DOCUMENT */

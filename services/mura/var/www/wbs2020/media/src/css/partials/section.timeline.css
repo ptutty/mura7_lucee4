@@ -1,0 +1,291 @@
+/**************************************************************
+* Timeline
+**************************************************************/
+
+section.timeline {
+
+    article.stamp {
+        overflow: visible;
+        position: relative;
+
+        &:not(:last-of-type) { padding-bottom: 40px; }
+
+        /* Line */
+        &::before {
+            background: #979797;
+            content: '';
+            display: block;
+            opacity: .3;
+            position: absolute 0 * 0 0;
+            size: 1px 100%;
+        }
+
+        /* Dot */
+        &::after {
+            background: $c--tone-1;
+            border-radius: 100%;
+            content: '';
+            display: block;
+            position: absolute 8px * * -3px;
+            size: 7px;
+        }
+
+        /* First stamp */
+        &:first-of-type::before {
+            height: calc(100% - 8px);
+            top: 8px;
+        }
+
+        /* Last stamp */
+        &:last-of-type::before { height: 8px; }
+
+        @media only screen and (min-width: 960px) and (max-width: 1024px), (min-width: 1400px) {
+            align-items: flex-start;
+            display: flex;
+            justify-content: space-between;
+
+            &:not(:last-of-type) { padding-bottom: 45px; }
+
+        }
+
+        /**
+        * Date
+        */
+        aside.date {
+            margin-bottom: 12px;
+            padding: 0;
+
+            span.label {
+                @extend %ts--9;
+                color: #1C1E20;
+                display: block;
+                font-family: $ff--1;
+                font-weight: $fw--bold;
+                letter-spacing: .72px;
+                padding: 5px 0 0 25px;
+                text-transform: uppercase;
+            }
+
+            @media only screen and (min-width: 960px) and (max-width: 1024px), (min-width: 1400px) {
+                flex: 1 1 20%;
+                margin-bottom: 0;
+
+                span.label { padding: 5px 0 12px 22px; }
+
+            }
+
+            @media only screen and (min-width: 1024px) and (max-width: 1400px), (max-width: 960px) {
+
+                span.label br { content:" "; }
+                span.label br::after { content:" "; }
+
+            }
+
+        }
+
+        /**
+        * Content
+        */
+        main.content {
+
+            > .content-inner {
+                padding: 0 25px;
+
+                @media only screen and (min-width: 960px) and (max-width: 1024px), (min-width: 1400px) {
+                    padding: 0 28px;
+
+                    &.grey {
+                        background: #EBEDEF;
+                        padding: 28px * 32px;
+                    }
+
+                }
+
+            }
+
+            .text-group {
+                &:not(:first-of-type) { margin-top: 50px; }
+            }
+
+                /* Large title */
+                .title {
+                    @extend %ts--20;
+                    color: $c--24;
+                    display: block;
+                    font-family: $ff--1;
+                    font-weight: $fw--semibold;
+                    letter-spacing: -.33px;
+                    margin-bottom: 8px;
+                }
+
+                /* Sub-title */
+                .sub-title {
+                    @extend %ts--21;
+                    color: $c--24;
+                    display: block;
+                    font-family: $ff--1;
+                    font-weight: $fw--semibold;
+                    letter-spacing: -.25px;
+                    margin-bottom: 5px;
+                }
+
+                /* Text */
+                p {
+                    @extend %ts--8;
+                    color: $c--5;
+                }
+
+                /* Primary button */
+                a.button {
+                    @extend %btn--1;
+                    display: inline-block;
+                    margin: 25px 0 0;
+                }
+
+                /* Outline button */
+                a.outline-button {
+                    @extend %btn--2;
+                    display: inline-block;
+                    margin: 25px 0 0;
+
+                    &:hover {
+                        border-color: $c--black;
+                        color: $c--black;
+                    }
+
+                }
+
+                /* Solid button */
+                a.solid-button {
+                    @extend %btn--3;
+                    display: inline-block;
+                    margin: 25px 0 0;
+                    min-height: 0;
+
+                    &:hover { color: #fff $c--black; }
+
+                }
+
+                /* Simple button */
+                a.simple-button {
+                    @extend %btn--4;
+                    display: inline-block;
+                    margin: 25px 0 0;
+
+                    &:hover { color: rgba($c--black, .6); }
+
+                }
+
+                /* Lists */
+                ul, ol {
+                    @extend %textarea--bullets;
+                    @extend %ts--8;
+                    color: $c--5;
+                    padding-top: 8px;
+
+                    li:not(:last-of-type) { margin-bottom: 4px; }
+
+                }
+
+                ol {
+                    padding-left: 17px;
+
+                    > li {
+                        list-style: decimal !important;
+                        padding-left: 13px;
+
+                        &::before { display: none; }
+
+                    }
+
+                    ol li {  list-style: lower-latin !important; }
+
+                }
+
+                /* Tooltip (info) */
+                .tooltip {
+                    cursor: help;
+                    display: inline-block;
+                    margin-left: 10px;
+                    position: relative;
+                    vertical-align: middle;
+
+                    i.icon {
+                        @extend %ts--9;
+                        background: #fff;
+                        border: 1px solid $c--3;
+                        color: $c--3 transparent;
+                        display: block;
+                        font-family: $ff--1;
+                        font-weight: $fw--bold;
+                        letter-spacing: .72px;
+                        min-height: 13px;
+                        min-width: 28px;
+                        padding: 1px 2px 0 4px;
+                        text-align: center;
+                        text-transform: uppercase;
+                        user-select: none;
+                    }
+
+                    .text {
+                        @extend %ts--8;
+                        border: 1px solid #C2C1C1;
+                        color: $c--5 #fff;
+                        opacity: 0;
+                        padding: 6px 9px 7px;
+                        position: absolute 18px * * 0;
+                        text-align: center;
+                        transform: translateX(calc(-50% + 14px));
+                        transition: all .3s ease-in-out-quart;
+                        visibility: hidden;
+                        width: 180px;
+                        z-index: 1;
+
+                        p:not(:last-of-type) { margin-bottom: 10px; }
+
+                        &::after {
+                            background: transparent url('../img/tooltip-top-arrow.svg') no-repeat center / 12px 7px;
+                            content: "";
+                            margin: 0 auto;
+                            position: absolute -7px 0 *;
+                            size: 12px 7px;
+                            text-align: center;
+                        }
+
+                    }
+
+                    &:hover .text {
+                        opacity: 1;
+                        visibility: visible;
+                    }
+
+                }
+
+            @media only screen and (min-width: 960px) and (max-width: 1024px), (min-width: 1400px) {
+                flex: 1 0 80%;
+                max-width: 580px;
+            }
+
+        }
+
+    }
+
+    /***************
+	* Lazy-loading
+	***************/
+	&.view-detect {
+		opacity: 0;
+		transition: all 1.2s ease-in-out-quart 0s;
+
+		/**
+		* Loaded
+		*/
+		&.viewed { opacity: 1; }
+
+	}
+
+}
+
+
+
+/* END OF DOCUMENT */

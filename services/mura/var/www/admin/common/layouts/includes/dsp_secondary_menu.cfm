@@ -28,13 +28,10 @@ Your custom code
 • May not alter the default display of the Mura CMS logo within Mura CMS and
 • Must not alter any files in the following directories.
 
- /admin/
- /tasks/
- /config/
- /requirements/mura/
- /Application.cfc
- /index.cfm
- /MuraProxy.cfc
+	/admin/
+	/core/
+	/Application.cfc
+	/index.cfm
 
 You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
 under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
@@ -45,7 +42,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfif session.siteid neq ''>
-<cfif not application.configBean.getSessionHistory() or application.configBean.getSessionHistory() gte 30>
+<cfif not application.configBean.getSessionHistory() or application.configBean.getSessionHistory() gte 180>
 	<cfparam name="session.dashboardSpan" default="30">
 <cfelse>
 	<cfparam name="session.dashboardSpan" default="#application.configBean.getSessionHistory()#">
@@ -91,13 +88,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   <!---
 	 <cfif rc.originalcircuit eq 'cFilemanager'>
     <ul class="nav nav-pills">
-			<li<cfif session.resourceType eq 'assets'> class="current"</cfif>><a href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cFilemanager.default&siteid=#session.siteid#&resourceType=assets">#application.rbFactory.getKeyValue(session.rb,"layout.userassets")#</a></li>
+			<li<cfif session.resourceType eq 'assets'> class="current"</cfif>><a href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cFilemanager.default&siteid=#session.siteid#&resourceType=assets">#rc.$.rbKey("layout.userassets")#</a></li>
 			<cfif listFind(session.mura.memberships,'S2')>
 				<cfif application.configBean.getValue('fmShowSiteFiles') neq 0>
-					<li<cfif session.resourceType eq 'files'> class="current"</cfif>><a href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cFilemanager.default&siteid=#session.siteid#&resourceType=files">#application.rbFactory.getKeyValue(session.rb,"layout.sitefiles")#</a></li>
+					<li<cfif session.resourceType eq 'files'> class="current"</cfif>><a href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cFilemanager.default&siteid=#session.siteid#&resourceType=files">#rc.$.rbKey("layout.sitefiles")#</a></li>
 					</cfif>
 					<cfif listFind(session.mura.memberships,'S2') and application.configBean.getValue('fmShowApplicationRoot') neq 0>
-					<li<cfif session.resourceType eq 'root'> class="current"</cfif>><a href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cFilemanager.default&siteid=#session.siteid#&resourceType=root">#application.rbFactory.getKeyValue(session.rb,"layout.applicationroot")#</a></li>
+					<li<cfif session.resourceType eq 'root'> class="current"</cfif>><a href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cFilemanager.default&siteid=#session.siteid#&resourceType=root">#rc.$.rbKey("layout.applicationroot")#</a></li>
 				</cfif>
 				</li>
 			</cfif>

@@ -1,0 +1,20 @@
+/**************************************************************
+* Separator
+**************************************************************/
+
+i.separator {
+    background: #979797;
+    display: block;
+    margin: 0 auto 40px;
+    max-width: 1220px;
+    opacity: .32;
+    size: 100% 1px;
+    text-align: center;
+
+    &.margin-bottom-23 { margin-bottom: 23px; }
+
+}
+
+
+
+/* END OF DOCUMENT */
