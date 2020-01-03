@@ -16,24 +16,29 @@
 						<cfset displayObjects=$.siteConfig('displayObjects')>
 						<cfset objectKeys=listSort(structKeylist(displayObjects),'textNoCase')>
 						<cfloop list="#objectKeys#" index="key">
-							<cfif (displayobjects['#key#'].contenttypes eq '*'
-								or listFindNoCase(displayobjects['#key#'].contenttypes,$.content('type'))
-								or listFindNoCase(displayobjects['#key#'].contenttypes,$.content('type') & '/' & $.content('subtype'))
-								or listFindNoCase(displayobjects['#key#'].contenttypes,$.content('subtype'))
-							) and not (
-								 listFindNoCase(displayobjects['#key#'].omitcontenttypes,$.content('type'))
-								or listFindNoCase(displayobjects['#key#'].omitcontenttypes,$.content('type') & '/' & $.content('subtype'))
-								or listFindNoCase(displayobjects['#key#'].omitcontenttypes,$.content('subtype'))
-							)
-							and evaluate(displayobjects['#key#'].condition)>
-								#contentRendererUtility.renderObjectClassOption(
-									object=displayObjects[key].object,
-									objectid='',
-									objectname=displayObjects[key].name,
-									objecticonclass=displayObjects[key].iconclass
-								)#
+							<cftry>
+								<cfif (displayobjects['#key#'].contenttypes eq '*'
+									or listFindNoCase(displayobjects['#key#'].contenttypes,$.content('type'))
+									or listFindNoCase(displayobjects['#key#'].contenttypes,$.content('type') & '/' & $.content('subtype'))
+									or listFindNoCase(displayobjects['#key#'].contenttypes,$.content('subtype'))
+								) and not (
+									 listFindNoCase(displayobjects['#key#'].omitcontenttypes,$.content('type'))
+									or listFindNoCase(displayobjects['#key#'].omitcontenttypes,$.content('type') & '/' & $.content('subtype'))
+									or listFindNoCase(displayobjects['#key#'].omitcontenttypes,$.content('subtype'))
+								)
+								and evaluate(displayobjects['#key#'].condition)>
+									#contentRendererUtility.renderObjectClassOption(
+										object=displayObjects[key].object,
+										objectid='',
+										objectname=displayObjects[key].name,
+										objecticonclass=displayObjects[key].iconclass
+									)#
 
-							</cfif>
+								</cfif>
+								<cfcatch>
+										<cfset writeLog(type="Error", file="exception", text="Error rendering display object as option in sidebar: #serializeJSON(displayObjects[key])#")>
+								</cfcatch>
+							</cftry>
 						</cfloop>
 					</div>
 
@@ -97,7 +102,7 @@
 					</div>
 				</div>
 				--->
-				<iframe src="" data-preloadsrc="#$.siteConfig().getAdminPath(complete=1)#?muraAction=carch.frontendconfigurator&siteid=#$.content('siteid')#&preloadOnly=true&layoutmanager=true&compactDisplay=true&cacheid=#createUUID()#" id="frontEndToolsSidebariframe" scrolling="false" frameborder="0" style="overflow:hidden;width:100%;" name="frontEndToolsSidebariframe">
+				<iframe src="" data-preloadsrc="#$.siteConfig().getAdminPath(complete=completeurls)#?muraAction=carch.frontendconfigurator&siteid=#$.content('siteid')#&preloadOnly=true&layoutmanager=true&compactDisplay=true&cacheid=#createUUID()#" id="frontEndToolsSidebariframe" scrolling="false" frameborder="0" style="overflow:hidden;width:100%;" name="frontEndToolsSidebariframe">
 				</iframe>
 
 			</div>
@@ -144,45 +149,51 @@
 </cfif>
 </div>
 <script>
-mura.ready(function(){
-	<cfif $.content('type') eq 'Variation'>
-	if(!Mura('.mxp-editable').length){
-		Mura('##adminQuickEdit').remove();
-		//Mura('##adminQuickEdit').css('text-decoration','line-through');
-	} else {
-		//Mura('##mura-edit-var-targetingjs-text').html('Re-Select Editable Content')
+Mura(function(){
+	if(typeof Mura.deInitLayoutManager != 'undefined'
+		&& typeof Mura.editing != 'undefined'
+		&& Mura.editing){
+			Mura.deInitLayoutManager();
 	}
-	</cfif>
-	Mura('body').addClass('mura-sidebar-state__hidden--right');
-	Mura('##mura-sidebar-container').show();
-	Mura('##mura-objects-legacy-btn').click(function(e){
-		e.preventDefault();
-		MuraInlineEditor.sidebarAction('showlegacyobjects');
-	});
-
-	Mura('##mura-objects-openregions-btn').click(function(e){
-		e.preventDefault();
-		var el=Mura('body');
-		if(el.hasClass('mura-regions-state__pushed--right')){
-			el.removeClass('mura-regions-state__pushed--right');
-		} else {
-			el.addClass('mura-regions-state__pushed--right');
+	Mura.loader().load('#variables.$.siteConfig().getAdminPath(complete=completeurls)#/assets/js/layoutmanager.js',
+		function(){
+			<cfif $.content('type') eq 'Variation'>
+			if(!Mura('.mxp-editable').length){
+				Mura('##adminQuickEdit').remove();
+				//Mura('##adminQuickEdit').css('text-decoration','line-through');
+			} else {
+				//Mura('##mura-edit-var-targetingjs-text').html('Re-Select Editable Content')
+			}
+			</cfif>
+			Mura('body').addClass('mura-sidebar-state__hidden--right');
+			Mura('body').removeClass('mura-sidebar-state__pushed--right');
+			Mura('##mura-sidebar-container').show();
+			Mura('##mura-objects-legacy-btn').click(function(e){
+				e.preventDefault();
+				MuraInlineEditor.sidebarAction('showlegacyobjects');
+			});
+			Mura('##mura-objects-openregions-btn').click(function(e){
+				e.preventDefault();
+				var el=Mura('body');
+				if(el.hasClass('mura-regions-state__pushed--right')){
+					el.removeClass('mura-regions-state__pushed--right');
+				} else {
+					el.addClass('mura-regions-state__pushed--right');
+				}
+			});
+			Mura('##mura-objects-closeregions-btn').click(function(e){
+				e.preventDefault();
+				Mura('body').removeClass('mura-regions-state__pushed--right');
+			});
+			Mura('.mura-objects-back-btn').click(function(e){
+				e.preventDefault();
+				MuraInlineEditor.sidebarAction('showobjects');
+			});
+			//Mura('.mura-region.mura-editable').attr('style','clear:both;');
+			Mura.rb.saveasdraft='#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.saveasdraft"))#';
+			Mura.adminpath='#variables.$.siteConfig().getAdminPath(complete=completeurls)#';
 		}
-	});
-	Mura('##mura-objects-closeregions-btn').click(function(e){
-		e.preventDefault();
-		Mura('body').removeClass('mura-regions-state__pushed--right');
-	});
-
-	Mura('.mura-objects-back-btn').click(function(e){
-		e.preventDefault();
-		MuraInlineEditor.sidebarAction('showobjects');
-	});
-
-	//Mura('.mura-region.mura-editable').attr('style','clear:both;');
-	mura.rb.saveasdraft='#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.saveasdraft"))#';
-	mura.adminpath='#variables.$.globalConfig("adminPath")#';
-	mura.loader().loadjs('#variables.$.globalConfig("adminpath")#/assets/js/layoutmanager.js');
+	);
 });
 </script>
 </cfoutput>

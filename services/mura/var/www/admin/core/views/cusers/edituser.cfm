@@ -1,4 +1,4 @@
-	<!---
+<!---
 	This file is part of Mura CMS.
 
 	Mura CMS is free software: you can redistribute it and/or modify
@@ -29,13 +29,10 @@
 	• May not alter the default display of the Mura CMS logo within Mura CMS and
 	• Must not alter any files in the following directories.
 
-	 /admin/
-	 /tasks/
-	 /config/
-	 /requirements/mura/
-	 /Application.cfc
-	 /index.cfm
-	 /MuraProxy.cfc
+	/admin/
+	/core/
+	/Application.cfc
+	/index.cfm
 
 	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
 	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
@@ -80,6 +77,8 @@
 		}
 		tabLabelList = ListAppend(tabLabelList,rbKey('user.advanced'));
 		tabList = ListAppend(tabList,"tabAdvanced");
+
+		lockedSuper=(rc.userBean.exists() and rc.userBean.get('s2') and not rc.$.getCurrentUser().isSuperUser());
 	</cfscript>
 </cfsilent>
 
@@ -94,23 +93,24 @@
 	</div>
 </div> <!-- /.mura-header -->
 
-		<cfif len(rc.userBean.getUsername())>
-			<cfset strikes=createObject("component","mura.user.userstrikes").init(rc.userBean.getUsername(),application.configBean)>
-			<cfif structKeyExists(rc,"removeBlock")>
-				<cfset strikes.clear()>
-			</cfif>
-			<cfif strikes.isBlocked()>
-				<div class="alert alert-error"><span>#rbKey('user.blocked')#: #LSTimeFormat(strikes.blockedUntil(),"short")# <a href="?muraAction=cUsers.edituser&amp;userid=#esapiEncode('url',rc.userid)#&amp;type=2&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;removeBlock">[#rbKey('user.remove')#]</a></span>
-				</div>
-			</cfif>
-		</cfif>
+<cfif len(rc.userBean.getUsername())>
+	<cfset strikes=createObject("component","mura.user.userstrikes").init(rc.userBean.getUsername(),application.configBean)>
+	<cfif structKeyExists(rc,"removeBlock")>
+		<cfset strikes.clear()>
+	</cfif>
+	<cfif strikes.isBlocked()>
+		<div class="alert alert-error"><span>#rbKey('user.blocked')#: #LSTimeFormat(strikes.blockedUntil(),"short")# <a href="?muraAction=cUsers.edituser&amp;userid=#esapiEncode('url',rc.userid)#&amp;type=2&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;removeBlock">[#rbKey('user.remove')#]</a></span>
+		</div>
+	</cfif>
+</cfif>
 
-		<cfif not structIsEmpty(rc.userBean.getErrors())>
-			<div class="alert alert-error"><span>#application.utility.displayErrors(rc.userBean.getErrors())#</span></div>
-		</cfif>
+<cfif lockedSuper>
+	<div class="alert alert-info"><span>#rc.$.rbKey("user.locksupers")#</span></div>
+<cfelseif not structIsEmpty(rc.userBean.getErrors())>
+	<div class="alert alert-error"><span>#application.utility.displayErrors(rc.userBean.getErrors())#</span></div>
+</cfif>
 
-
-	<form novalidate="novalidate" action="#buildURL(action='cUsers.update', querystring='userid=#rc.userBean.getUserID()#&routeid=#rc.routeid#')#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return userManager.submitForm(this);;" autocomplete="off">
+<form novalidate="novalidate" action="#buildURL(action='cUsers.update', querystring='userid=#rc.userBean.getUserID()#&routeid=#rc.routeid#')#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return userManager.submitForm(this);;" autocomplete="off">
 
 	<div class="block block-constrain">
 
@@ -172,7 +172,7 @@
 							<!--- Email + Phone --->
 							<div class="mura-control-group">
 								<label for="email">#rbKey('user.email')#*</label>
-								<input id="email" name="email" type="text" value="#esapiEncode('html',rc.userBean.getemail())#" required="true" validate="email" message="#rbKey('user.emailvalidate')#">
+								<input <cfif lockedSuper>disabled</cfif> id="email" name="email" type="text" value="#esapiEncode('html',rc.userBean.getemail())#" required="true" validate="email" message="#rbKey('user.emailvalidate')#">
 								</div>
 
 							<div class="mura-control-group">
@@ -183,40 +183,37 @@
 							<!--- Username --->
 							<div class="mura-control-group">
 								<label for="username">#rbKey('user.username')#*</label>
-								<input id="username"  name="usernameNoCache" type="text" value="#esapiEncode('html',rc.userBean.getusername())#" required="true" message="The 'Username' field is required" autocomplete="off">
+								<input <cfif lockedSuper>disabled</cfif> id="username"  name="usernameNoCache" type="text" value="#esapiEncode('html',rc.userBean.getusername())#" required="true" message="The 'Username' field is required" autocomplete="off">
 							</div>
+							<cfif not lockedSuper>
 
-							<!--- Password --->
-							<div class="mura-control-group">
-								<label for="passwordNoCache">#rbKey('user.newpassword')#**</label>
-								<input id="passwordNoCache" name="passwordNoCache" autocomplete="off" validate="match" matchfield="password2" type="password" value=""  message="#rbKey('user.passwordmatchvalidate')#">
+								<cfif isBoolean($.globalConfig('strongpasswords')) and $.globalConfig('strongpasswords')>
+									<div class="help-block-inline">#$.rbKey('user.passwordstrengthhelptext')#</div>
+								</cfif>
+
+								<!--- Password --->
+								<div class="mura-control-group">
+									<label for="passwordNoCache">#rbKey('user.newpassword')#**</label>
+									<input id="passwordNoCache" name="passwordNoCache" autocomplete="off" validate="match" matchfield="password2" type="password" value=""  message="#rbKey('user.passwordmatchvalidate')#">
+									</div>
+
+								<div class="mura-control-group">
+									<label for="password2">#rbKey('user.newpasswordconfirm')#**</label>
+									<input id="password2" name="password2" autocomplete="off" type="password" value=""  message="#rbKey('user.passwordconfirm')#">
 								</div>
-
-							<div class="mura-control-group">
-								<label for="password2">#rbKey('user.newpasswordconfirm')#**</label>
-								<input id="password2" name="password2" autocomplete="off" type="password" value=""  message="#rbKey('user.passwordconfirm')#">
-							</div>
+							</cfif>
 
 							<!--- Image --->
 							<div class="mura-control-group">
 								<label for="newFile">#rbKey('user.image')#</label>
-									<input type="file" id="newFile" name="newFile" validate="regex" regex="(.+)(\.)(jpg|JPG)" message="Your logo must be a .JPG" value=""/>
-								<cfif len(rc.userBean.getPhotoFileID())>
-										<a href="./index.cfm?muraAction=cArch.imagedetails&amp;userid=#rc.userBean.getUserID()#&amp;siteid=#rc.userBean.getSiteID()#&amp;fileid=#rc.userBean.getPhotoFileID()#">
-											<img id="assocImage" src="#application.configBean.getContext()#/index.cfm/_api/render/medium/?fileid=#rc.userBean.getPhotoFileID()#&amp;cacheID=#createUUID()#" />
-										</a>
-										<label class="checkbox inline">
-											<input type="checkbox" name="removePhotoFile" value="true">
-											#rbKey('user.delete')#
-										</label>
-								</cfif>
+								<cf_fileselector name="newfile" property="photofileid" bean="#rc.userBean#" deleteKey="removePhotoFile" compactDisplay="#rc.compactDisplay#" examplefileext="JPG">
 							</div>
 
-						<span id="extendSetsBasic"></span>
+							<span id="extendSetsBasic"></span>
 
-				</div> <!-- /.block-content -->
-			</div> <!-- /.block-bordered -->
-		</div> <!-- /.tab-pane -->
+						</div> <!-- /.block-content -->
+					</div> <!-- /.block-bordered -->
+				</div> <!-- /.tab-pane -->
 				<!--- /Basic Tab --->
 
 				<!--- Address Tab --->
@@ -258,17 +255,17 @@
 								<div class="mura-control-group">
 									<label>#rbKey('user.city')#</label>
 									<input id="city" name="city" type="text" value="#esapiEncode('html',rc.city)#">
-									</div>
+								</div>
 
 								<div class="mura-control-group">
 									<label>#rbKey('user.state')#</label>
 									<input id="state" name="state" type="text" value="#esapiEncode('html',rc.state)#">
-									</div>
+								</div>
 
 								<div class="mura-control-group">
 									<label>#rbKey('user.zip')#</label>
 									<input id="zip" name="zip" type="text" value="#esapiEncode('html',rc.zip)#">
-									</div>
+								</div>
 
 								<div class="mura-control-group">
 									<label>#rbKey('user.country')#</label>
@@ -279,7 +276,7 @@
 								<div class="mura-control-group">
 									<label>#rbKey('user.phone')#</label>
 									<input id="phone" name="phone" type="text" value="#esapiEncode('html',rc.phone)#">
-									</div>
+								</div>
 
 								<div class="mura-control-group">
 									<label>#rbKey('user.fax')#</label>
@@ -288,9 +285,9 @@
 
 								<!---URL + Email --->
 								<div class="mura-control-group">
-										<label>#rbKey('user.website')# (#rbKey('user.includehttp')#)</label>
-										<input id="addressURL" name="addressURL" type="text" value="#esapiEncode('html',rc.addressURL)#">
-									</div>
+									<label>#rbKey('user.website')# (#rbKey('user.includehttp')#)</label>
+									<input id="addressURL" name="addressURL" type="text" value="#esapiEncode('html',rc.addressURL)#">
+								</div>
 
 								<div class="mura-control-group">
 									<label>#rbKey('user.email')#</label>
@@ -439,12 +436,12 @@
 									</label>
 
 										<label class="radio inline">
-											<input name="isPublic" type="radio" class="radio inline" value="1"<cfif rc.tempIsPublic> Checked</cfif>>
+											<input <cfif lockedSuper>disabled </cfif>name="isPublic" type="radio" class="radio inline" value="1"<cfif rc.tempIsPublic> Checked</cfif>>
 											#rbKey('user.sitemember')#
 										</label>
 
 										<label class="radio inline">
-											<input name="isPublic" type="radio" class="radio inline" value="0"<cfif not rc.tempIsPublic> Checked</cfif>>
+											<input <cfif lockedSuper>disabled </cfif>name="isPublic" type="radio" class="radio inline" value="0"<cfif not rc.tempIsPublic> Checked</cfif>>
 											#rbKey('user.adminuser')#
 										</label>
 									</div>
@@ -579,20 +576,20 @@
 				<!--- Extended Attributes Tab --->
 					<cfif rsSubTypes.recordcount>
 						<div id="tabExtendedattributes" class="tab-pane">
-						<div class="block block-bordered">
-							<!-- block header -->
-							<div class="block-header">
-								<h3 class="block-title">Extended Attributes</h3>
-							</div> <!-- /.block header -->
-							<div class="block-content">
+							<div class="block block-bordered">
+								<!-- block header -->
+								<div class="block-header">
+									<h3 class="block-title">Extended Attributes</h3>
+								</div> <!-- /.block header -->
+								<div class="block-content">
 
-							<span id="extendSetsDefault"></span>
-							<script type="text/javascript">
-								userManager.loadExtendedAttributes('#rc.userbean.getUserID()#','#rc.userbean.getType()#','#rc.userBean.getSubType()#','#userPoolID#','#application.settingsManager.getSite(rc.siteid).getThemeAssetPath()#');
-							</script>
-							</div> <!-- /.block-content -->
-						</div> <!-- /.block-bordered -->
-					</div> <!-- /.tab-pane -->
+								<span id="extendSetsDefault"></span>
+								<script type="text/javascript">
+									userManager.loadExtendedAttributes('#rc.userbean.getUserID()#','#rc.userbean.getType()#','#rc.userBean.getSubType()#','#userPoolID#','#application.settingsManager.getSite(rc.siteid).getThemeAssetPath()#');
+								</script>
+								</div> <!-- /.block-content -->
+							</div> <!-- /.block-bordered -->
+						</div> <!-- /.tab-pane -->
 					</cfif>
 				<!--- /Extended Attributes Tab --->
 
@@ -620,15 +617,20 @@
 										</div>
 								</cfif>
 
+						<!--- Email Broadcaster --->
+						<cfif YesNoFormat(rc.$.siteConfig('EmailBroadcaster'))>
 							<div class="mura-control-group">
 								<label>#rbKey('user.emailbroadcaster')#</label>
-										<label class="radio inline"><input name="subscribe" type="radio" class="radio inline" value="1"<cfif rc.userBean.getsubscribe() eq 1>Checked</cfif>>
-											#rbKey('user.yes')#
-										</label>
-										<label class="radio inline"><input name="subscribe" type="radio" class="radio inline" value="0"<cfif rc.userBean.getsubscribe() eq 0>Checked</cfif>>
-											#rbKey('user.no')#
-										</label>
-									</div>
+								<label class="radio inline">
+									<input name="subscribe" type="radio" class="radio inline" value="1"<cfif rc.userBean.getsubscribe() eq 1>Checked</cfif>>
+									#rbKey('user.yes')#
+								</label>
+								<label class="radio inline">
+									<input name="subscribe" type="radio" class="radio inline" value="0"<cfif rc.userBean.getsubscribe() eq 0>Checked</cfif>>
+									#rbKey('user.no')#
+								</label>
+							</div>
+						</cfif>
 
 							<!--- Active + User Type --->
 							<div class="mura-control-group">
@@ -637,10 +639,11 @@
 										#rbKey('user.inactive')#
 									</label>
 										<label class="radio inline">
-											<input name="InActive" type="radio" class="radio inline" value="0"<cfif rc.userBean.getInActive() eq 0 >Checked</cfif>>
+											<input <cfif lockedSuper>disabled </cfif>name="InActive" type="radio" class="radio inline" value="0"<cfif rc.userBean.getInActive() eq 0 >Checked</cfif>>
 											#rbKey('user.yes')#
 										</label>
-										<label class="radio inline"><input name="InActive" type="radio" class="radio inline" value="1"<cfif rc.userBean.getInActive() eq 1 >Checked</cfif>>
+										<label class="radio inline">
+											<input <cfif lockedSuper>disabled </cfif>name="InActive" type="radio" class="radio inline" value="1"<cfif rc.userBean.getInActive() eq 1 >Checked</cfif>>
 											#rbKey('user.no')#
 										</label>
 									</div>
@@ -673,6 +676,27 @@
 								<label>#rbKey('user.remoteid')#</label>
 								<input id="remoteID" name="remoteID" type="text" value="#esapiEncode('html',rc.userBean.getRemoteID())#">
 							</div>
+
+							<cfif rc.userBean.exists()>
+								<cfset tokens=rc.$.getFeed('oauthtoken')
+									.where()
+									.prop('userID').isEQ(rc.userBean.getUserID())
+									.andProp('granttype').isEQ('refresh_token')
+									.getIterator()>
+
+								<div class="mura-control-group">
+									<span data-toggle="popover" title="" data-placement="right" data-content="Check to remove connection to web service." data-original-title="Web Services">
+							  		Web Services <i class="mi-question-circle"></i></span>
+									<cfif tokens.hasNext()>
+									<cfloop condition="tokens.hasNext()">
+										<cfset token=tokens.next()>
+										<label for="removeToken#tokens.getCurrentIndex()#" class="checkbox"><input name="removeToken" id="removeToken#tokens.getCurrentIndex()#" type="CHECKBOX" value="#token.getToken()#" class="checkbox"> #esapiEncode('html',token.getClient().getName())#</label>
+									</cfloop>
+									<cfelse>
+										<div class="alert alert-info"><p>This user has not connected through any web services.</p></div>
+									</cfif>
+								</div>
+							</cfif>
 
 						</div> <!-- /.block-content -->
 					</div> <!-- /.block-bordered -->
@@ -708,46 +732,48 @@
 
 		<cfoutput>
 			<ul class="mura-tabs nav-tabs" data-toggle="tabs">
-					<cfloop from="1" to="#listlen(tabList)#" index="t">
+				<cfloop from="1" to="#listlen(tabList)#" index="t">
 					<li<cfif listGetAt(tabList,t) eq 'tabExtendedattributes'> id="tabExtendedattributesLI" class="hide"<cfelseif t eq 1> class="active"</cfif>>
-							<a href="###listGetAt(tabList,t)#" onclick="return false;">
-								<span>#listGetAt(tabLabelList,t)#</span>
-							</a>
-						</li>
-					</cfloop>
-				</ul>
+						<a href="###listGetAt(tabList,t)#" onclick="return false;">
+							<span>#listGetAt(tabLabelList,t)#</span>
+						</a>
+					</li>
+				</cfloop>
+			</ul>
 
-				<div class="tab-content block-content">
-					#tabContent#
-					<div class="load-inline tab-preloader"></div>
-					<script>$('.tab-preloader').spin(spinnerArgs2);</script>
-					<div class="mura-actions">
-						<div class="form-actions">
-							<cfif rc.userid eq ''>
-								<button type="button" class="btn mura-primary" onclick="userManager.submitForm(document.forms.form1,'add');"><i class="mi-check-circle"></i>#rbKey('user.add')#</button>
-							<cfelse>
-								<button type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(rbKey('user.deleteuserconfirm'))#');"><i class="mi-trash"></i>#rbKey('user.delete')#</button>
-								<button type="button" class="btn mura-primary" onclick="userManager.submitForm(document.forms.form1,'update');"><i class="mi-check-circle"></i>#rbKey('user.update')#</button>
-							</cfif>
-						</div>
+			<div class="tab-content block-content">
+				#tabContent#
+				<div class="load-inline tab-preloader"></div>
+				<script>$('.tab-preloader').spin(spinnerArgs2);</script>
+
+				<div class="mura-actions">
+					<div class="form-actions">
+						<cfif rc.userid eq ''>
+							<button type="button" class="btn mura-primary" onclick="userManager.submitForm(document.forms.form1,'add');"><i class="mi-check-circle"></i>#rbKey('user.add')#</button>
+						<cfelse>
+							<cfif not lockedSuper><button type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(rbKey('user.deleteuserconfirm'))#');"><i class="mi-trash"></i>#rbKey('user.delete')#</button></cfif>
+							<button type="button" class="btn mura-primary" onclick="userManager.submitForm(document.forms.form1,'update');"><i class="mi-check-circle"></i>#rbKey('user.update')#</button>
+						</cfif>
 					</div>
+				</div>
 
-			<input type="hidden" name="type" value="2"><!--- 2=user, 1=group --->
-			<cfset tempAction = !Len(rc.userid) ? 'Add' : 'Update' />
-			<input type="hidden" name="action" value="#tempAction#">
-			<input type="hidden" name="contact" value="0">
-			<input type="hidden" name="groupid" value="">
-			<input type="hidden" name="ContactForm" value="">
-			<input type="hidden" name="returnurl" value="#buildURL(action='cUsers.listUsers', querystring='ispublic=#rc.tempIsPublic#')#">
+				<input type="hidden" name="type" value="2"><!--- 2=user, 1=group --->
+				<cfset tempAction = !Len(rc.userid) ? 'Add' : 'Update' />
+				<input type="hidden" name="action" value="#tempAction#">
+				<input type="hidden" name="contact" value="0">
+				<input type="hidden" name="groupid" value="">
+				<input type="hidden" name="ContactForm" value="">
+				<input type="hidden" name="returnurl" value="#buildURL(action='cUsers.listUsers', querystring='ispublic=#rc.tempIsPublic#')#">
 
-			<cfif not rsNonDefault.recordcount>
-				<input type="hidden" name="subtype" value="Default"/>
-			</cfif>
+				<cfif not rsNonDefault.recordcount>
+					<input type="hidden" name="subtype" value="Default"/>
+				</cfif>
 
-			#rc.$.renderCSRFTokens(context=rc.userBean.getUserID(),format="form")#
+				#rc.$.renderCSRFTokens(context=rc.userBean.getUserID(),format="form")#
+
+
+			</div> <!-- /.block-content.tab-content -->
 		</cfoutput>
 
-	</div> <!-- /.block-content.tab-content -->
-</div> <!-- /.block-constrain -->
-
+	</div> <!-- /.block-constrain -->
 </form>

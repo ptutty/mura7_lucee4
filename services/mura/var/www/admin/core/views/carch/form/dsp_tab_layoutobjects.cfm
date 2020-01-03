@@ -28,13 +28,10 @@ Your custom code
 • May not alter the default display of the Mura CMS logo within Mura CMS and
 • Must not alter any files in the following directories.
 
- /admin/
- /tasks/
- /config/
- /requirements/mura/
- /Application.cfc
- /index.cfm
- /MuraProxy.cfc
+	/admin/
+	/core/
+	/Application.cfc
+	/index.cfm
 
 You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
 under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
@@ -63,34 +60,45 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
       <!-- block content -->
       <div class="block-content">
-  <span id="extendset-container-tablayoutobjectstop" class="extendset-container"></span>
-
-            <div class="mura-control-group">
-
+  			<span id="extendset-container-tablayoutobjectstop" class="extendset-container"></span>
+        <div class="mura-control-group">
               <div class="half">
                 <div class="mura-control-group">
-                    <label>
+                  <label>
                       <span data-toggle="popover" title="" data-placement="right"
                       data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.layoutTemplate"))#"
                       data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.layouttemplate"))#">
                         #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.layouttemplate')#
                        <i class="mi-question-circle"></i></span>
-
-            </label>
-              <select name="template" class="dropdown">
-            <cfif rc.contentid neq '00000000000000000000000000000000001'>
-              <option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.inheritfromparent')#</option>
-            </cfif>
-            <cfloop query="rc.rsTemplates">
-              <cfif right(rc.rsTemplates.name,4) eq ".cfm">
-                      <option value="#rc.rsTemplates.name#" <cfif rc.contentBean.gettemplate() eq rc.rsTemplates.name>selected</cfif>>#rc.rsTemplates.name#</option>
-              </cfif>
-            </cfloop>
-          </select>
-        </div>
-        </div>
-              <div class="half">
-                <div class="mura-control-group">
+            			</label>
+		              <select name="template" class="dropdown">
+			            <cfif rc.contentid neq '00000000000000000000000000000000001'>
+			              <option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.inheritfromparent')#</option>
+			            </cfif>
+									<cfset renderer=rc.$.getContentRenderer()>
+									<cfif isDefined('renderer.templateArray') and isArray(renderer.templateArray)>
+										<cfset templateArray=renderer.templateArray>
+									<cfelse>
+										<cfset templateArray=listToArray(rc.$.siteConfig('templateList'),'^')>
+									</cfif>
+									<cfif rc.moduleID eq  '00000000000000000000000000000000000' and arrayLen(templateArray)>
+										<cfloop from="1" to="#arrayLen(renderer.templateArray)#" index="t">
+			                <cfoutput>
+			                  <option value="#templateArray[t]#" <cfif rc.contentBean.gettemplate() eq templateArray[t]>selected</cfif>>#templateArray[t]#</option>
+			                </cfoutput>
+				            </cfloop>
+									<cfelse>
+				            <cfloop query="rc.rsTemplates">
+				              <cfif listFindNocase('cfm,html,htm,hbs',listLast(rc.rsTemplates.name,'.'))>
+				                <option value="#rc.rsTemplates.name#" <cfif rc.contentBean.gettemplate() eq rc.rsTemplates.name>selected</cfif>>#rc.rsTemplates.name#</option>
+				              </cfif>
+				            </cfloop>
+									</cfif>
+		          		</select>
+        			</div>
+        		</div>
+            <div class="half">
+              <div class="mura-control-group">
               <label>
                 <span data-toggle="popover" title="" data-placement="right"
                 data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.childTemplate"))#"
@@ -99,19 +107,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                  <i class="mi-question-circle"></i></span>
               </label>
               <select name="childTemplate" class="dropdown">
-            <option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.none')#</option>
-            <cfloop query="rc.rsTemplates">
-              <cfif right(rc.rsTemplates.name,4) eq ".cfm">
-                <cfoutput>
-                        <option value="#rc.rsTemplates.name#" <cfif rc.contentBean.getchildTemplate() eq rc.rsTemplates.name>selected</cfif>>#rc.rsTemplates.name#</option>
-                </cfoutput>
-              </cfif>
-            </cfloop>
-          </select>
+	            <option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.none')#</option>
+							<cfset templateArray=listToArray(rc.$.siteConfig('templateList'),'^')>
+							<cfif rc.moduleID eq  '00000000000000000000000000000000000' and arrayLen(templateArray)>
+								<cfloop from="1" to="#arrayLen(templateArray)#" index="t">
+	                <cfoutput>
+	                  <option value="#templateArray[t]#" <cfif rc.contentBean.getchildTemplate() eq templateArray[t]>selected</cfif>>#templateArray[t]#</option>
+	                </cfoutput>
+		            </cfloop>
+							<cfelse>
+								<cfloop query="rc.rsTemplates">
+		              <cfif listFindNocase('cfm,html,htm,hbs',listLast(rc.rsTemplates.name,'.'))>
+		                <cfoutput>
+		                  <option value="#rc.rsTemplates.name#" <cfif rc.contentBean.getchildTemplate() eq rc.rsTemplates.name>selected</cfif>>#rc.rsTemplates.name#</option>
+		                </cfoutput>
+		              </cfif>
+		            </cfloop>
+							</cfif>
+	          </select>
         </div>
-        </div>
-
       </div>
+    </div>
 
       <div class="mura-control-group">
         <label>
@@ -145,12 +161,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.donotinheritcascade')#
         </label>
       </div>
-  
+
         <cfif rc.$.getContentRenderer().useLayoutManager()>
           <div class="mura-control-group">
             <label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentobjects')#</label>
             <div class="help-block">
-              <p>To manage content objects, <a href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getWebPath(complete=1)##$.getURLStem(rc.siteid,rc.contentbean.getfilename())#','#esapiEncode('javascript',rc.contentbean.getTargetParams())#');">preview this content node</a> and select the "Inline Edit" option.</p>
+              <p>To manage content objects, <a href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getWebPath(complete=1)##$.getURLStem(rc.siteid,rc.contentbean.getfilename())#?previewid=#rc.contentbean.getContentHistID()#','#esapiEncode('javascript',rc.contentbean.getTargetParams())#');">preview this content node</a> and select the "Inline Edit" option.</p>
             </div>
           </div>
 

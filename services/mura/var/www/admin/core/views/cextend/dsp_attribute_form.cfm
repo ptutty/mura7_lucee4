@@ -28,13 +28,10 @@ Your custom code
 • May not alter the default display of the Mura CMS logo within Mura CMS and
 • Must not alter any files in the following directories.
 
- /admin/
- /tasks/
- /config/
- /requirements/mura/
- /Application.cfc
- /index.cfm
- /MuraProxy.cfc
+	/admin/
+	/core/
+	/Application.cfc
+	/index.cfm
 
 You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
 under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
@@ -82,7 +79,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <div class="mura-control-group">
 	<label>Name (No spaces)</label>
-		<input type="text" name="name" required="true" value="#esapiEncode('html_attr',attributes.attributeBean.getName())#" />
+		<input type="text" name="name" data-required="true" value="#esapiEncode('html_attr',attributes.attributeBean.getName())#" onchange="removePunctuation(this);" />
 </div>
 <div class="mura-control-group">
 	<label>Label</label>
@@ -99,7 +96,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <div class="mura-control-group">
 	<label>Default Value</label>
-		<input type="text" name="defaultValue"  value="#esapiEncode('html_attr',attributes.attributeBean.getDefaultvalue())#" />
+		<input type="text" name="defaultValue"  value="#esapiEncode('html_attr',attributes.attributeBean.getDefaultvalue())#"  maxlength="100" />
 </div>
 <div class="mura-control-group">
 	<label>Tooltip</label>
@@ -149,8 +146,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <div class="mura-control-group">
 	<label>For administrative Use Only?</label>
-		<label class="radio inline"><input name="adminonly" type="radio" class="radio inline" value="1"<cfif attributes.attributeBean.getAdminOnly() eq 1 >Checked</cfif>>Yes</label>
-		<label class="radio inline"><input name="adminonly" type="radio" class="radio inline" value="0"<cfif attributes.attributeBean.getAdminOnly() eq 0 >Checked</cfif>>No</label>
+		<label class="radio inline"><input name="adminonly" type="radio" class="radio inline" value="1" <cfif attributes.attributeBean.getAdminOnly() eq 1 >Checked</cfif>>Yes</label>
+		<label class="radio inline"><input name="adminonly" type="radio" class="radio inline" value="0" <cfif attributes.attributeBean.getAdminOnly() eq 0 >Checked</cfif>>No</label>
 </div>
 
 <div class="mura-actions">

@@ -1,5 +1,4 @@
 /* tabdrop menu */
-
 .nav-tabs,
 .nav-pills {
   position: relative;
@@ -24,7 +23,7 @@
 .tabdrop .dropdown-menu > .active > a:hover,
 .tabdrop .dropdown-menu > .active > a:focus{
   background-color: transparent;
-  color: #ff3405;
+  color: @mura-red;
 }
 
 .block>.nav-tabs li.tabdrop .dropdown-menu a{
@@ -41,7 +40,7 @@
 
 .block>.nav-tabs li.tabdrop .dropdown-menu li.active a,
 .block>.nav-tabs li.tabdrop .dropdown-menu a:hover{
-  color: #ff3405 !important;
+  color: @mura-red !important;
   background-color: transparent;
 }
 
@@ -140,15 +139,15 @@
 }
 
 #header-navbar{
-  min-height: 42px;
-  height: 42px;
+  min-height: 58px;
+  height: 58px;
   padding-bottom: 0;
   padding-left: 10px;
   padding-right: 10px;
   background-color: #FFF;
 
   &.content-mini{
-    padding-top: 5px;
+    padding-top: 13px;
   }
   .mi-ellipsis-v{
   font-size: 14px;
@@ -190,11 +189,16 @@
      margin-right: 10px;
     }
 }
+
 #header-navbar #user-tools-selector{
   margin-right: 10px;
 }
+
 #header-navbar #site-selector-list.dropdown-menu{
+  max-height: 390px;
+  max-height: 50vh;
   min-width: 100%;
+  overflow-y:auto;
   padding-right: 12px;
 }
 
@@ -226,12 +230,15 @@
 #header-navbar .btn#mura-sidebar-toggle{
   display:block;
  }
+
 #header-navbar .btn#mura-sidebar-toggle-open{
   display: none;
 }
+
 .sidebar-mini #header-navbar .btn#mura-sidebar-toggle-open{
   display: block;
 }
+
 .sidebar-mini #header-navbar .btn#mura-sidebar-toggle{
   display: none;
 }
@@ -241,6 +248,31 @@
   .regular-font;
   font-size: 13px;
 
+}
+
+.text-divider {
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    margin-top: 20px;
+    position: relative;
+    text-align: center;
+}
+
+.text-divider::before,
+.text-divider::after {
+    content: '';
+    background: #ccc;
+    height: 1px;
+    display: block;
+    width: 100%;
+}
+
+.text-divider span {
+    font-size: 16px;
+    font-weight: 500;
+    padding: 10px 20px;
+    text-align: center;
 }
 
 /* input sets */
@@ -281,6 +313,7 @@
   .border-right-radius(0px);
   margin-right: -2px !important;
  }
+
 .mura-input-set .btn:not(:first-child),
 .mura-input-set input:not(:first-child){
   .border-left-radius(0px);
@@ -344,6 +377,7 @@
   background-color: #dcdcdc;
   border-color: #cacaca;
 }
+
 .btn-default.active:hover,
 .open > .dropdown-toggle.btn-default:hover{
   color: #545454;
@@ -458,8 +492,8 @@ body.mura-admin{
     .border-radius(0);
     color: #848484;
     font-size: 13px;
+    font-weight: bold;
     height: 35px !important;
-    text-transform: uppercase;
     vertical-align: top;
 
    > i{
@@ -595,6 +629,12 @@ form .mura-control-group > * + .help-block{
   margin: 0;
 }
 
+#main-container #tabEntities ul.breadcrumb{
+  margin-bottom: 10px;
+  margin-top: 15px;
+}
+
+
 #main-container #tabArchitectural #arch-mod,
 #flatViewContainer .navSort{
     margin: 0;
@@ -658,8 +698,13 @@ form .mura-control-group > * + .help-block{
 #gridContainer ul.breadcrumb li a:link,
 #gridContainer ul.breadcrumb li a:visited,
 #gridContainer ul.breadcrumb li a:hover,
-#gridContainer ul.breadcrumb li a:active{
-  color: #ff3405;
+#gridContainer ul.breadcrumb li a:active,
+#container-scaffold ul.breadcrumb li a,
+#container-scaffold ul.breadcrumb li a:link,
+#container-scaffold ul.breadcrumb li a:visited,
+#container-scaffold ul.breadcrumb li a:hover,
+#container-scaffold ul.breadcrumb li a:active{
+  color: @mura-red;
   font-weight: normal;
   font-size:13px;
   margin-right: 8px;
@@ -671,99 +716,138 @@ form .mura-control-group > * + .help-block{
   }
 }
 
-.nav-main a{
-  color: rgba(255, 255, 255, 0.8);
+.nav-main-header {
+  background-color: #2c2c2f;
 }
 
-.nav-main a:hover,
-.nav-main a:focus{
-  color: @white !important;
-}
+.nav-main {
 
-.nav-main li a{
-  display: block;
-  overflow: hidden;
-  padding-right: 30px;
-  text-decoration: none;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  font-size:16px;
+  padding-bottom: 15px;
+  padding-top: 12px;
 
-  span{
-    display: inline-block;
-    vertical-align: top;
+  a{
+    color: rgba(255, 255, 255, 0.8);
   }
 
-}
+  a:hover,
+  a:focus{
+    color: @white !important;
+  }
 
-.nav-main li > a.nav-submenu:before {
-  content: "\f105";
-}
-.nav-main li.open > a.nav-submenu:before {
-  content: "\f107";
-}
+  a.active{
+    color: #fff;
+  }
 
-.nav-main ul{
-  padding-left: 32px;
-  background-color: #3B3B3B;
+  ul{
+    padding-left: 32px;
+    background-color: #3B3B3B;
 
-  > li ul{
-    padding-left: 6px;
+    > li ul{
+      padding-left: 6px;
 
-    > li,
-    > li a{
-      font-size: 13px;
+      > li,
+      > li a{
+        font-size: 13px;
+      }
+    }
+
+    li a i {
+          font-size: 19px;
+          margin-left: 0;
+          min-width: 21px;
+        }
+
+         a i.fa-action {
+            display: inline-block;
+            font-size: 19px;
+            line-height: 1em;
+            margin-left: 8px;
+            float:right;
+        }
+
+  } /* /ul */
+
+  ul.version{
+    padding-left: 20px;
+      
+    li a,
+    li a strong{
+      font-weight: normal;
+      white-space: normal;
+    }
+
+    li a i{
+      font-weight: normal;
+      margin-left: 0;
+      margin-right: 10px;
     }
   }
 
+  li{
+    
+    a{
+      display: block;
+      overflow: hidden;
+      padding-right: 30px;
+      text-decoration: none;
+      text-overflow: ellipsis;
+      white-space: nowrap;
 
-}
+      span{
+        display: inline-block;
+        vertical-align: top;
+      }
 
-.nav-main ul.version{
-  padding-left: 20px;
-}
+      i {
+        font-size: 24px;
+        margin-left: -3px;
+        min-width: 26px;
+        position: relative;
+        text-align:center;
 
-.nav-main ul.version li a,
-.nav-main ul.version li a strong{
-  font-weight: normal;
-  white-space: normal;
-}
+        &.mi-edit{
+          padding-left: 2px;
+        }
 
-.nav-main ul.version li a i{
-  font-weight: normal;
-  margin-left: 0;
-  margin-right: 10px;
-}
+      }
 
-.nav-main li a i {
-  font-size: 23px;
-  margin-left: -3px;
-  min-width: 26px;
-  position: relative;
-  text-align:center;
 
-  &.mi-edit{
+    }
+    
+    > a.nav-submenu:before {
+      content: "\f105";
+    }
+
+    
+  
+  } /* /li */
+  
+  > li > a{
+    padding-bottom: 14px;
+    padding-top: 14px;
+  }
+  
+  li.open > a.nav-submenu:before {
+    content: "\f107";
+  }
+
+  #navContentAdmin i{
     padding-left: 2px;
   }
 
-}
+}  
+/* .nav-main */
 
-.nav-main #navContentAdmin i{
-  padding-left: 2px;
-}
 
-.nav-main li ul li a i {
-  font-size: 17px;
-  margin-left: 0;
-  min-width: 20px;
-}
 
-.nav-main ul a i.fa-action {
-    display: inline-block;
-    font-size: 18px;
-    line-height: 1em;
-    margin-left: 8px;
-    float:right;
-}
+
+
+
+
+
+
+
 .content h2{
   font-size: 15px;
   margin-bottom: 15px;
@@ -891,12 +975,17 @@ a.cke_dialog_ui_button_ok span {
 .mura-link-search-result{
   padding-top: 15px;
 
- th.actions, 
- td.actions{
+  th.actions, 
+  td.actions{
     max-width: 30px;
     padding-left: 12px !important;
     width: 30px;
   }
+
+  .mura-table-grid .var-width{
+    max-width: none;
+  }
+
 }
 .tagSelector .tag{
   height: 26px;
@@ -1015,13 +1104,39 @@ a.no-link{
   cursor: default;
 }
 
-.side-content img.mura-logo {
-    width: 38px;
-    max-width: 38px;
-    height: 40px;
-    max-height: 40px;
-    margin-top: -13px;
-    margin-left: -10px;
+.side-content #brand-logo-lg{
+  img.mura-logo {
+    width: 96px;
+    max-width: 96px;
+    height: 26px;
+    max-height: 26px;
+    margin-top: 3px;
+    margin-left: -1px;
+  } 
+}
+.side-content #brand-logo-min{
+  display: none;
+
+ img.mura-logo {
+    width: 25px;
+    max-width: 25px;
+    height: 26px;
+    max-height: 26px;
+    margin-top: 3px;
+    margin-left: -1px;
+  }
+ img.mura-logo-text {
+    height: 26px;
+    max-height: 26px;
+    margin-top: 3px;
+    margin-left: -3px;
+  }
+}
+.sidebar-mini .side-content #brand-logo-lg{
+  display: none;
+}
+.sidebar-mini .side-content #brand-logo-min{
+  display: block;
 }
 
 .sidebar-icon-right{
@@ -1318,7 +1433,7 @@ div:not(.mura-header) + p.alert,
 }
 
 .alert-info {
-  background-color: #0fafcd;
+  background-color: @mura-blue;
   background-image:url(../images/alert-info@2x.png);
 
   i.mi-close{
@@ -1415,6 +1530,16 @@ ul.dropdown-menu{
   min-width: 142px;
 }
 
+#sidebar,
+#side-overlay {
+  z-index: 1041;
+}   
+#sidebar-mobile-close{
+  font-size: 16px;
+  padding: 10px;
+  margin-right: -19px;
+  margin-top: -13px;
+}
 .sidebar {
   h3{
     font-size: 15px;
@@ -1451,7 +1576,7 @@ ul.dropdown-menu{
           }
         > a.active{
           font-weight: normal;
-          color: #FF3405;
+          color: @mura-red;
         }
         > a:not(.active){
          color: #646464;
@@ -1466,7 +1591,7 @@ ul.dropdown-menu{
   input.text, { width: 95%; }
 }
 #plugin-license textarea{
-  min-height: 528px;
+  min-height: 264px;
   margin-bottom: 24px;
 }
 
@@ -1659,35 +1784,69 @@ form .checkbox.inline
 }
 
 /* login and setup */
+.mura-login-auth-btn{
+  display: inline-block;
+  margin: 0 0 6px;
+  height: 40px;
+  width: 100%;
+
+  &.ggl{
+    background-color: #dc4e41;
+  }
+
+  &.fb{
+    background-color: #4267b2;
+  }
+
+  span{
+    color: #fff;
+    font-size: 16px;
+    text-align: left;
+    padding: 7px 0 0 12px;
+    display: inline-block;
+  }
+  i{
+    border-right: 1px solid #fff;
+    color: #fff;
+    height: 40px;
+    font-size: 28px;
+    float: left;
+    padding: 6px;
+    text-align: center;
+    width: 40px;
+  }
+}
+
+h3.mura-login-auth-heading{
+  margin: 22px;
+}
+
 .mura-focus-block{
 
    width: 360px;
    margin: auto;
 
   .focus-block-header{
-     background-color: #252525 ;
-      height: 54px;
+      height: 84px;
+      text-align: center; 
 
       img.mura-logo{
-        width: 38px;
-        max-width: 38px;
-        height: 40px;
-        max-height: 40px;
-        margin-left: 20px;
-        float: left;
+        width: auto;
+        height: 26px;
+        max-height: 26px;
+        margin: 13px auto 0 auto;
      }
-      h1{
-        color: #FFF;
-        float: left;
-        letter-spacing: .07em;
-        margin: 8px 0 0 24px;
-        padding: 0;
-        text-transform: uppercase;
-      }
 
   }
   .block-content{
-    padding: 30px 20px 10px;
+    padding: 30px 40px;
+    border: 2px solid #ECEEEF;  
+    border-radius: 1px;
+
+      h3{
+        font-size: 18px;
+      }
+
   }
   .mura-focus-actions button,
   .mura-focus-actions button:hover,
@@ -1698,16 +1857,12 @@ form .checkbox.inline
     .btn;
     .btn-block;
     border:none;
-    background-color: #ff3405;
+    background-color: @mura-red;
     color: #fff !important;
     height: 35px;
     margin-left: 0;
     margin-right: 0;
   }
-}
-body#clogin,
-body#csetup{
-  background-color:#333;
 }
 #clogin #main-container,
 #csetup #main-container{
@@ -1716,6 +1871,7 @@ body#csetup{
 #clogin #page-container,
 #clogin #main-container,
 #clogin #main-container > .content{
+  background-color: #fff;
   height: 100%;
   margin-top: 0;
   margin-bottom: 0;
@@ -1724,10 +1880,37 @@ body#csetup{
   padding-bottom: 0;
 }
 
-#csetup #main-container{
+#mura-setup{ 
+  margin-top: 3%;
+}
 
-  .mura-focus-block .block-content{
-    padding-top: 0;
+#csetup #page-container,
+#csetup #main-container{
+  background-color: #fff;
+  height: 100%;
+  margin-top: 0;
+  margin-bottom: 0;
+  min-height: 480px;
+  padding-top: 0;
+  padding-bottom: 0;
+
+  h3{
+  margin: 0 auto 22px;
+    padding: 0;
+  }
+
+  .mura-focus-block {
+    width: 498px!important;
+  
+    .block-content{
+        padding: 40px 30px!important;
+    
+        .block-content{
+         border: none !important;
+          padding: 0 !important;
+        }
+    }
+
   }
 
   .alert{
@@ -1760,7 +1943,7 @@ body#csetup{
     background-color: #FFF;
   }
   .progress-bar-danger{
-    background-color: #ff3405;
+    background-color: @mura-red;
     .border-radius(2px);
   }
   .nav-tabs{
@@ -1779,7 +1962,7 @@ body#csetup{
     font-weight: normal;
   }
   .nav-tabs li.active a{
-    color: #ff3405;
+    color: @mura-red;
   }
   .tab-content{
     padding: 0 0;
@@ -1834,13 +2017,6 @@ body#csetup{
 }
 
 #mura-login{
-
-    margin-top: -20px;
-    position: relative!important;
-    top: 50%;
-    transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    -webkit-transform: translateY(-50%);
 
   #remember-me{
     margin-top: 7px !important;
@@ -1898,9 +2074,70 @@ body#csetup{
     margin-bottom: 23px !important;
   }
 
+}
+
+body.mura-admin #mura-login{
+
+    margin-top: -20px;
+    position: relative!important;
+    top: 50%;
+    transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
 
 }
+
+body#clogin.modal-wrapper #mura-content {
+  margin-left: auto;
+  margin-right: auto;
+    #frontEndToolsModalClose{
+      opacity: 1;
+      margin-right: 14px;
+      margin-top: 6px;
+    }
+}
 /* /login and setup */
+
+/* BS3 panels */
+.mura-panel-group{
+  clear:both;
+  margin-top: 22px;
+
+  .mura-panel{
+    border: 1px solid #DBDBDB; 
+    border-radius: 0;
+  }
+  .mura-panel-heading {
+    background-color: #f4f3f3;
+    border-bottom: none;
+    border-radius: 0;
+    padding: 0;
+  }
+  .mura-panel-heading:hover {
+    background-color: #f4f3f3;
+    border-radius: 0;
+    cursor: pointer;
+  }
+  .mura-panel-title {
+    color: #7a7a7a;
+    font-size: 13px;
+  }
+  .mura-panel-title a {
+    color: #7a7a7a;
+    display: block;
+    padding: 10px 16px;
+  }
+  .mura-panel-title a:hover,
+  .mura-panel-title a:active,
+  .mura-panel-title a:focus {
+    color: #7a7a7a;
+  }
+  .mura-panel-body{
+    border-radius: 0;
+  }
+
+} 
+/* /panels */
 
 .mura-modal, .modal-backdrop {
   background-image: none!important;

@@ -28,13 +28,10 @@
 	• May not alter the default display of the Mura CMS logo within Mura CMS and
 	• Must not alter any files in the following directories.
 
-	 /admin/
-	 /tasks/
-	 /config/
-	 /requirements/mura/
-	 /Application.cfc
-	 /index.cfm
-	 /MuraProxy.cfc
+	/admin/
+	/core/
+	/Application.cfc
+	/index.cfm
 
 	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
 	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
@@ -228,17 +225,30 @@ var extendManager = {
 			$(".hasAssocFileContainer").show();
 			$(".adminOnlyContainer").show();
 		} else if(dataArray[0] == "Form" || dataArray[0] == "Component" || dataArray[0] == "Variation") {
-			$(".hasRow1Container").hide();
+
 			$(".subTypeContainer").show();
 			$(".SubTypeIconSelect").show();
+
+			if(dataArray[0] == "Variation"){
+				$(".hasRow1Container").hide();
+				$(".hasAssocFileContainer").hide();
+				$(".hasBodyContainer").hide();
+			} else {
+				$(".hasRow1Container").show();
+				$(".hasBodyContainer").show();
+				$(".hasAssocFileContainer").hide();
+			}
+
+			//$(".hasRow1Container").hide();
+
 			$(".hasSummaryContainer").hide();
-			$(".hasBodyContainer").hide();
+
 			if ( $("input[name='isnew']").val() === '1' ) {
 				$('#hasConfiguratorYes').prop('checked', true);
 			}
+
 			$(".hasConfiguratorContainer").hide();
 			$(".availableSubTypesContainer").show();
-			$(".hasAssocFileContainer").show();
 			$(".adminOnlyContainer").show();
 		} else {
 			$(".hasRow1Container").show();
@@ -251,8 +261,6 @@ var extendManager = {
 			$(".hasAssocFileContainer").show();
 			$(".adminOnlyContainer").show();
 		}
-
-
 
 	}
 }
