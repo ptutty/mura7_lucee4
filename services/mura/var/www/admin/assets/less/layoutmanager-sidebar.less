@@ -29,7 +29,7 @@
 		border: 1px solid transparent !important;
 		box-shadow: none !important;
 		cursor: pointer !important;
-		font-size: 14px !important;
+		font-size: 13px !important;
 		height: 32px !important;
 		letter-spacing: normal !important;
 		line-height: 1.42857143 !important;
@@ -91,7 +91,7 @@
 
 .mura__layout-manager__controls__objects {
 	min-height: 120px;
-	padding: 50px 0;
+	padding: 30px 0 50px 0;
 }
 
 /* sidebar icons */
@@ -139,9 +139,8 @@ body.configurator-wrapper #mura-content{
 	margin-left: 0;
 	margin-right: 0;
 }
-
 .mura-sidebar__objects-list__object-group-heading {
-	font-size: 14px;
+	font-size: 13px;
 	font-weight: normal;
 	color: #f3f3f3;
 	line-height: 1.2;
@@ -156,7 +155,7 @@ body.configurator-wrapper #mura-content{
 }
 .mura-sidebar__objects-list__object-group-instruction {
 	background-color: #6f6f6f;
-	font-size: 14px;
+	font-size: 13px;
 	margin-bottom: 3px;
 	padding: 10px 15px;
 }
@@ -204,7 +203,7 @@ body.configurator-wrapper #mura-content{
 	background-color: #333;
 	color: #d8d8d8;
 	padding: 8px 12px;
-	font-size: 14px;
+	font-size: 13px;
 	border: none;
 	cursor: pointer;
 	outline: none;
@@ -216,7 +215,7 @@ body.configurator-wrapper #mura-content{
 	display:block;
 	padding: 10px 16px;
 	margin-bottom: 2px;
-	font-size: 14px;
+	font-size: 13px;
 	color: #d8d8d8;
 	background-color: #565656;
 	font-weight: normal;
@@ -270,7 +269,6 @@ select + .mura-sidebar__objects-list__object-item{
 /* compact view / configurators */
 
 body.configurator-wrapper{
-
 	background-color: #454545;
 
 	// reset typography styles in sidebar configurator
@@ -287,14 +285,6 @@ body.configurator-wrapper{
 				text-transform: none;
 			}
 
-			.clearfix{
-				clear:both !important;
-			}
-
-			img + div, 
-			img + label{
-				margin-top: 8px;
-			} 
 			#configurator .load-inline{
     		position: absolute;
 	    	right: ~'calc(50% - 30px)';
@@ -321,7 +311,7 @@ body.configurator-wrapper{
 
 			// button styles
 			.btn {
-				font-size: 14px;
+				font-size: 13px;
 				padding: 6px 12px;
 				.border-radius(2px);
 				-webkit-box-shadow: none;
@@ -371,103 +361,6 @@ body.configurator-wrapper{
 				margin-bottom: 12px;
 			}
 
-			.mura-panel-group{
-				border-radius: 0;
-				clear:both;
-			  margin-bottom: 22px;
-			  margin-left: -18px;
-			  margin-right: -34px;
-
-				.mura-panel{
-					border: none;
-					border-radius: 0;
-					margin: 0;
-					margin-bottom: 2px;
-					background-color: inherit !important;
-				
-					.mura-panel-heading{
-						border-radius: 0;
-				    background-color: #565656;
-				    padding: 0;
-					}
-			
-				  .mura-panel-heading:hover {
-				    background-color: #6f6f6f;
-				    cursor: pointer;
-				  }
-				
-					.mura-panel-body{
-						border-radius: 0;
-						padding-top: 18px;
-						padding-left: 18px;
-						padding-right: 34px;
-						margin-bottom: 2px;
-					}
-
-					.mura-panel-title {
-					  color: #fff;
-					  font-size: 14px;
-					}
-					.mura-panel-title a {
-					  display: block;
-					  color: inherit;
-					  padding: 10px 16px;
-					}
-					.mura-panel-title a:hover,
-					.mura-panel-title a:active,
-					.mura-panel-title a:focus {
-					  color: inherit !important;
-					}
-
-				} /* /mura-panel*/
-
-				/* nested panels */
-				.mura-control-group .mura-panel-group{
-					margin-bottom: 0 !important;	
-
-					.mura-panel-body{
-						padding-bottom: 2px !important;
-						padding-top: 2px !important;
-
-						.mura-control-group:last-child{
-							margin-bottom: 0 !important;
-							padding-bottom: 0 !important;
-						}
-					}			
-
-				} /* /nested panels */
-
-				&.no-header{
-					.mura-panel-heading{
-						display: none !important;
-						margin: 0 !important;
-						padding: 0 !important;
-						height: 0 !important;
-					}
-				}
-
-				.panel-gds-box{
-					box-shadow: inset 0 0 0 2px #565656;
-			    cursor: pointer;
-			    margin: 8px 0;
-			    padding: 6px 10px;
-				}
-				.panel-gds-box span{
-					font-size: 12px;
-			    font-weight: 400;
-			    color: #f3f3f3;
-			    line-height: 1.2;
-				}
-				.panel-gds-box.active{
-					box-shadow: inset 0 0 0 2px #bbbbbb;
-				}
-				#panel-gds-meta + #panel-gds-inner{
-					margin-top: 10px;
-				}
-
-			} /* /mura-panel-group */
-
-
 			label,
 			.control-label,
 			.mura-control-label{
@@ -476,77 +369,18 @@ body.configurator-wrapper{
 
 			select,
 			select:focus,
-			input[type=date],
-			input[type=datetime],
-			input[type=datetime-local],
-			input[type=image],
-			input[type=email],
-			input[type=month],
-			input[type=number],
-			input[type=tel],
-			input[type=range],
 			input[type=text],
-			input[type=url],
-			input[type=week],
 			textarea {
 				margin: .5em 0;
 				width: 100%;
 				background-color: #333;
 				color: #d8d8d8;
 				padding: 8px 12px;
-				font-size: 14px;
+				font-size: 13px;
 				border: none;
 				cursor: pointer;
 				outline: none;
 				outline-offset: 0;
-			}
-
-			/* custom styles for date inputs */
-			input[type=date],
-			input[type=datetime],
-			input[type=datetime-local],
-			input[type=month],
-			input[type=week]{
-			    appearance: none;
-			    -webkit-appearance: none;
-			    display: inline-block !important;
-			    visibility: visible !important;
-			}
-
-			/* hide the clear button from date inputs */
-			input[type=date]::-webkit-clear-button,
-			input[type=datetime]::-webkit-clear-button,
-			input[type=datetime-local]::-webkit-clear-button,
-			input[type=month]::-webkit-clear-button,
-			input[type=week]::-webkit-clear-button{
-			    display: none;
-			}
-
-			/* hide the spin button */
-			input[type=date]::-webkit-inner-spin-button,
-			input[type=datetime]::-webkit-inner-spin-button,
-			input[type=datetime-local]::-webkit-inner-spin-button,
-			input[type=month]::-webkit-inner-spin-button,
-			input[type=week]::-webkit-inner-spin-button{  
-			    display: none;
-			}
-
-			/* always display the drop down caret */
-			input[type=date]::-webkit-calendar-picker-indicator,
-			input[type=datetime]::-webkit-calendar-picker-indicator,
-			input[type=datetime-local]::-webkit-calendar-picker-indicator,
-			input[type=month]::-webkit-calendar-picker-indicator,
-			input[type=week]::-webkit-calendar-picker-indicator{
-			    color: #d8d8d8;
-			}
-			
-			input[type=date]::-webkit-calendar-picker-indicator:hover,
-			input[type=datetime]::-webkit-calendar-picker-indicator:hover,
-			input[type=datetime-local]::-webkit-calendar-picker-indicator:hover,
-			input[type=month]::-webkit-calendar-picker-indicator:hover,
-			input[type=week]::-webkit-calendar-picker-indicator:hover{
-					background: none;
-			    color: #d8d8d8;
 			}
 
 			.mura-control-group input.radio,
@@ -599,7 +433,7 @@ body.configurator-wrapper{
 				text-shadow:none;
 				.border-radius(0);
 					box-shadow:none;
-				font-size: 14px;
+				font-size: 13px;
 				padding: 8px 12px;
 			  color: #d8d8d8;
 			}

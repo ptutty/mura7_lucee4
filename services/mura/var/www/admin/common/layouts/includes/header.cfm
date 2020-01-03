@@ -29,10 +29,13 @@
 	• May not alter the default display of the Mura CMS logo within Mura CMS and
 	• Must not alter any files in the following directories.
 
-	/admin/
-	/core/
-	/Application.cfc
-	/index.cfm
+	 /admin/
+	 /tasks/
+	 /config/
+	 /requirements/mura/
+	 /Application.cfc
+	 /index.cfm
+	 /MuraProxy.cfc
 
 	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
 	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
@@ -47,7 +50,7 @@
 	<cfparam name="rc.originalfuseAction" default="">
 	<cfparam name="rc.originalcircuit" default="">
 	<cfparam name="rc.moduleid" default="">
-	<cfif not application.configBean.getSessionHistory() or application.configBean.getSessionHistory() gte 180>
+	<cfif not application.configBean.getSessionHistory() or application.configBean.getSessionHistory() gte 30>
 		<cfparam name="session.dashboardSpan" default="30">
 	<cfelse>
 		<cfparam name="session.dashboardSpan" default="#application.configBean.getSessionHistory()#">
@@ -71,7 +74,7 @@
 	      <button id="mura-sidebar-toggle" class="btn btn-default" data-toggle="layout" data-action="sidebar_mini_toggle" type="button">
 	          <i class="mi-navicon"></i>
 	      </button>
-
+	      	
 	      <button id="mura-sidebar-toggle-open" class="btn btn-default" data-toggle="layout" data-action="sidebar_mini_toggle" type="button">
 	          <i class="mi-navicon"></i>
 	      </button>
@@ -87,14 +90,14 @@
     <!--- site selector  --->
     <li id="site-selector">
       <div class="btn-group">
-     		<a id="select-site-btn" class="btn btn-default" href="#rc.$.createHref(filename='',complete=1)#" target="_blank"><i class="mi-globe"></i> #esapiEncode('html', application.settingsManager.getSite(session.siteid).getSite())#</a>
+     		<a id="select-site-btn" class="btn btn-default" href="#rc.$.siteConfig().getWebPath(complete=1)#<cfif application.configBean.getSiteIDInURLS()>/#session.siteid#/</cfif>" target="_blank"><i class="mi-globe"></i> #esapiEncode('html', application.settingsManager.getSite(session.siteid).getSite())#</a>
         <button type="button" class="btn btn-default dropdown-toggle" id="site-selector-trigger" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <span class="caret"></span>
         </button>
         <ul  id="site-selector-list" class="dropdown-menu">
-				<cfif theSiteList.recordCount gt 10>
+				<cfif theSiteList.recordCount gt 20>
 					<div class="ui-widget">
-						<input name="site-list-filter" id="site-list-filter" class="form-control input-sm" type="text" placeholder="#rc.$.rbKey("dashboard.search")#...">
+						<input name="site-search" class="form-control input-sm" type="text" placeholder="#rc.$.rbKey("dashboard.search")#...">
 					</div>
 				</cfif>
 				<cfset settingsManager=rc.$.getBean('settingsManager')>
@@ -129,7 +132,7 @@
       <li class="js-header-search header-search">
 				<form class="form-horizontal" action="##" novalidate="novalidate" id="globalSearch" name="globalSearch" method="get">
           <div class="form-material form-material-primary input-group remove-margin-t remove-margin-b">
-              <input class="form-control" type="text" id="mura-search-keywords" name="keywords" value="#esapiEncode('html_attr',session.keywords)#" placeholder="#rc.$.rbKey('dashboard.search')#">
+              <input class="form-control" type="text" id="mura-search-keywords" name="keywords" value="#esapiEncode('html_attr',session.keywords)#" placeholder="Search">
               <span onclick="submitForm(document.forms.globalSearch);" class="input-group-addon" id="mura-search-submit"><i class="mi-search"></i></span>
           </div>
 					<input type="hidden" name="muraAction" value="cArch.list">
@@ -231,7 +234,7 @@
 									</cfif>
 
                   <li>
-                      <a tabindex="-1" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cEditProfile.edit"><i class="mi-cog"></i> #rc.$.rbKey('layout.editprofile')#</a>
+                      <a tabindex="-1" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cEditProfile.edit"><i class="mi-cog"></i> Edit Profile</a>
                   </li>
                   <li>
                       <a tabindex="-1" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cLogin.logout"><i class="mi-sign-out"></i> #rc.$.rbKey("layout.logout")#</a>

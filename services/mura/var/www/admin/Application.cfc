@@ -28,10 +28,13 @@ Your custom code
 • May not alter the default display of the Mura CMS logo within Mura CMS and
 • Must not alter any files in the following directories.
 
-	/admin/
-	/core/
-	/Application.cfc
-	/index.cfm
+ /admin/
+ /tasks/
+ /config/
+ /requirements/mura/
+ /Application.cfc
+ /index.cfm
+ /MuraProxy.cfc
 
 You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
 under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
@@ -43,17 +46,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 */
 component extends="framework" output="false" {
 
-	include "../core/appcfc/applicationSettings.cfm";
+	include "../config/applicationSettings.cfm";
 
 
 	if(server.coldfusion.productname != 'ColdFusion Server'){
 		backportdir='';
-		include "../core/mura/backport/backport.cfm";
+		include "../requirements/mura/backport/backport.cfm";
 	} else {
-		backportdir='../core/mura/backport/';
+		backportdir='../requirements/mura/backport/';
 		include "#backportdir#backport.cfm";
 	}
-/*
+
 	if(not hasMainMappings){
 		//Try and include global mappings;
 		canWriteMode=true;
@@ -70,11 +73,10 @@ component extends="framework" output="false" {
 		}
 
 		if(not hasMappings){
-			include "../core/buildMainMappings.cfm";
+			include "../config/buildMainMappings.cfm";
 		}
 
 	}
-	*/
 
 	if(not hasPluginMappings){
 		//Try and include plugin mappings
@@ -91,7 +93,7 @@ component extends="framework" output="false" {
 		}
 
 		if(not hasMappings){
-			include "../core/appcfc/buildPluginMappings.cfm";
+			include "../config/buildPluginMappings.cfm";
 		}
 
 	}
@@ -111,7 +113,7 @@ component extends="framework" output="false" {
 		}
 
 		if(not hasMappings){
-			include "../core/appcfc/buildPluginCFApplication.cfm";
+			include "../config/buildPluginCFApplication.cfm";
 		}
 
 	}
@@ -135,14 +137,6 @@ component extends="framework" output="false" {
 		url.muraAction=url.fuseaction;
 	}
 
-	function setFrameWorkBaseDir(){
-		if(isDefined('application.configBean') && len(application.configBean.getAdminDir())){
-			variables.framework.base="/muraWRM#application.configBean.getAdminDir()#/";
-		} else {
-			variables.framework.base="/muraWRM/admin/";
-		}
-	}
-
 	function setupApplication() output="false"{
 
 		param name="application.appInitialized" default=false;
@@ -150,7 +144,7 @@ component extends="framework" output="false" {
 		if(!application.appInitialized){
 			param name="application.instanceID" default=createUUID();
 			lock name="appInitBlock#application.instanceID#" type="exclusive" timeout="200" {
-				include "../core/appcfc/onApplicationStart_include.cfm";
+				include "../config/appcfc/onApplicationStart_include.cfm";
 			}
 		}
 
@@ -166,15 +160,13 @@ component extends="framework" output="false" {
 			setBeanFactory( application.serviceFactory );
 		}
 
-		setFrameWorkBaseDir();
+		variables.framework.base="/muraWRM#application.configBean.getAdminDir()#/";
 
 	}
 
 	function onRequestStart() output="false"{
 
-		setFrameWorkBaseDir();
-
-		include "../core/appcfc/onRequestStart_include.cfm";
+		include "../config/appcfc/onRequestStart_include.cfm";
 
 		try{
 			if(not (structKeyExists(application.settingsManager,'validate') and application.settingsManager.validate() and isStruct(application.configBean.getAllValues()))){
@@ -264,7 +256,7 @@ component extends="framework" output="false" {
 			}
 		} catch(any e){}
 
-		setFrameWorkBaseDir();
+	    variables.framework.base="/muraWRM#application.configBean.getAdminDir()#/";
 
 		super.onRequestStart(argumentCollection=arguments);
 	}
@@ -338,13 +330,13 @@ component extends="framework" output="false" {
 			}
 		}
 
-		if(not application.configBean.getSessionHistory() or application.configBean.getSessionHistory() gte 180){
+		if(not application.configBean.getSessionHistory()  or application.configBean.getSessionHistory() gte 30){
 			param name="session.dashboardSpan" default="30";
 		} else {
 			param name="session.dashboardSpan" default="#application.configBean.getSessionHistory()#";
 		}
 
-		if(not application.configBean.getSessionHistory() or application.configBean.getSessionHistory() gte 180){
+		if(not application.configBean.getSessionHistory()  or application.configBean.getSessionHistory() gte 30){
 			session.dashboardSpan=30;
 		} else {
 			session.dashboardSpan=application.configBean.getSessionHistory();
@@ -393,7 +385,7 @@ component extends="framework" output="false" {
 			application.serviceFactory.getBean("userUtility").returnLoginCheck(request.event.getValue("MuraScope"));
 		}
 
-		if(application.configBean.getValue(property="disableAdmin",defaultValue=false) or application.configBean.getAdminDomain() neq '' and application.configBean.getAdminDomain() neq listFirst(cgi.http_host,":")){
+		if(application.configBean.getAdminDomain() neq '' and application.configBean.getAdminDomain() neq listFirst(cgi.http_host,":")){
 			application.contentServer.renderFilename("#application.configBean.getAdminDir()#/",false);
 			abort;
 		}
@@ -485,22 +477,20 @@ component extends="framework" output="false" {
 			location(addtoken="false", url="https://" & listFirst(cgi.http_host,':') & page);
 		}
 
+
 		var headers = getHttpRequestData().headers;
 
 		if(structKeyExists(headers,'Origin')){
 
-			var origin = headers['Origin'];
-      var originDomain =reReplace(origin, "^\w+://([^\/:]+)[\w\W]*$", "\1", "one");
-	  	var PC = getpagecontext().getresponse();
+		  	var origin = headers['Origin'];
+		  	var PC = getpagecontext().getresponse();
 
-	  	// If the Origin is okay, then echo it back, otherwise leave out the header key
-      for(var domain in application.settingsManager.getAccessControlOriginDomainArray() ){
-        if( domain == originDomain || len(originDomain) > len(domain) && right(originDomain,len(domain)+1)=='.' & domain ){
-          PC.setHeader( 'Access-Control-Allow-Origin', origin );
-          PC.setHeader( 'Access-Control-Allow-Credentials', 'true' );
-        }
-      }
-  	}
+		  	// If the Origin is okay, then echo it back, otherwise leave out the header key
+		  	if(listFindNoCase(application.settingsManager.getSite(session.siteid).getAccessControlOriginList(), origin )) {
+		   		PC.setHeader( 'Access-Control-Allow-Origin', origin );
+		   		PC.setHeader( 'Access-Control-Allow-Credentials', 'true' );
+		  	}
+	  	}
 
 		application.rbFactory.setAdminLocale();
 
@@ -512,21 +502,21 @@ component extends="framework" output="false" {
 	}
 
 	function setupSession() output="false"{
-		include "../core/appcfc/onSessionStart_include.cfm";
+		include "../config/appcfc/onSessionStart_include.cfm";
 	}
 
-	include "../core/appcfc/onSessionEnd_method.cfm";
+	include "../config/appcfc/onSessionEnd_method.cfm";
 
 	function onError(exception,eventname) output="false"{
-		include "../core/appcfc/onError_include.cfm";
+		include "../config/appcfc/onError_include.cfm";
 	}
 
-	include "../core/appcfc/onMissingTemplate_method.cfm";
+	include "../config/appcfc/onMissingTemplate_method.cfm";
 
 	function onRequestEnd(targetPage) output="false"{
 		if(isdefined("request.event")){
 			application.pluginManager.announceEvent("onAdminRequestEnd",request.event);
-			include "../core/appcfc/onRequestEnd_include.cfm";
+			include "../config/appcfc/onRequestEnd_include.cfm";
 		}
 	}
 

@@ -29,10 +29,13 @@
 	• May not alter the default display of the Mura CMS logo within Mura CMS and
 	• Must not alter any files in the following directories.
 
-	/admin/
-	/core/
-	/Application.cfc
-	/index.cfm
+	 /admin/
+	 /tasks/
+	 /config/
+	 /requirements/mura/
+	 /Application.cfc
+	 /index.cfm
+	 /MuraProxy.cfc
 
 	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
 	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
@@ -72,7 +75,7 @@
 
 		<title>#esapiEncode('html', application.configBean.getTitle())#</title>
     	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0">
-		<meta name="author" content="blueriver">
+		<meta name="author" content="Blue River Interactive Group">
 		<meta name="robots" content="noindex, nofollow, noarchive">
 		<meta http-equiv="cache control" content="no-cache, no-store, must-revalidate">
 
@@ -99,11 +102,8 @@
 
 		<!-- Spinner JS -->
 		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/spin.min.js" type="text/javascript"></script>
-		
-		<!-- jQuery -->
-		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-	  
-	  <!-- OneUI Core JS: Bootstrap, slimScroll, scrollLock, Appear, CountTo, Placeholder, Cookie and App.js -->
+
+	  <!-- OneUI Core JS: jQuery, Bootstrap, slimScroll, scrollLock, Appear, CountTo, Placeholder, Cookie and App.js -->
 		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/oneui.min.js"></script>
 
 		<!-- jQuery UI components -->
@@ -112,33 +112,31 @@
 		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery.spin.js" type="text/javascript"></script>
 
-		<!-- Mura js -->
+		<!-- Mura js --->
 		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/mura.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+
+	    <!-- Web fonts, stored locally -->
+	    <link rel="stylesheet" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/css/fonts.min.css">
 
 		<!-- Mura Admin JS -->
 		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/admin.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 
 		<!-- CK Editor/Finder -->
-		<script type="text/javascript" src="#application.configBean.getContext()#/core/vendor/ckeditor/ckeditor.js"></script>
-		<script type="text/javascript" src="#application.configBean.getContext()#/core/vendor/ckeditor/adapters/jquery.js"></script>
+		<script type="text/javascript" src="#application.configBean.getContext()#/requirements/ckeditor/ckeditor.js"></script>
+		<script type="text/javascript" src="#application.configBean.getContext()#/requirements/ckeditor/adapters/jquery.js"></script>
 
 		<cfif rc.$.event('contenttype') neq 'Variation' and not len(rc.$.event('remoteurl')) and not len(rc.$.event('preloadOnly'))>
-			<script>
-				try{
-					//if you can access window.top.document then ckfinder won't work
-					crossdomainhack=window.top.document;
-					Mura.loader().loadjs('#application.configBean.getContext()#/core/vendor/ckfinder/ckfinder.js');
-				} catch (e){};
-			</script>
+			<script type="text/javascript" src="#application.configBean.getContext()#/requirements/ckfinder/ckfinder.js"></script>
 		</cfif>
 
 		<!-- Color Picker -->
-		<script type="text/javascript" src="#application.configBean.getContext()#/core/vendor/colorpicker/js/bootstrap-colorpicker.js?coreversion=#application.coreversion#"></script>
-		<link href="#application.configBean.getContext()#/core/vendor/colorpicker/css/colorpicker.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="#application.configBean.getContext()#/requirements/colorpicker/js/bootstrap-colorpicker.js?coreversion=#application.coreversion#"></script>
+		<link href="#application.configBean.getContext()#/requirements/colorpicker/css/colorpicker.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 
 		<!-- nice-select: select box replacement (sidebar configurator only) -->
 		<cfif rc.sourceFrame neq 'modal'>
-			<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery.nice-select.min.js" type="text/javascript"></script>
+	    <link rel="stylesheet" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/css/nice-select.min.css">
+		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery.nice-select.min.js" type="text/javascript"></script>
 	    <script type="text/javascript">
 	    	$(document).ready(function() {
 				//$('.mura ##configurator select').niceSelect();
@@ -223,32 +221,10 @@
 					}
 				};
 
-					// click to close new table actions, category selector filter
-					document.onclick = function(e) {
-					if (jQuery('##newContentMenu').length > 0){
-					  if(!(jQuery(e.target).parents().hasClass('addNew')) && !(jQuery(e.target).parents().hasClass('add')) && !(jQuery(e.target).hasClass('add'))){
-				     	jQuery('##newContentMenu').addClass('hide');
-			    	}
-					};
-
-					if (jQuery('.actions-menu').length > 0){
-				    if(!(jQuery(e.target).parents().hasClass('actions-menu')) && !(jQuery(e.target).parents().hasClass('actions-list')) && !(jQuery(e.target).parents().hasClass('show-actions')) && !(jQuery(e.target).hasClass('actions-list'))){
-				       jQuery('.actions-menu').addClass('hide');
-			     	}
-					};
-
-					if(jQuery('##category-select-list').length > 0){
-				    if(!(jQuery(e.target).parents().hasClass('category-select')) && !(jQuery(e.target).parents().hasClass('categories'))){
-				    	jQuery('##category-select-list').slideUp('fast');
-					    }
-						}
-					};
-					// /click to close
 
 			});
 
 			mura.init({
-				inAdmin:true,
 				context:'#esapiEncode("javascript",rc.$.globalConfig('context'))#',
 				themepath:'#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#',
 				siteid:<cfif isDefined('session.siteid') and len(session.siteid)>'#esapiEncode("javascript",session.siteid)#'<cfelse>'default'</cfif>

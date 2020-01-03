@@ -28,10 +28,13 @@ Your custom code
 • May not alter the default display of the Mura CMS logo within Mura CMS and
 • Must not alter any files in the following directories.
 
-	/admin/
-	/core/
-	/Application.cfc
-	/index.cfm
+ /admin/
+ /tasks/
+ /config/
+ /requirements/mura/
+ /Application.cfc
+ /index.cfm
+ /MuraProxy.cfc
 
 You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
 under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
@@ -97,7 +100,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<span id="extendSetsBasic"></span>
 
 		<cfif rc.type eq 'Form'>
-			<cfif application.configBean.getValue(property='formpolls',defaultValue=false)>
+			<!---
 			<div class="mura-control-group">
 				<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formpresentation')#</label>
 				<div class="mura-control justify">
@@ -107,17 +110,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</label>
 				</div>
 			</div>
-			</cfif>
+			--->
 			<div class="mura-control-group">
 				<label>
-					#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.confirmationmessage')#
-				</label>
-				<textarea name="responseMessage" rows="6">#esapiEncode('html',rc.contentBean.getresponseMessage())#</textarea>
-			</div>
+			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.confirmationmessage')#
+		</label>
+			<textarea name="responseMessage" rows="6">#esapiEncode('html',rc.contentBean.getresponseMessage())#</textarea>
+		</div>
 			<div class="mura-control-group">
-				<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.responsesendto')#</label>
-				<input type="text" name="responseSendTo" value="#esapiEncode('html_attr',rc.contentBean.getresponseSendTo())#">
-			</div>
+				<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.responsesendto')#
+		</label>
+			<input type="text" name="responseSendTo" value="#esapiEncode('html_attr',rc.contentBean.getresponseSendTo())#">
+		</div>
 		</cfif>
 
 		<span id="extendset-container-basic" class="extendset-container"></span>

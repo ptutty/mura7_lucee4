@@ -12,7 +12,6 @@
 	<cfparam name="rc.object" default="">
 	<cfparam name="rc.objectname" default="">
 	<cfparam name="rc.objecticonclass" default="mi-cog">
-	<cfparam name="rc.isnew" default="false">
 
 	<cfif not len(rc.objectname) and len(rc.object) gt 1>
 		<cfif rc.$.siteConfig().hasDisplayObject(rc.object)>
@@ -52,7 +51,6 @@
 		    </div>
 		    --->
 		</div>
-	
 		<cfif not listFindNoCase('folder,calendar,gallery',rc.object) and not isdefined('rc.isBody')>
 			<div class="form-actions" style="display:none">
 
@@ -112,7 +110,7 @@
 						reload=siteManager.getPluginConfigurator(siteManager.availableObject.params.objectid);
 					}
 
-					console.log(siteManager.availableObject.params);
+					//console.log(siteManager.availableObject.params);
 
 					frontEndProxy.post(
 					{
@@ -150,7 +148,6 @@
 							'objectid':'#esapiEncode('javascript',rc.objectid)#',
 							'name':'#esapiEncode('javascript',rc.objectname)#',
 							'iconclass':'#esapiEncode('javascript',rc.objecticonclass)#',
-							'isnew':'#esapiEncode('javascript',rc.isnew)#',
 							'regionid':'0',
 							'context':'#application.configBean.getContext()#',
 							'params':encodeURIComponent(JSON.stringify(parameters["params"])),
@@ -222,7 +219,7 @@
 			<cfif rc.sourceFrame eq 'modal'>
 			jQuery("##saveConfigDraft").bind("click",updateDraft);
 			<cfelse>
-			jQuery('##configuratorContainer').on('change','.objectParam, .objectparam, .objectStyle, .objectstyle, .metaStyle, .metastyle, .contentStyle, .contentstyle, ##availableObjectSelector',updateDraft);
+			jQuery('##configuratorContainer').on('change','.objectParam, ##availableObjectSelector',updateDraft);
 			</cfif>
 
 			jQuery("##deleteObject").bind("click",

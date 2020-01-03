@@ -1,20 +1,20 @@
-component extends="controller" output="false" {
+<cfcomponent extends="controller" output="false">
 
-	public function setSettingsManager(settingsManager) output=false {
-		variables.settingsManager=arguments.settingsManager;
-	}
+<cffunction name="setSettingsManager" output="false">
+	<cfargument name="settingsManager">
+	<cfset variables.settingsManager=arguments.settingsManager>
+</cffunction>
 
-	/**
-	 * @ouput false
-	 */
-	public function searchsitedata(rc) {
-		arguments.rc.rsList=variables.settingsManager.getUserSites(
+<cffunction name="searchsitedata" ouput="false">
+	<cfargument name="rc">
+
+	<cfset arguments.rc.rsList=variables.settingsManager.getUserSites(
 		session.siteArray,
 		listFind(session.mura.memberships,'S2'),
 		rc.searchString,
-		-1
-	);
-		//  // unlimited maxRows because of minLength trigger of autocomplete set to 2
-	}
+		-1 
+	) /><!--- // unlimited maxRows because of minLength trigger of autocomplete set to 2 --->
+	
+</cffunction>
 
-}
+</cfcomponent>

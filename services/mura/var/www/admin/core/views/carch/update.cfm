@@ -28,10 +28,13 @@ Your custom code
 • May not alter the default display of the Mura CMS logo within Mura CMS and
 • Must not alter any files in the following directories.
 
-	/admin/
-	/core/
-	/Application.cfc
-	/index.cfm
+ /admin/
+ /tasks/
+ /config/
+ /requirements/mura/
+ /Application.cfc
+ /index.cfm
+ /MuraProxy.cfc
 
 You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
 under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
@@ -47,7 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfabort>
 <cfelseif rc.ajaxrequest>
 <cfif StructIsEmpty(rc.contentBean.getErrors())>
-<cfoutput>{success:true,location:<cfif rc.contentBean.getActive() and rc.contentBean.getIsOnDisplay()>
+<cfoutput>{success:true,location:<cfif rc.contentBean.getActive()>
 	'#esapiEncode('javascript',rc.contentBean.getURL())#'
 <cfelse>
 	'#esapiEncode('javascript',rc.contentBean.getURL(queryString="previewid=" & rc.contentBean.getContentHistID()))#'

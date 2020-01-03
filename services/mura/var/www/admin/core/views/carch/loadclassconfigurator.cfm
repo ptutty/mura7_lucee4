@@ -28,10 +28,13 @@ Your custom code
 • May not alter the default display of the Mura CMS logo within Mura CMS and
 • Must not alter any files in the following directories.
 
-	/admin/
-	/core/
-	/Application.cfc
-	/index.cfm
+ /admin/
+ /tasks/
+ /config/
+ /requirements/mura/
+ /Application.cfc
+ /index.cfm
+ /MuraProxy.cfc
 
 You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
 under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
@@ -49,8 +52,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="rc.parentid" default="">
 	<cfparam name="rc.contenthistid" default="">
 	<cfparam name="rc.objectid" default=""/>
-	<cfparam name="rc.configuratorMode" default="frontend">
-
 	<cfset contentRendererUtility=rc.$.getBean('contentRendererUtility')>
 	<cfset rc.classid=listLast(replace(rc.classid, "\", "/", "ALL"),"/")>
 	<cfset rc.container=listLast(replace(rc.container, "\", "/", "ALL"),"/")>
@@ -61,29 +62,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfset objectParams={}>
 	</cfif>
-	<cfif not (isDefined("objectParams.cssstyles") and isStruct(objectParams.cssstyles))>
-		<cfif isDefined("objectParams.cssstyles") and isJSON(objectParams.cssstyles)>
-			<cfset objectParams.cssstyles=deserializeJSON(objectParams.cssstyles)>
-		<cfelse>
-			<cfset objectParams.cssstyles={}>
-		</cfif>
-	</cfif>
-
-	<cfif not (isDefined("objectParams.metacssstyles") and isStruct(objectParams.metacssstyles))>
-		<cfif isDefined("objectParams.metacssstyles") and isJSON(objectParams.metacssstyles)>
-			<cfset objectParams.metacssstyles=deserializeJSON(objectParams.metacssstyles)>
-		<cfelse>
-			<cfset objectParams.metacssstyles={}>
-		</cfif>
-	</cfif>
-	<cfif not (isDefined("objectParams.contentcssstyles") and isStruct(objectParams.contentcssstyles))>
-		<cfif isDefined("objectParams.contentcssstyles") and isJSON(objectParams.contentcssstyles)>
-			<cfset objectParams.contentcssstyles=deserializeJSON(objectParams.contentcssstyles)>
-		<cfelse>
-			<cfset objectParams.contentcssstyles={}>
-		</cfif>
-	</cfif>
-
 	<cfset data=structNew()>
 	<cfset filefound=false>
 	<cfset $=rc.$>
@@ -93,7 +71,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset $.event('contentBean',$.getBean('content').loadBy(contehistid=rc.contenthistid))>
 
 	<cfif rc.classid eq "category_summary" and not application.configBean.getValue(property='allowopenfeeds',defaultValue=false)>
-		<cfset rc.classid='nav'>
+		<cfset rc.classid='navigation'>
 	</cfif>
 
 	<cfif rc.classid eq 'form_responses'>
@@ -103,19 +81,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelseif listFindNoCase('comments,favorites,forward_email,event_reminder_form,rater,payPalCart,user_tools,goToFirstChild',rc.classid)>
 		<cfset rc.classid='system'>
 	<cfelseif listFindNoCase('sub_nav,peer_nav,standard_nav,portal_nav,folder_nav,multilevel_nav,seq_nav,top_nav,calendar_nav,archive_nav,tag_cloud,category_summary,calendar_nav',rc.classid)>
-		<cfset rc.classid='nav'>
+		<cfset rc.classid='navigation'>
 	</cfif>
 
 	<cfif rc.container eq 'layout'>
 		<cfset configFileSuffix="#rc.classid#/layout/index.cfm">
 	<cfelse>
-		<cfset objectConfig=rc.$.siteConfig().getDisplayObject(rc.classid)>
-
-		<cfif isDefined('objectConfig.external') and objectConfig.external>
-			<cfset configFileSuffix="external/configurator.cfm">
-		<cfelse>
-			<cfset configFileSuffix="#rc.classid#/configurator.cfm">
-		</cfif>
+		<cfset configFileSuffix="#rc.classid#/configurator.cfm">
 	</cfif>
 
 	<cfset configFile=rc.$.siteConfig().lookupDisplayObjectFilePath(configFileSuffix)>
@@ -136,7 +108,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfcase>
 		<cfdefaultcase>
 			<cfif rc.$.useLayoutManager()>
-				<cf_objectconfigurator basictab=false></cf_objectconfigurator>
+				<cf_objectconfigurator></cf_objectconfigurator>
 			<cfelse>
 				<cfoutput>
 					<div class="help-block-empty">This display object is not configurable.</div>

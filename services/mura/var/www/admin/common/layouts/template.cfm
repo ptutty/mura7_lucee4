@@ -29,10 +29,13 @@
 	• May not alter the default display of the Mura CMS logo within Mura CMS and
 	• Must not alter any files in the following directories.
 
-	/admin/
-	/core/
-	/Application.cfc
-	/index.cfm
+	 /admin/
+	 /tasks/
+	 /config/
+	 /requirements/mura/
+	 /Application.cfc
+	 /index.cfm
+	 /MuraProxy.cfc
 
 	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
 	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
@@ -67,9 +70,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 	<cfsilent>
-		<cfif not IsDefined("cookie.ADMINSIDEBAR")>
-			<cfset application.utility.setCookie(name="ADMINSIDEBAR",value="off",httponly=false)>
-		</cfif>
+		<cfparam name="cookie.ADMINSIDEBAR" default="off">
 		<cfparam name="request.action" default="core:cplugin.plugin">
 		<cfparam name="rc.originalfuseaction" default="#listLast(listLast(request.action,":"),".")#">
 		<cfparam name="rc.originalcircuit"  default="#listFirst(listLast(request.action,":"),".")#">
@@ -79,7 +80,7 @@
 		<cfparam name="rc.renderMuraAlerts" default="#application.configBean.getValue(property='renderMuraAlerts',defaultValue=true)#">
 		<cfparam name="rc.activepanel" default="0">
 		<cfparam name="rc.siteid" default="#session.siteID#">
-		<cfparam name="application.coreversion" default="#application.configBean.getVersion()#">
+		<cfparam name="application.coreversion" default="#application.serviceFactory.getBean('autoUpdater').getCurrentVersion()#">
 		<!--- default site id --->
 		<cfif not len(rc.siteID)>
 		<cfset rc.siteID="default">
@@ -134,7 +135,7 @@
 				<cfset moduleTitle="Edit Profile"/>
 				</cfcase>
 				<cfcase value="cFeed">
-				<cfset moduleTitle="Collections"/>
+				<cfset moduleTitle="Content Collections"/>
 				</cfcase>
 				<cfcase value="cFilemanager">
 				<cfset moduleTitle="File Manager"/>
@@ -182,20 +183,22 @@
 	</cfsilent>
 
 	<title>#esapiEncode('html',application.configBean.getTitle())#<cfif len(moduleTitle)> - #esapiEncode('html',moduleTitle)#</cfif></title>
-	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0">
-	<meta name="author" content="blueriver">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0">
+	<meta name="author" content="Blue River Interactive Group">
 	<meta name="robots" content="noindex, nofollow, noarchive">
 	<meta http-equiv="cache control" content="no-cache, no-store, must-revalidate">
 
-	<!-- Favicons -->
+    <!-- Favicons -->
 	<link rel="icon" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/favicon.ico" type="image/x-icon" />
 	<link rel="shortcut icon" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/favicon.ico" type="image/x-icon" />
-	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/apple-touch-icon-144-precomposed.png">
-	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/apple-touch-icon-114-precomposed.png">
-	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/apple-touch-icon-72-precomposed.png">
-	<link rel="apple-touch-icon-precomposed" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/apple-touch-icon-57-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/apple-touch-icon-57-precomposed.png">
 
-	<!-- Stylesheets -->
+    <!-- Stylesheets -->
+    <!-- Web fonts, stored locally -->
+    <link rel="stylesheet" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/css/fonts.min.css">
 
 	<!-- Admin CSS -->
 	<link href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/css/admin.min.css" rel="stylesheet" type="text/css" />
@@ -203,20 +206,17 @@
 	<!-- Spinner JS -->
 	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/spin.min.js" type="text/javascript"></script>
 
-	<!-- jQuery -->
-	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+    <!-- OneUI Core JS: jQuery, Bootstrap, slimScroll, scrollLock, Appear, CountTo, Placeholder, Cookie and App.js -->
+   	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/oneui.js"></script>
 
-	<!-- OneUI Core JS: Bootstrap, slimScroll, scrollLock, Appear, CountTo, Placeholder, Cookie and App.js -->
-	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/oneui.min.js"></script>
-
-	<!-- jQuery UI components -->
+   	<!-- jQuery UI components -->
 	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery-ui.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery-ui-i18n.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery.spin.js" type="text/javascript"></script>
 
-	<!-- Mura js -->
-	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/mura.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+	<!-- Mura js --->
+	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/mura.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 
 	<!-- Mura Admin JS -->
 	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/admin.js?coreversion=#application.coreversion#" type="text/javascript"></script>
@@ -228,13 +228,13 @@
 	</cfif>
 
 	<!-- CK Editor/Finder -->
-	<script type="text/javascript" src="#application.configBean.getContext()#/core/vendor/ckeditor/ckeditor.js"></script>
-	<script type="text/javascript" src="#application.configBean.getContext()#/core/vendor/ckeditor/adapters/jquery.js"></script>
-	<script type="text/javascript" src="#application.configBean.getContext()#/core/vendor/ckfinder/ckfinder.js"></script>
+	<script type="text/javascript" src="#application.configBean.getContext()#/requirements/ckeditor/ckeditor.js"></script>
+	<script type="text/javascript" src="#application.configBean.getContext()#/requirements/ckeditor/adapters/jquery.js"></script>
+	<script type="text/javascript" src="#application.configBean.getContext()#/requirements/ckfinder/ckfinder.js"></script>
 
 	<!-- Color Picker -->
-	<script type="text/javascript" src="#application.configBean.getContext()#/core/vendor/colorpicker/js/bootstrap-colorpicker.js?coreversion=#application.coreversion#"></script>
-	<link href="#application.configBean.getContext()#/core/vendor/colorpicker/css/colorpicker.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="#application.configBean.getContext()#/requirements/colorpicker/js/bootstrap-colorpicker.js?coreversion=#application.coreversion#"></script>
+	<link href="#application.configBean.getContext()#/requirements/colorpicker/css/colorpicker.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 
 	<!-- JSON -->
 	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/json2.js" type="text/javascript"></script>
@@ -271,15 +271,15 @@
   <body id="#rc.originalcircuit#" class="mura-admin header-navbar-fixed<!-- no-constrain-->">
 
     <!-- Page Container -->
-    <div id="page-container" class="<cfif session.siteid neq ''  and rc.$.currentUser().isLoggedIn() and rc.$.currentUser().isPrivateUser()>sidebar-l</cfif> sidebar-o <cfif cookie.ADMINSIDEBAR is 'off'> sidebar-mini</cfif> side-overlay-hover side-scroll header-navbar-fixed">
+    <div id="page-container" class="<cfif session.siteid neq '' and session.mura.isLoggedIn>sidebar-l</cfif> sidebar-o <cfif cookie.ADMINSIDEBAR is 'off'> sidebar-mini</cfif> side-overlay-hover side-scroll header-navbar-fixed">
 
-		<cfif session.siteid neq ''  and rc.$.currentUser().isLoggedIn() and rc.$.currentUser().isPrivateUser()>
+		<cfif session.siteid neq '' and session.mura.isLoggedIn>
     <cfinclude template="includes/nav.cfm">
     <cfinclude template="includes/header.cfm">
 		</cfif>
 
     <!-- Main Container -->
-    <main id="main-container" class="<cfif session.siteid neq '' and rc.$.currentUser().isLoggedIn() and rc.$.currentUser().isPrivateUser()>block-constrain</cfif>">
+    <main id="main-container" class="<cfif session.siteid neq '' and session.mura.isLoggedIn>block-constrain</cfif>">
 
     <!-- Page Content -->
     <div class="content">
@@ -300,35 +300,35 @@
      					<cfif not listFindNoCase('defaultpasswordnotice,cachenotice',alert)>
      						<div<cfif len(alerts['#alert#'].type)> class="alert alert-#esapiEncode('html',alerts['#alert#'].type)#"<cfelse> class="alert alert-error"</cfif>>
 	     						<span>
-				           	<a data-alertid="#alert#" class="close alert-dismiss" data-dismiss="alert"><i class="mi-close"></i></a>
+				           	<a href="##" data-alertid="#alert#" class="close alert-dismiss" data-dismiss="alert"><i class="mi-close"></i></a>
   	   						</span>
-		     					#alerts['#alert#'].text#
-								</div>
+		            </div>
+		     				#alerts['#alert#'].text#
 		     			</cfif>
      				</cfloop>
      			</cfif>
 
-					<cfif rc.renderMuraAlerts>
-						<cfif isdefined('session.hasdefaultpassword') and not structKeyExists(session.mura.alerts['#session.siteID#'],'defaultpasswordnotice')>
-							<div class="alert alert-error">
-								<span>
-									<a data-alertid="defaultpasswordnotice" class="close alert-dismiss" data-dismiss="alert"><i class="mi-close"></i></a>
-									#rc.$.rbKey("layout.defaultpasswordnotice")#
-								</span>
+     			<cfif rc.renderMuraAlerts>
+     				<cfif isdefined('session.hasdefaultpassword') and not structKeyExists(session.mura.alerts['#session.siteID#'],'defaultpasswordnotice')>
+     					<div class="alert alert-error">
+     						<span>
+			           	<a href="##" data-alertid="defaultpasswordnotice" class="close alert-dismiss" data-dismiss="alert"><i class="mi-close"></i></a>
+     						#application.rbFactory.getKeyValue(session.rb,"layout.defaultpasswordnotice")#
+     						</span>
 							</div>
-						</cfif>
+	     			</cfif>
 
-						<cfif not len(application.settingsManager.getSite(session.siteID).getEnableLockdown())
-							and not application.settingsManager.getSite(session.siteID).getCache()
-								and not structKeyExists(session.mura.alerts['#session.siteID#'],'cachenotice')>
-									<div class="alert alert-warning">
-										<span>
-											<a data-alertid="cachenotice" class="close alert-dismiss" data-dismiss="alert"><i class="mi-close"></i></a>
-											#rc.$.rbKey("layout.cachenotice")#
-										</span>
-									</div>
-								</cfif>
-							</cfif>
+	     			<cfif not len(application.settingsManager.getSite(session.siteID).getEnableLockdown())
+	     						and not application.settingsManager.getSite(session.siteID).getCache()
+	     						and not structKeyExists(session.mura.alerts['#session.siteID#'],'cachenotice')>
+			           	<div class="alert alert-warning">
+		     						<span>
+					           	<a href="##" data-alertid="cachenotice" class="close alert-dismiss" data-dismiss="alert"><i class="mi-close"></i></a>
+			           		#application.rbFactory.getKeyValue(session.rb,"layout.cachenotice")#
+		     						</span>
+			           </div>
+		           	</cfif>
+     			</cfif>
 
 
          	</cfif>
@@ -366,51 +366,16 @@
 						$('##mura-header-search').show();
 					});
 
-					// site list filter
-					var sitefilter = jQuery('##site-list-filter');
-					var sitelist = jQuery('ul##site-selector-list');
-					var sitelistw = jQuery(sitelist).width();
-					jQuery(sitelist).find('.ui-widget').click(function(){
-						return false;
-					})
-					jQuery(sitefilter).click(function(){
-						return false;
-					});
-					jQuery(sitelist).css('width',sitelistw);
-					jQuery(sitefilter).keyup(function(){
-						var str = jQuery(this).val();
-						jQuery(sitelist).find('li').hide();
-						if (str == ''){
-							jQuery(sitelist).find('li').show();
-						} else {
-							jQuery(sitelist).find('li:contains(' + str + ')').show();
-						}
-					});
-
-					// make :contains selector case-insensitive
-					jQuery.expr[":"].contains = jQuery.expr.createPseudo(function(arg) {
-					    return function( elem ) {
-				        return jQuery(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
-					    };
-					});
 
 					// min-height for page content area
 					var setBlockHeight = function(){
-						var bc = $('##mura-content .block-constrain');
 						var minFooterH = 15;
 						var windowH = $(window).height();
 						var headerH = $('.mura-header:first').height();
 						var footerH = $('.mura-actions:first').height();
 						if (footerH <= minFooterH){ footerH = minFooterH;}
-						if ($(bc).length > 1){
-							$.each(bc,function(){
-								if($(this)[0] !== $(bc).last()[0]){
-									footerH = footerH + $(this).height();
-								}
-							});
-						}
 						var h = windowH - headerH - footerH -110;
-						$(bc).last().css('min-height',h + 'px');
+						$('.block-constrain').css('min-height',h + 'px');
 					};
 					// run on page load
 					setBlockHeight();
@@ -455,6 +420,7 @@
 									},
 									success: function(){
 										$(_alert).parent('.alert').fadeOut();
+										//$('##system-notice').html(data);
 									}
 								}
 							);
@@ -486,7 +452,6 @@
 				});
 
 			mura.init({
-			inAdmin:true,
 			context:'#esapiEncode("javascript",rc.$.globalConfig('context'))#',
 			themepath:'#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#',
 			siteid:<cfif isDefined('session.siteid') and len(session.siteid)>'#esapiEncode("javascript",session.siteid)#'<cfelse>'default'</cfif>

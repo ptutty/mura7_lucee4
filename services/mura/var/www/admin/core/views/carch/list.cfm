@@ -29,10 +29,13 @@
 	• May not alter the default display of the Mura CMS logo within Mura CMS and
 	• Must not alter any files in the following directories.
 
-	/admin/
-	/core/
-	/Application.cfc
-	/index.cfm
+	 /admin/
+	 /tasks/
+	 /config/
+	 /requirements/mura/
+	 /Application.cfc
+	 /index.cfm
+	 /MuraProxy.cfc
 
 	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
 	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
@@ -629,9 +632,6 @@
 				<ul id="viewTabs" class="mura-tabs nav-tabs" data-toggle="tabs">
 					<li><a href="##tabArchitectural" onclick="return false;"><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.architectural")#</span></a></li>
 					<li><a href="##tabFlat" onclick="return false;"><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.flat")#</span></a></li>
-					<cfif $.siteConfig('scaffolding') and application.permUtility.getModulePerm("00000000000000000000000000000000016",session.siteid)>
-						<li><a href="##tabEntities"><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.custom")#</span></a></li>
-					</cfif>
 				</ul>
 				<div class="block-content tab-content">
 
@@ -655,14 +655,14 @@
   									  </a>
 
 
-  								  <cfif listFindNocase('editor,author',application.permUtility.getPerm("00000000000000000000000000000000003",session.siteid))>
+  								  <cfif application.permUtility.getModulePerm("00000000000000000000000000000000003",session.siteid)>
 
   									  <a class="site-manager-mod btn<cfif rc.moduleid eq "00000000000000000000000000000000003"> active</cfif>" data-moduleid="00000000000000000000000000000000003" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"layout.components"))#" href="##" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteid)#','','00000000000000000000000000000000003','','','Component',1)});">
   										  <i class="mi-align-justify"></i> #application.rbFactory.getKeyValue(session.rb,"layout.components")#
   									  </a>
 
   								  </cfif>
-  								  <cfif application.settingsManager.getSite(session.siteid).getDataCollection() and  listFindNocase('editor,author',application.permUtility.getPerm("00000000000000000000000000000000004",session.siteid))>
+  								  <cfif application.settingsManager.getSite(session.siteid).getDataCollection() and  application.permUtility.getModulePerm("00000000000000000000000000000000004",session.siteid)>
 
   									  <a class="site-manager-mod btn<cfif rc.moduleid eq "00000000000000000000000000000000004"> active</cfif>" data-moduleid="00000000000000000000000000000000004" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"layout.forms"))#" href="##" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteid)#','','00000000000000000000000000000000004','','','Form',1)});">
   										<i class="mi-toggle-on"></i> #application.rbFactory.getKeyValue(session.rb,"layout.forms")#
@@ -705,8 +705,6 @@
 					</div>
 						</div>
 					</div>
-
-
 					<div id="tabFlat" class="tab-pane">
 						<div class="block block-bordered">
 							<!-- block header -->
@@ -716,22 +714,12 @@
 						  <!-- /block header -->
 						  <div class="block-content">
 						  	<!--- site manager flat view container --->
-								<div id="flatViewContainer">
+						<div id="flatViewContainer">
 
-								</div>
-							</div>
 						</div>
 					</div>
-					<cfif $.siteConfig('scaffolding') and application.permUtility.getModulePerm("00000000000000000000000000000000016",session.siteid)>
-						<div id="tabEntities" class="tab-pane">
-							<div class="block block-bordered">
-								<!-- block header -->
-
-							  <cfinclude template="scaffold.cfm">
-
-							</div>
-						</div>
-					</cfif>
+				</div>
+			</div>
 
 				</div> <!--- /.block-content.tab-content --->
 			</div> <!--- /.block-constrain --->
@@ -746,7 +734,7 @@
 					return {
 						siteid:'#esapiEncode('javascript',session.siteID)#',
 						moduleid:'#esapiEncode('javascript',$.event("moduleid"))#',
-						topid:'#esapiEncode('javascript',session["m#$.event("moduleid")#"].topid)#',
+						topid:'#esapiEncode('javascript',session["#$.event("moduleid")#"].topid)#',
 						sortby:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"].sortby)#',
 						sortdirection:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"].sortdirection)#',
 						page:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"].page)#',
@@ -798,10 +786,6 @@
 							siteManager.loadSiteFlat(flatViewArgs);
 							flatViewLoaded = true;
 						}
-						break;
-						case 2:
-							jQuery('##viewTabs a[href="##tabEntities"]').tab('show');
-						break;
 					}
 				}
 
@@ -809,7 +793,7 @@
 					<cfif isdefined('url.moduleid') and not isdefined('url.activetab')>
 						initSiteManagerTabContent(0);
 					<cfelse>
-						initSiteManagerTabContent(#esapiEncode('javascript',rc.activeTab)#);
+						initSiteManagerTabContent(#rc.activeTab#);
 					</cfif>
 
 				});

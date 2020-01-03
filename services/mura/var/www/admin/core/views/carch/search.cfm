@@ -28,10 +28,13 @@ Your custom code
 • May not alter the default display of the Mura CMS logo within Mura CMS and
 • Must not alter any files in the following directories.
 
-	/admin/
-	/core/
-	/Application.cfc
-	/index.cfm
+ /admin/
+ /tasks/
+ /config/
+ /requirements/mura/
+ /Application.cfc
+ /index.cfm
+ /MuraProxy.cfc
 
 You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
 under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
@@ -130,7 +133,7 @@ siteManager.copySiteID = '#session.copySiteID#';
 		<li class="preview"><a title="Preview" href="##" onclick="return preview('#rc.rsList.filename#','#rc.rsList.targetParams#');"><i class="mi-globe"></i></a></li>
 		</cfcase>
 		<cfcase value="File">
-		<li class="preview"><a title="Preview" href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getScheme()#://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,rc.rsList.filename)#','#rc.rsList.targetParams#');"><i class="mi-globe"></i></a></li>
+		<li class="preview"><a title="Preview" href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getScheme()#://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#index.cfm?LinkServID=#rc.rsList.contentid#','#rc.rsList.targetParams#');"><i class="mi-globe"></i></a></li>
 		</cfcase>
 		</cfswitch>
 		<li class="version-history disabled"><a>Version History</a></li>

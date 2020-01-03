@@ -29,10 +29,13 @@
 	• May not alter the default display of the Mura CMS logo within Mura CMS and
 	• Must not alter any files in the following directories.
 
-	/admin/
-	/core/
-	/Application.cfc
-	/index.cfm
+	 /admin/
+	 /tasks/
+	 /config/
+	 /requirements/mura/
+	 /Application.cfc
+	 /index.cfm
+	 /MuraProxy.cfc
 
 	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
 	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
@@ -90,7 +93,7 @@
 												<!--- Edit --->
 													<cfif local.canEdit>
 														<li>
-															<a href="#buildURL(action='cusers.edituser', querystring='userid=#local.item.getValue('userid')#&siteid=#esapiEncode('url',rc.siteid)#')#" rel="tooltip" onclick="actionModal(); window.location=this.href;">
+															<a href="#buildURL(action='cusers.edituser', querystring='userid=#local.item.getValue('userid')#&siteid=#rc.siteid#')#" rel="tooltip" onclick="actionModal(); window.location=this.href;">
 																<i class="mi-pencil"></i>#rbKey('user.edit')#
 															</a>
 														</li>
@@ -112,7 +115,7 @@
 												<!--- Delete --->
 													<cfif local.canEdit>
 														<li class="delete">
-															<a href="#buildURL(action='cusers.update', querystring='action=delete&ispublic=#local.item.getValue('ispublic')#&userid=#local.item.getValue('userid')#&siteid=#esapiEncode('url',rc.siteid)#&type=1#rc.$.renderCSRFTokens(context=local.item.getValue('userid'),format='url')#')#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.deleteuserconfirm'))#',this.href)" rel="tooltip">
+															<a href="#buildURL(action='cusers.update', querystring='action=delete&ispublic=#local.item.getValue('ispublic')#&userid=#local.item.getValue('userid')#&siteid=#rc.siteid#&type=1#rc.$.renderCSRFTokens(context=local.item.getValue('userid'),format='url')#')#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.deleteuserconfirm'))#',this.href)" rel="tooltip">
 																<i class="mi-trash"></i>#rbKey('user.delete')#
 															</a>
 														</li>
@@ -163,7 +166,7 @@
 								<!--- Last Name, First Name --->
 									<td class="var-width">
 										<cfif local.canEdit>
-											<a href="#buildURL(action='cusers.edituser', querystring='userid=#local.item.getValue('userid')#&siteid=#esapiEncode('url',rc.siteid)#')#" onclick="actionModal();">
+											<a href="#buildURL(action='cusers.edituser', querystring='userid=#local.item.getValue('userid')#&siteid=#rc.siteid#')#" onclick="actionModal();">
 												#esapiEncode('html', local.item.getValue('lname'))#, #esapiEncode('html', local.item.getValue('fname'))#
 											</a>
 										<cfelse>

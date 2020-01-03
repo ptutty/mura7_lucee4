@@ -28,10 +28,13 @@ Your custom code
 • May not alter the default display of the Mura CMS logo within Mura CMS and
 • Must not alter any files in the following directories.
 
-	/admin/
-	/core/
-	/Application.cfc
-	/index.cfm
+ /admin/
+ /tasks/
+ /config/
+ /requirements/mura/
+ /Application.cfc
+ /index.cfm
+ /MuraProxy.cfc
 
 You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
 under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
@@ -161,7 +164,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<a class="add" href="javascript:;" <!---ontouchstart="this.onclick();"---> onclick="siteManager.showMenu('newContentMenu','#esapiEncode('javascript',newcontent)#',this,'#rsnest.contentid#','#esapiEncode('javascript',attributes.topid)#','#rsnest.parentid#','#esapiEncode('javascript',attributes.siteid)#','#rsnest.type#','#esapiEncode('javascript',rsnest.moduleid)#');"><i class="mi-ellipsis-v"></i></a>
 
 	<cfif isNumeric(attributes.hasKids) and attributes.hasKids>
-		<span <cfif isOpenSection>class="hasChildren open"<cfelse>class="hasChildren closed"</cfif> onclick="return siteManager.loadSiteSection( jQuery(this).closest('li') , 1 , true);"></span>
+		<span <cfif isOpenSection>class="hasChildren open"<cfelse>class="hasChildren closed"</cfif> onclick="return siteManager.loadSiteSection( jQuery(this).parents('li:first') , 1 , true);"></span>
 	</cfif>
 
 	<cfsilent>
@@ -277,7 +280,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		   		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(attributes.siteid).getWebPath(complete=1)##$.getURLStem(attributes.siteid,rsnest.filename)#','#esapiEncode('javascript',rsnest.targetParams)#');"><i class="mi-globe"></i></a></li>
 		   </cfcase>
 		   <cfcase value="File,Link">
-		   		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(attributes.siteid).getWebPath(complete=1)##$.getURLStem(attributes.siteid,rsnest.filename)#','#esapiEncode('javascript',rsnest.targetParams)#');"><i class="mi-globe"></i></a></li>
+		   		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(attributes.siteid).getWebPath(complete=1)##$.getURLStem(attributes.siteid,"")#index.cfm?LinkServID=#rsnest.contentid#','#esapiEncode('javascript',rsnest.targetParams)#');"><i class="mi-globe"></i></a></li>
 		   </cfcase>
 		   <cfcase value="Variation">
 		   		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#rsnest.remoteurl#','#esapiEncode('javascript',rsnest.targetParams)#');"><i class="mi-globe"></i></a></li>
@@ -288,10 +291,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	   </cfswitch>
    		</cfif>
 	   <li class="version-history"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.versionhistory")#" href="./?muraAction=cArch.hist&contentid=#rsnest.ContentID#&type=#rsnest.type#&parentid=#rsnest.parentID#&topid=#esapiEncode('url',attributes.topid)#&siteid=#esapiEncode('url',attributes.siteid)#&moduleid=#esapiEncode('url',rsnest.moduleid)#&startrow=#esapiEncode('url',attributes.startrow)#"><i class="mi-history"></i></a></li>
-	    <cfif rsnest.type eq 'Form'>
-			<li class="manage-data"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.managedata")#"  href="./?muraAction=cArch.datamanager&contentid=#esapiEncode('url',rsnest.contentid)#&siteid=#esapiEncode('url',rsnest.siteid)#&topid=#esapiEncode('url',attributes.topid)#&moduleid=#esapiEncode('url',rsnest.moduleid)#&type=Form&parentid=#esapiEncode('url',rsnest.parentid)#"><i class="mi-wrench"></i></a></li>
-		</cfif>
-		<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
+        <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
           <li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.permissions")#" href="./?muraAction=cPerm.main&contentid=#rsnest.ContentID#&type=#rsnest.type#&parentid=#rsnest.parentID#&topid=#esapiEncode('url',attributes.topid)#&siteid=#esapiEncode('url',attributes.siteid)#&moduleid=#esapiEncode('url',rsnest.moduleid)#&startrow=#esapiEncode('url',attributes.startrow)#"><i class="mi-group"></i></a></li>
         <cfelse>
 		  <li class="permissions disabled"><a><i class="mi-group"></i></a></li>
@@ -309,7 +309,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(attributes.siteid).getWebPath(complete=1)##$.getURLStem(attributes.siteid,rsnest.filename)#','#esapiEncode('javascript',rsnest.targetParams)#');"><i class="mi-globe"></i></a></li>
 			</cfcase>
 			<cfcase value="File,Link">
-				<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(attributes.siteid).getWebPath(complete=1)##$.getURLStem(attributes.siteid,rsnest.filename)#','#esapiEncode('javascript',rsnest.targetParams)#');"><i class="mi-globe"></i></a></li>
+				<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(attributes.siteid).getWebPath(complete=1)##$.getURLStem(attributes.siteid,"")#index.cfm?LinkServID=#rsnest.contentid#','#esapiEncode('javascript',rsnest.targetParams)#');"><i class="mi-globe"></i></a></li>
 			</cfcase>
 			<cfcase value="Variation">
 				<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#rsnest.remoteurl#','#esapiEncode('javascript',rsnest.targetParams)#');"><i class="mi-globe"></i></a></li>

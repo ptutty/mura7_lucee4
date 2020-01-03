@@ -29,10 +29,13 @@
 	• May not alter the default display of the Mura CMS logo within Mura CMS and
 	• Must not alter any files in the following directories.
 
-	/admin/
-	/core/
-	/Application.cfc
-	/index.cfm
+	 /admin/
+	 /tasks/
+	 /config/
+	 /requirements/mura/
+	 /Application.cfc
+	 /index.cfm
+	 /MuraProxy.cfc
 
 	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
 	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
@@ -43,7 +46,8 @@
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfinclude template="js.cfm">
-<cfset chains=$.getBean('approvalChainManager').getChainFeed(rc.siteID).setSortBy('name').getIterator()>
+<cfset chains=$.getBean('approvalChainManager').getChainFeed(rc.siteID).getIterator()>
+
 <cfoutput>
 <div class="mura-header">
 	<h1>#application.rbFactory.getKeyValue(session.rb,"approvalchains")#</h1>
@@ -83,7 +87,7 @@
 									<a href="./?muraAction=cchain.delete&chainID=#chain.getChainID()#&siteid=#esapiEncode('url',rc.siteid)##rc.$.renderCSRFTokens(context=chain.getChainID(),format='url')#" onClick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'approvalchains.deleteconfirm'))#',this.href)"><i class="mi-trash"></i>#application.rbFactory.getKeyValue(session.rb,'categorymanager.delete')#</a>
 								</li>
 							</ul>
-						</div>
+						</div>	
 					</td>
 					<td class="var-width">
 						<a title="#application.rbFactory.getKeyValue(session.rb,'approvalchains.edit')#" href="./?muraAction=cchain.pending&chainID=#chain.getChainID()#&siteid=#esapiEncode('url',rc.siteid)#">#esapiEncode('html',chain.getName())#</a>

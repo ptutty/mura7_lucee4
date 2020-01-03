@@ -29,10 +29,13 @@
   • May not alter the default display of the Mura CMS logo within Mura CMS and
   • Must not alter any files in the following directories.
 
-  	/admin/
-	/core/
-	/Application.cfc
-	/index.cfm
+   /admin/
+   /tasks/
+   /config/
+   /requirements/mura/
+   /Application.cfc
+   /index.cfm
+   /MuraProxy.cfc
 
   You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
   under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
@@ -45,7 +48,7 @@
 <cfset rc.rslist=rc.groups.privateGroups />
 <cfoutput>
 <div class="mura-header">
-  <h1>#rc.rscontent.title# #application.rbFactory.getKeyValue(session.rb,'permissions')#</h1>
+  <h1>#application.rbFactory.getKeyValue(session.rb,'permissions')#</h1>
   <div class="nav-module-specific btn-group">
     <a class="btn" href="##" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="mi-arrow-circle-left"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
   </div>
@@ -56,7 +59,7 @@
       <div class="block-content">
 
       <div class="help-block">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"permissions.moduletext"),rc.rscontent.title)#</div>
-      <form novalidate="novalidate"  method="post" name="form1" action="./?muraAction=cPerm.updatemodule&contentid=#esapiEncode('url',rc.contentid)#">
+ <form novalidate="novalidate"  method="post" name="form1" action="./?muraAction=cPerm.updatemodule&contentid=#esapiEncode('url',rc.contentid)#">
         <div class="block-content">
         <h2>#application.rbFactory.getKeyValue(session.rb,'user.adminusergroups')#</h2>
 
@@ -80,7 +83,7 @@
       </div><!-- /.block-content -->
       <cfset rc.rslist=rc.groups.publicGroups />
       <div class="block-content">
- <h2>#application.rbFactory.getKeyValue(session.rb,'user.membergroups')#</h2>
+ <h2>#application.rbFactory.getKeyValue(session.rb,'user.membergroups')#</h2>   
   <div class="help-block">#application.rbFactory.getKeyValue(session.rb,'permissions.memberpermscript')#</div>
 
   <cfif rc.rslist.recordcount>

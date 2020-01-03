@@ -28,10 +28,13 @@ Your custom code
 • May not alter the default display of the Mura CMS logo within Mura CMS and
 • Must not alter any files in the following directories.
 
-	/admin/
-	/core/
-	/Application.cfc
-	/index.cfm
+ /admin/
+ /tasks/
+ /config/
+ /requirements/mura/
+ /Application.cfc
+ /index.cfm
+ /MuraProxy.cfc
 
 You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
 under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
@@ -120,8 +123,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset criterias[10][1]="NOT IN">
 <cfset criterias[10][2]=application.rbFactory.getKeyValue(session.rb,'params.notin')>
 
-<cfset hasCategories=application.categoryManager.getCategoryCount(rc.siteid)>
-
 <cfif len(rc.assignmentID)>
 	<cfset rsDisplayObject=application.contentManager.readContentObject(rc.assignmentID,rc.regionID,rc.orderno)>
 	<cfset rc.feedBean.setInstanceParams(rsDisplayObject.params)>
@@ -152,29 +153,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 
 <cfif rc.$.getContentRenderer().useLayoutManager()>
-	<cfif hasCategories>
-		<cfset tablist="tabBasic,tabCategorization,tabAdvancedfilters,tabRss">
-		<cfset tabLabellist="#application.rbFactory.getKeyValue(session.rb,'collections.basic')#,#application.rbFactory.getKeyValue(session.rb,'collections.categorization')#,#application.rbFactory.getKeyValue(session.rb,'collections.advancedfilters')#,#application.rbFactory.getKeyValue(session.rb,'collections.rss')#">
-	<cfelse>
-		<cfset tablist="tabBasic,tabAdvancedfilters,tabRss">
-		<cfset tabLabellist="#application.rbFactory.getKeyValue(session.rb,'collections.basic')#,#application.rbFactory.getKeyValue(session.rb,'collections.advancedfilters')#,#application.rbFactory.getKeyValue(session.rb,'collections.rss')#">
-	</cfif>
-
+	<cfset tablist="tabBasic,tabCategorization,tabAdvancedfilters,tabRss">
+	<cfset tabLabellist="#application.rbFactory.getKeyValue(session.rb,'collections.basic')#,#application.rbFactory.getKeyValue(session.rb,'collections.categorization')#,#application.rbFactory.getKeyValue(session.rb,'collections.advancedfilters')#,#application.rbFactory.getKeyValue(session.rb,'collections.rss')#">
 <cfelse>
-	<cfif hasCategories>
-		<cfset tablist="tabBasic,tabCategorization,tabAdvancedfilters,tabDisplay,tabRss">
-		<cfif isObjectInstance>
-			<cfset tabLabellist="#application.rbFactory.getKeyValue(session.rb,'collections.basic')#,#application.rbFactory.getKeyValue(session.rb,'collections.categorization')#,#application.rbFactory.getKeyValue(session.rb,'collections.advancedfilters')#,#application.rbFactory.getKeyValue(session.rb,'collections.displayinstance')#,#application.rbFactory.getKeyValue(session.rb,'collections.rss')#">
-		<cfelse>
-			<cfset tabLabellist="#application.rbFactory.getKeyValue(session.rb,'collections.basic')#,#application.rbFactory.getKeyValue(session.rb,'collections.categorization')#,#application.rbFactory.getKeyValue(session.rb,'collections.advancedfilters')#,#application.rbFactory.getKeyValue(session.rb,'collections.displaydefaults')#,#application.rbFactory.getKeyValue(session.rb,'collections.rss')#">
-		</cfif>
+	<cfset tablist="tabBasic,tabCategorization,tabAdvancedfilters,tabDisplay,tabRss">
+	<cfif isObjectInstance>
+		<cfset tabLabellist="#application.rbFactory.getKeyValue(session.rb,'collections.basic')#,#application.rbFactory.getKeyValue(session.rb,'collections.categorization')#,#application.rbFactory.getKeyValue(session.rb,'collections.advancedfilters')#,#application.rbFactory.getKeyValue(session.rb,'collections.displayinstance')#,#application.rbFactory.getKeyValue(session.rb,'collections.rss')#">
 	<cfelse>
-		<cfset tablist="tabBasic,tabAdvancedfilters,tabDisplay,tabRss">
-		<cfif isObjectInstance>
-			<cfset tabLabellist="#application.rbFactory.getKeyValue(session.rb,'collections.basic')#,#application.rbFactory.getKeyValue(session.rb,'collections.advancedfilters')#,#application.rbFactory.getKeyValue(session.rb,'collections.displayinstance')#,#application.rbFactory.getKeyValue(session.rb,'collections.rss')#">
-		<cfelse>
-			<cfset tabLabellist="#application.rbFactory.getKeyValue(session.rb,'collections.basic')#,#application.rbFactory.getKeyValue(session.rb,'collections.advancedfilters')#,#application.rbFactory.getKeyValue(session.rb,'collections.displaydefaults')#,#application.rbFactory.getKeyValue(session.rb,'collections.rss')#">
-		</cfif>
+		<cfset tabLabellist="#application.rbFactory.getKeyValue(session.rb,'collections.basic')#,#application.rbFactory.getKeyValue(session.rb,'collections.categorization')#,#application.rbFactory.getKeyValue(session.rb,'collections.advancedfilters')#,#application.rbFactory.getKeyValue(session.rb,'collections.displaydefaults')#,#application.rbFactory.getKeyValue(session.rb,'collections.rss')#">
 	</cfif>
 </cfif>
 
@@ -306,7 +292,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									<cfif item.exists()>
 										<cfset started=true>
 										<tr id="c#rc.rslist.contentID#">
-											<td class="actions"><input type="hidden" name="contentID" value="#rc.rslist.contentid#" /><ul class="clearfix"><li class="delete"><a title="Delete" href="##" onclick="feedManager.removeFilter('c#rc.rslist.contentid#'); return false;"><i class="mi-trash"></i></a></li></ul></td>
+											<td class="actions"><input type="hidden" name="contentID" value="#rc.rslist.contentid#" /><ul class="clearfix"><li class="delete"><a title="Delete" href="##" onclick="return feedManager.removeFilter('c#rc.rslist.contentid#');"><i class="mi-trash"></i></a></li></ul></td>
 											<td class="var-width">#$.dspZoomNoLinks(item.getCrumbArray())#</td>
 											<td>#rc.rslist.type#</td>
 										</tr>
@@ -427,7 +413,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div> <!-- /.block-bordered -->
 </div> <!-- /.tab-pane -->
 
-<cfif hasCategories>
 <div id="tabCategorization" class="tab-pane">
 	<div class="block block-bordered">
 			<!-- block header -->
@@ -435,6 +420,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,'collections.categorization')#</h3>
 			</div> <!-- /.block header -->
 			<div class="block-content">
+
+			<cfif application.categoryManager.getCategoryCount(rc.siteid)>
 
 				<div class="mura-control-group">
 					<!--- Category Filters --->
@@ -460,11 +447,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<input name="useCategoryIntersect" type="radio" value="0" <cfif not rc.feedBean.getUseCategoryIntersect()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')#
 						</label>
 					</div>
+			</cfif>
 
 		</div> <!-- /.block-content -->
 	</div> <!-- /.block-bordered -->
 </div> <!-- /.tab-pane -->
-</cfif>
 
 <div id="tabAdvancedfilters" class="tab-pane">
 	<div class="block block-bordered">
@@ -755,7 +742,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div> <!-- /.block-bordered -->
 </div> <!-- /.tab-pane -->
 
-<cfif application.configBean.getValue(property='showUsageTabs',defaultValue=true) and rc.feedID neq ''>
+<cfif rc.feedID neq ''>
 	<cfinclude template="dsp_tab_usage.cfm">
 </cfif>
 </cfif>
@@ -771,12 +758,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<input type="hidden" name="action" value="add">
 	<cfelse>
 		<cfif rc.compactDisplay neq "true">
-			<button class="btn" onclick="submitForm(document.forms.form1,'delete','#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'collections.deletelocalconfirm'))#');return false;"><i class="mi-trash"></i>#application.rbFactory.getKeyValue(session.rb,'collections.delete')#</button>
+			<button class="btn" onclick="submitForm(document.forms.form1,'delete','#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'collections.deletelocalconfirm'))#');"><i class="mi-trash"></i>#application.rbFactory.getKeyValue(session.rb,'collections.delete')#</button>
 		</cfif>
 		<cfif isObjectInstance>
-			<button class="btn" onclick="updateInstanceObject();submitForm(document.forms.form1,'update');return false;"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'collections.update')#</button>
+			<button class="btn" onclick="updateInstanceObject();submitForm(document.forms.form1,'update');"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'collections.update')#</button>
 		<cfelse>
-			<button class="btn mura-primary" onclick="submitForm(document.forms.form1,'update');return false;"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'collections.update')#</button>
+			<button class="btn mura-primary" onclick="submitForm(document.forms.form1,'update');"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'collections.update')#</button>
 		</cfif>
 		<cfif rc.compactDisplay eq "true">
 			<input type="hidden" name="homeID" value="#rc.homeID#" />
@@ -943,7 +930,7 @@ jQuery(document).ready(function(){
 				</label>
 			</div>
 
-			<!--- <div class="mura-control-group">
+			<div class="mura-control-group">
 				<label>#application.rbFactory.getKeyValue(session.rb,'collections.makedefault')#</label>
 				<label class="radio inline">
 				<input name="isDefault" type="radio" value="1" <cfif rc.feedBean.getIsDefault()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')#
@@ -951,7 +938,7 @@ jQuery(document).ready(function(){
 				<label class="radio inline">
 					<input name="isDefault" type="radio" value="0" <cfif not rc.feedBean.getIsDefault()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')#
 				</label>
-			</div> --->
+			</div>
 
 			<div class="mura-control-group">
 				<label>#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#</label>
@@ -961,8 +948,7 @@ jQuery(document).ready(function(){
 					</cfloop>
 					<option value="100000" <cfif rc.feedBean.getMaxItems() eq 100000>selected</cfif>>ALL</option>
 				</select>
-				</div>
-				<div class="mura-control-group">
+
 				<label>#application.rbFactory.getKeyValue(session.rb,'collections.version')#</label>
 				<select name="version">
 					<cfloop list="RSS 0.920,RSS 2.0,Atom" index="v">
@@ -1049,7 +1035,7 @@ jQuery(document).ready(function(){
 
 </cfif>
 
-<cfif application.configBean.getValue(property='showUsageTabs',defaultValue=true) and rc.feedID neq ''>
+<cfif rc.feedID neq ''>
 	<cfinclude template="dsp_tab_usage.cfm">
 </cfif>
 </cfsavecontent>

@@ -28,10 +28,13 @@ Your custom code
 • May not alter the default display of the Mura CMS logo within Mura CMS and
 • Must not alter any files in the following directories.
 
-	/admin/
-	/core/
-	/Application.cfc
-	/index.cfm
+ /admin/
+ /tasks/
+ /config/
+ /requirements/mura/
+ /Application.cfc
+ /index.cfm
+ /MuraProxy.cfc
 
 You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
 under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
@@ -52,6 +55,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <div class="mura-header">
 	<h1>Select Fields</h1>
+
+	<!---
+	<div class="nav-module-specific btn-toolbar">
+		<div class="btn-group">
+			<a class="btn" href="javascript:frontEndProxy.post({cmd:'close'});"><i class="mi-arrow-circle-left"></i>  #application.rbFactory.getKeyValue(session.rb,'collections.back')#</a>
+		</div>
+	</div> <!-- /.nav-module-specific -->
+	--->
+
 </div> <!-- /.mura-header -->
 <div class="block block-constrain">
 	<div class="block block-bordered">
@@ -64,12 +76,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 					<cfset displayList=feed.getDisplayList()>
 					<cfset availableList=feed.getAvailableDisplayList()>
-					
+
 					<ul id="availableListSort" class="displayListSortOptions">
 						<cfloop list="#availableList#" index="i">
-							<cfif not listFind(displayList,i)>
-								<li class="ui-state-default">#trim(i)#</li>
-							</cfif>
+							<li class="ui-state-default">#trim(i)#</li>
 						</cfloop>
 					</ul>
 
@@ -102,6 +112,8 @@ $(function(){
 	} else {
 		frontEndProxy.post({cmd:'setWidth',width:600});
 	}
+
+
 
 	$('##updateBtn').click(function(){
 		frontEndProxy.post({

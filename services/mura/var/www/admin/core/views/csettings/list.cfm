@@ -28,10 +28,13 @@ Your custom code
 • May not alter the default display of the Mura CMS logo within Mura CMS and
 • Must not alter any files in the following directories.
 
-	/admin/
-	/core/
-	/Application.cfc
-	/index.cfm
+ /admin/
+ /tasks/
+ /config/
+ /requirements/mura/
+ /Application.cfc
+ /index.cfm
+ /MuraProxy.cfc
 
 You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
 under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
@@ -43,6 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfparam name="rc.action" default="">
 <cfparam name="rc.siteSortBy" default="site">
+<cfparam name="rc.siteUpdateSelect" default="false">
 <cfparam name="rc.siteAutoDeploySelect" default="false">
 <div class="mura-header">
 	<h1>Global Settings</h1>
@@ -54,10 +58,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfoutput>
 								<a class="btn" href="##" onclick="confirmDialog('WARNING: Do not update your core files unless you have backed up your current Mura install.<cfif application.configBean.getDbType() eq "mssql">\n\nIf your are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.</cfif>',function(){actionModal('./?muraAction=cSettings.list&action=updateCore#rc.$.renderCSRFTokens(context='updatecore',format='url')#')});return false;"><i class="mi-cloud-download"></i> Update Core Files</a>
 					</cfoutput>
+					<cfif rc.siteUpdateSelect neq "true">
+									<a class="btn" href="./?muraAction=cSettings.list&siteUpdateSelect=true"><i class="mi-cloud-download"></i> Update Multiple Sites</a>
+					</cfif>
 				</div>
 			</cfif>
 			<div class="btn-group">
-				<cfif rc.siteSortBy eq "orderno">
+				<cfif rc.siteUpdateSelect eq "true" or rc.siteSortBy eq "orderno">
 								<a class="btn" href="./?muraAction=cSettings.list&siteSortBy=site"><i class="mi-list-alt"></i> List Sites by Site Name</a>
 				</cfif>
 				<cfif rc.siteSortBy neq "orderno">
@@ -77,7 +84,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif rc.action neq 'updateCore'>
 	<cfif rc.action eq "deploy">
-		<cfoutput>#application.pluginManager.renderEvent("onAfterSiteDeployRender",event)#</cfoutput>
+		<cfoutput>#application.pluginManager.announceEvent("onAfterSiteDeployRender",event)#</cfoutput>
 	</cfif>
 	<cfset errors=application.userManager.getCurrentUser().getValue("errors")>
 	<cfif isStruct(errors) and not structIsEmpty(errors)>
@@ -103,17 +110,47 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</div> <!-- /.block header -->
 							<div class="block-content">
 
+			<script type="text/javascript">
+				jQuery(function ($) {
+					$('#checkall').click(function () {
+						$(':checkbox.checkall').attr('checked', this.checked);
+					});
+					$('#btnUpdateSites').click(function() {
+						confirmDialog(
+						'WARNING: DO NOT continue unless you have backed up all selected site files.',
+						function(){
+							actionModal(
+								function(){
+									$('.form-actions').hide();
+									$('#actionIndicator').show();
+									document.form1.submit();
+								}
+							);
+						}
+						)
+
+					});
+				});
+			</script>
 			<form novalidate="novalidate" name="form1" id="form1" action="./?muraAction=csettings.list" method="post">
 				<table class="mura-table-grid">
 					<tr>
 						<th class="actions"></th>
+						<cfif rc.siteUpdateSelect eq "true">
+							<th>
+								<input type="checkbox" name="checkall" id="checkall" />
+								<input type="hidden" name="siteUpdateSelect" value="true">
+							</th>
+						</cfif>
 						<cfif rc.siteSortBy eq "orderno">
 							<th>Bind Order</th>
 						</cfif>
 						<th class="var-width">Site</th>
 						<th>Domain</th>
+						<th>Version</th>
 						<cfif application.configBean.getMode() eq 'staging'
-						and rc.siteSortBy neq "orderno">
+						and rc.siteSortBy neq "orderno"
+						and rc.siteUpdateSelect neq "true">
 							<th>Batch&nbsp;Deploy</th>
 							<th>Last&nbsp;Deployment</th>
 						</cfif>
@@ -142,6 +179,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</ul>
 						</div>
 						</td>
+						<cfif rc.siteUpdateSelect eq "true">
+							<td>
+								<input type="checkbox" name="ckUpdate" class="checkall" value="#rc.rsSites.siteid#" />
+							</td>
+						</cfif>
 						<cfif rc.siteSortBy eq "orderno">
 							<td><select name="orderno" class="dropdown">
 									<cfloop from="1" to="#rc.rsSites.recordcount#" index="I">
@@ -159,8 +201,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								-
 							</cfif>
 						</td>
+						<td> #application.autoUpdater.getCurrentCompleteVersion(rc.rsSites.siteid)#</td>
 						<cfif application.configBean.getMode() eq 'staging'
-						and rc.siteSortBy neq "orderno">
+						and rc.siteSortBy neq "orderno"
+						and rc.siteUpdateSelect neq "true">
 							<td><select name="deploy" class="dropdown">
 									<option value="1" <cfif rc.rsSites.deploy eq 1>selected</cfif>>Yes</option>
 									<option value="0" <cfif rc.rsSites.deploy neq 1>selected</cfif>>No</option>
@@ -171,20 +215,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									Never
 								</cfif></td>
 						</cfif>
+						<!---<td>#application.autoUpdater.getCurrentCompleteVersion(rc.rsSites.siteid)#</td>--->
 					</tr>
 					</cfoutput>
 				</table>
 
-				<cfif rc.siteSortBy eq "orderno"
+				<cfif rc.siteSortBy eq "orderno" or rc.siteUpdateSelect eq "true"
 					or (application.configBean.getMode() eq 'staging'
-					and rc.siteSortBy neq "orderno")>
+					and rc.siteSortBy neq "orderno"
+					and rc.siteUpdateSelect neq "true")>
 					<div class="mura-actions">
 						<div class="form-actions">
 							<cfif rc.siteSortBy eq "orderno">
 								<button type="button" class="btn mura-primary" onclick="document.form1.submit();"><i class="mi-check"></i> Update Bind Order</button>
 							</cfif>
+							<cfif  rc.siteUpdateSelect eq "true">
+									<button type="button" class="btn mura-primary" id="btnUpdateSites"><i class="mi-cloud-download"></i> Update Selected Sites</button>
+								<div class="load-inline" style="display: none;"></div>
+							</cfif>
 							<cfif application.configBean.getMode() eq 'staging'
-									and rc.siteSortBy neq "orderno">
+									and rc.siteSortBy neq "orderno"
+									and rc.siteUpdateSelect neq "true">
 								<button type="button" class="btn" onclick="document.form1.submit();"><i class="mi-check"></i>Update Auto Deploy Settings</button>
 							</cfif>
 						</div>
@@ -212,25 +263,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<h2>Install Plugin</h2>
 		<cfif application.configBean.getJavaEnabled()>
+		<div class="mura-control-group">
 		<div class="mura-file-selector">
-			<div class="mura-control-group">
-				<div class="mura-control justify">
-					<div class="mura-input-set" data-toggle="buttons-radio">
-					  <button type="button" class="btn btn-default active" data-toggle="button" name="installType" value="Upload" id="apptypefile"><i class="mi-upload"></i> Via Upload</button>
-					  <button type="button" class="btn btn-default" name="installType" value="URL" id="apptypeurl"><i class="mi-globe"></i> Via URL</button>
-					</div>
-				</div>
+			<div class="mura-input-set" data-toggle="buttons-radio">
+			  <button type="button" class="btn btn-default active" data-toggle="button" name="installType" value="Upload" id="apptypefile"><i class="mi-upload"></i> Via Upload</button>
+			  <button type="button" class="btn btn-default" name="installType" value="URL" id="apptypeurl"><i class="mi-globe"></i> Via URL</button>
 			</div>
 
 			<div id="appzip" class="fileTypeOption">
 				<form novalidate="novalidate" name="frmNewPlugin" action="./?muraAction=cSettings.deployPlugin" enctype="multipart/form-data" method="post" onsubmit="return validateForm(this);">
 					<div class="mura-control-group">
-						  <label>Plugin File</label>
 							<input name="newPlugin" type="file" data-required="true" message="Please select a plugin file.">
-					</div>
-					<div class="mura-control-group">
 						<div class="mura-control justify">
-								<button type="submit" class="btn" /><i class="mi-bolt"></i> Deploy</button>
+								<button type="submit" value="Deploy" class="btn" /><i class="mi-bolt"></i> Deploy</button>
 								<cfoutput>#rc.$.renderCSRFTokens(context='newplugin',format='form')#</cfoutput>
 						</div>
 					</div>
@@ -239,10 +284,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<div id="appurl" class="fileTypeOption" style="display:none;">
 				<form name="frmNewPluginFROMURL" action="./?muraAction=cSettings.deployPlugin" method="post" onsubmit="return validateForm(this);">
 					<div class="mura-control-group">
-							<label>Plugin URL</label>
 							<input type="text" name="newPlugin"  type="url" data-required="true" placeholder="http://www.domain.com/plugin.zip" message="Please enter the url for your plugin file" value="">
-					</div>
-					<div class="mura-control-group">
 						<div class="mura-control justify">
 							<button type="submit" class="btn" /><i class="mi-bolt"></i> Deploy</button>
 							<cfoutput>#rc.$.renderCSRFTokens(context='newplugin',format='form')#</cfoutput>
@@ -251,6 +293,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</form>
 				</div>
 			</div>
+		</div>
 		<script>
 			$(function(){
 				$("#apptypefile").click(
@@ -338,10 +381,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<div class="block block-constrain">
 				<div class="block block-bordered">
 				  <div class="block-content">
+
 						<div class="help-block-inline">Your core files have been updated to version
-							<cfoutput>#application.configBean.getVersionFromFile()#</cfoutput>.
-						</div>
-						<div class="clearfix"></div>
+							<cfoutput>#application.autoUpdater.getCurrentCompleteVersion()#</cfoutput>.</div>
+						<p> <strong>Updated Files
+							<cfoutput>(#arrayLen(files)#)</cfoutput>
+							</strong><br/>
+							<cfif arrayLen(files)>
+								<cfoutput>
+								<cfloop from="1" to="#arrayLen(files)#" index="i"> #files[i]#<br/>
+								</cfloop>
+								</cfoutput>
+							</cfif>
+						</p>
+
+					<div class="clearfix"></div>
 				</div> <!-- /.block-content -->
 			</div> <!-- /.block-bordered -->
 		</div> <!-- /.block-constrain -->

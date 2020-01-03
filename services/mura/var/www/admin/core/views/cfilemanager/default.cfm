@@ -29,10 +29,13 @@
   • May not alter the default display of the Mura CMS logo within Mura CMS and
   • Must not alter any files in the following directories.
 
-  	/admin/
-	/core/
-	/Application.cfc
-	/index.cfm
+   /admin/
+   /tasks/
+   /config/
+   /requirements/mura/
+   /Application.cfc
+   /index.cfm
+   /MuraProxy.cfc
 
   You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
   under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
@@ -60,10 +63,10 @@
 			<div class="nav-module-specific btn-group">
 			  <a class="btn<cfif session.resourceType eq 'assets'> active</cfif>" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cFilemanager.default&siteid=#session.siteid#&&resourceType=assets"><i class="mi-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,"layout.userassets")#</a>
   <cfif listFind(session.mura.memberships,'S2')>
-	  <cfif application.configBean.getValue(property='fmShowSiteFiles',defaultValue=true)>
+	  <cfif application.configBean.getValue('fmShowSiteFiles') neq 0>
 				 	 <a class="btn<cfif session.resourceType eq 'files'> active</cfif>" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cFilemanager.default&siteid=#session.siteid#&resourceType=files"><i class="mi-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,"layout.sitefiles")#</a>
 	  </cfif>
-	  <cfif listFind(session.mura.memberships,'S2') and application.configBean.getValue(property='fmShowApplicationRoot',defaultValue=true)>
+	  <cfif listFind(session.mura.memberships,'S2') and application.configBean.getValue('fmShowApplicationRoot') neq 0>
 				  	<a class="btn<cfif session.resourceType eq 'root'> active</cfif>" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cFilemanager.default&siteid=#session.siteid#&resourceType=root"><i class="mi-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,"layout.applicationroot")#</a>
 	  </cfif>
   </cfif>
@@ -75,14 +78,14 @@
 		  <div class="block-content">
 			<script type="text/javascript">
 			var finder = new CKFinder();
-			finder.basePath = '#application.configBean.getContext()#/core/vendor/ckfinder/';
+			finder.basePath = '#application.configBean.getContext()#/requirements/ckfinder/';
 			finder.language = '#lcase(session.rb)#';
 			finder.height="600";
 			<cfif session.resourceType eq "assets">
 			finder.resourceType="#esapiEncode('javascript','#session.siteID#_User_Assets')#";
-			<cfelseif session.resourceType eq "files" and application.configBean.getValue(property='fmShowSiteFiles',defaultValue=true)>
+			<cfelseif session.resourceType eq "files" and application.configBean.getValue('fmShowSiteFiles') neq 0>
 			finder.resourceType="#esapiEncode('javascript','#session.siteID#_Site_Files')#"
-			<cfelseif session.resourceType eq "root" and application.configBean.getValue(property='fmShowApplicationRoot',defaultValue=true)>
+			<cfelseif session.resourceType eq "root" and application.configBean.getValue('fmShowApplicationRoot') neq 0>
 			finder.resourceType="#esapiEncode('javascript','Application_Root')#";
 			<cfelse>
 			finder.resourceType="#esapiEncode('javascript','#session.siteID#_User_Assets')#";

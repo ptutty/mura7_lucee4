@@ -9,15 +9,15 @@ a {
 }
 
 a.link-effect:before {
-  background-color: @gray;
+  background-color: #3973ac;
 }
 
 a:hover {
-  color: @gray;
+  color: #3973ac;
 }
 
 a:active{
-  color: @gray !important;
+  color: @mura-blue !important;
 }
 
 a:focus {
@@ -87,7 +87,7 @@ a.text-primary-lighter:hover,a.text-primary-lighter:active,a.text-primary-lighte
 }
 
 .bg-primary {
-  background-color: @mura-red;
+  background-color: #ff3405;
 }
 
 a.bg-primary:hover,a.bg-primary:focus {
@@ -148,7 +148,7 @@ a.bg-primary-lighter:hover,a.bg-primary-lighter:focus {
 
 .btn-primary {
   color: #fff;
-  background-color: @mura-red;
+  background-color: #ff3405;
   border-color: #ff3838;
 }
 
@@ -200,12 +200,12 @@ a.bg-primary-lighter:hover,a.bg-primary-lighter:focus {
 .btn-primary[disabled]:active,fieldset[disabled] .btn-primary:active,
 .btn-primary.disabled.active,
 .btn-primary[disabled].active,fieldset[disabled] .btn-primary.active {
-  background-color: @mura-red;
+  background-color: #ff3405;
   border-color: #ff3838;
 }
 
 .btn-primary .badge {
-  color: @mura-red;
+  color: #ff3405;
   background-color: #fff;
 }
 .nav-module-specific * > .badge{ 
@@ -221,7 +221,7 @@ label{
 }
 
 .label-primary {
-  background-color: @mura-red;
+  background-color: #ff3405;
 }
 
 .label-primary[href]:hover,
@@ -236,11 +236,11 @@ label{
 }
 
 .badge-primary {
-  background-color: @mura-red;
+  background-color: #ff3405;
 }
 
 .progress-bar-primary {
-  background-color: @mura-red;
+  background-color: #ff3405;
 }
 
 .nav-pills > li > a{
@@ -263,7 +263,7 @@ label{
 }
 
 .nav-pills > li.active > a > .badge {
-  color: @mura-red;
+  color: #ff3405;
 }
 
 .nav-pills > li > a{
@@ -289,12 +289,11 @@ label{
 }
 
 ul.pagination,
-#main-container #tabEntities ul.pagination,
+#main-container #tabArchitectural ul.pagination,
 .pagination{
   margin: 0 0;
 }
 
-#main-container #tabEntities ul.pagination,
 #main-container #tabArchitectural ul.pagination{
   .pull-right;
 }
@@ -306,7 +305,6 @@ ul.pagination,
 .pagination > li > a,
 .pagination > li > span{
   font-weight: normal;
-  cursor: pointer;
   padding: 2px 10px;
 }
 
@@ -317,7 +315,7 @@ ul.pagination,
   background-color:#f5f5f5;
   box-shadow: none;
   -webkit-box-shadow: none;
-  color: #4485f1;
+  color: #646464;
 }
 
 .pagination>.active>a,
@@ -329,31 +327,27 @@ ul.pagination,
   background-color: #ebebeb;
   box-shadow: none;
   -webkit-box-shadow: none;
-  color: #4485f1;
+  color: #646464;
 }
 
 .pager li>a:hover,
 .pager li>a:focus {
-  color: @mura-red;
-}
-.pagination > li  select{
-  cursor: pointer;
-  border-color: #f9f9f9;
+  color: #ff3405;
 }
 
 a.list-group-item:hover,a.list-group-item:focus {
-  color: @mura-red;
+  color: #ff3405;
 }
 
 .list-group-item.active,
 .list-group-item.active:hover,
 .list-group-item.active:focus {
-  background-color: @mura-red;
-  border-color: @mura-red;
+  background-color: #ff3405;
+  border-color: #ff3405;
 }
 
 .list-group-item.active>.badge {
-  color: @mura-red;
+  color: #ff3405;
 }
 
 .tooltip-inner {
@@ -388,8 +382,8 @@ a.list-group-item:hover,a.list-group-item:focus {
 
 .table-header-bg>thead>tr>th,
 .table-header-bg>thead>tr>td {
-  background-color: @mura-red;
-  border-bottom-color: @mura-red;
+  background-color: #ff3405;
+  border-bottom-color: #ff3405;
 }
 
 /* table striping */
@@ -420,7 +414,7 @@ a.list-group-item:hover,a.list-group-item:focus {
 }
 
 .panel-primary>.panel-heading {
-  color: @mura-red;
+  color: #ff3405;
   background-color: #ffdbdb;
   border-color: hsla(210, 50%, 60%, 0.80);
 }
@@ -431,7 +425,7 @@ a.list-group-item:hover,a.list-group-item:focus {
 
 .panel-primary>.panel-heading .badge {
   color: #ffdbdb;
-  background-color: @mura-red;
+  background-color: #ff3405;
 }
 
 .panel-primary>.panel-heading a {
@@ -451,8 +445,8 @@ a.list-group-item:hover,a.list-group-item:focus {
   background-color: #3B3B3B;
 }
 
-#sidebar {
-  background-color: #2c2c2f;
+#page-container,#sidebar {
+  background-color: #333;
 }
 
 .header-navbar-fixed #main-container,
@@ -463,6 +457,22 @@ a.list-group-item:hover,a.list-group-item:focus {
   padding-bottom: 0;
 }
 
+.nav-main{
+  font-size:15px;
+  padding-bottom: 15px;
+}
+.nav-main-header {
+  background-color: #333;
+}
+
+@media screen and (min-width:992px) {
+  .nav-main-header {
+    background-color: transparent;
+  }
+  .nav-main-header ul {
+    background-color: #555;
+  }
+}
 .form-material.form-material-primary>.form-control:focus {
   -webkit-box-shadow: 0 2px 0 #b1b1b1;
   box-shadow: 0 2px 0 #b1b1b1;
@@ -485,7 +495,7 @@ a.list-group-item:hover,a.list-group-item:focus {
 
 .css-radio-primary input:checked+span:after,
 .switch-primary input:checked+span {
-  background-color: #646464;
+  background-color: #69C;
 }
 
 .block > .nav-tabs > li.tabdrop > a:hover,
@@ -506,14 +516,16 @@ a.list-group-item:hover,a.list-group-item:focus {
 }
 
 .block > .nav-tabs > li  a{
-  font-weight:bold !important;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  font-weight:normal !important;
 }
 
 .block > .nav-tabs > li.active > a,
 .block > .nav-tabs > li.active > a:hover,
 .block > .nav-tabs > li.active > a:active,
 .block > .nav-tabs > li.active > a:focus {
-  color: @mura-red !important;
+  color: #ff3405 !important;
   background-color: #fff;
   border-color: transparent;
 }
@@ -521,7 +533,7 @@ a.list-group-item:hover,a.list-group-item:focus {
 .block > .nav-tabs > li > a:hover,
 .block > .nav-tabs > li > a:active,
 .block > .nav-tabs > li > a:focus{
-  color: @mura-red !important;
+  color: #ff3405 !important;
 }
 
 .irs-bar,
@@ -530,15 +542,15 @@ a.list-group-item:hover,a.list-group-item:focus {
 .irs-to,
 .irs-single,
 .irs-grid-pol {
-  background: @mura-red;
+  background: #ff3405;
 }
 
 .dropzone:hover {
-  border-color: @mura-red;
+  border-color: #ff3405;
 }
 
 .dropzone:hover .dz-message {
-  color: @mura-red;
+  color: #ff3405;
 }
 
 .datepicker {
@@ -585,18 +597,18 @@ a.list-group-item:hover,a.list-group-item:focus {
 .open .dropdown-toggle.datepicker table tr td span.active:hover,
 .open .dropdown-toggle.datepicker table tr td span.active.disabled,
 .open .dropdown-toggle.datepicker table tr td span.active.disabled:hover {
-  background-color: @mura-red;
-  border-color: @mura-red;
+  background-color: #ff3405;
+  border-color: #ff3405;
 }
 
 div.tagsinput span.tag {
-  background-color: @mura-red;
+  background-color: #ff3405;
 }
 
 .select2-container--default .select2-selection--multiple .select2-selection__choice {
-  background-color: @mura-red;
+  background-color: #ff3405;
 }
 
 .select2-container--default .select2-results__option--highlighted[aria-selected] {
-  background-color: @mura-red;
+  background-color: #ff3405;
 }

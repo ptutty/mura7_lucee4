@@ -28,10 +28,13 @@ Your custom code
 • May not alter the default display of the Mura CMS logo within Mura CMS and
 • Must not alter any files in the following directories.
 
-	/admin/
-	/core/
-	/Application.cfc
-	/index.cfm
+ /admin/
+ /tasks/
+ /config/
+ /requirements/mura/
+ /Application.cfc
+ /index.cfm
+ /MuraProxy.cfc
 
 You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
 under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
@@ -92,7 +95,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 	</cfif>
 	<!--- Use site useSSL sitewide setting instead --->
-	<cfif not listFindNoCase('Component,Form,Variation',rc.type) and rc.contentBean.getForceSSL() and not rc.$.siteConfig('useSSL')>
+	<cfif not listFindNoCase('Component,Form,Variation',rc.type) and not rc.$.siteConfig('useSSL')>
 		<div class="mura-control-group">
 		    <label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessllabel')#</label>
 	      	<label for="forceSSL" class="checkbox">
@@ -108,8 +111,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfif not rc.$.siteConfig().getContentRenderer().useLayoutManager() and rc.type eq 'Form' >
-
-		<cfif rc.contentBean.getForceSSL() and not rc.$.siteConfig('useSSL')>
+		<cfif not rc.$.siteConfig('useSSL')>
 			<div class="mura-control-group">
 				<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessllabel')#</label>
 	     		<label for="forceSSL" class="checkbox">
@@ -117,7 +119,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	     		</label>
 		    </div>
 	   	</cfif>
-
 		    <div class="mura-control-group">
 				<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displaytitlelabel')#</label>
 	      		<label for="displayTitle" class="checkbox">
@@ -141,37 +142,33 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<label for="islocked" class="checkbox"><input name="isLocked" id="islocked" type="CHECKBOX" value="1" <cfif rc.contentBean.getIsLocked() eq "">checked <cfelseif rc.contentBean.getIsLocked() eq 1>checked</cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.locknode')#</label>
 	    </div>
 	</cfif>
-
-	<!--- Remote Information --->
 	<cfif (rc.type neq 'Component' and rc.type neq 'Form') and rc.contentBean.getcontentID() neq '00000000000000000000000000000000001'>
-		<h2>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remoteinformation')#</h2>
+	<h2>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remoteinformation')#</h2>
+     <!--- <div id="editRemote"> --->
+		<div class="mura-control-group">
+ 	 	<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remoteid')#</label>
+ 	 	<input type="text" id="remoteID" name="remoteID" value="#rc.contentBean.getRemoteID()#"  maxlength="255">
+	     	 	</div>
 
 		<div class="mura-control-group">
- 	 		<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remoteid')#</label>
- 	 		<input type="text" id="remoteID" name="remoteID" value="#rc.contentBean.getRemoteID()#"  maxlength="255">
-	  </div>
-
-		<div class="mura-control-group">
- 	 		<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remoteurl')#</label>
+ 	 	<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remoteurl')#</label>
   		<input type="text" id="remoteURL" name="remoteURL" value="#rc.contentBean.getRemoteURL()#"  maxlength="255">
-   	</div>
+   		</div>
+
 
 		<div class="mura-control-group">
-    	<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotepublicationdate')#</label>
-      <input type="text" id="remotePubDate" name="remotePubDate" value="#rc.contentBean.getRemotePubDate()#"  maxlength="255">
-		</div>
+     	 	<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotepublicationdate')#</label>
+      		<input type="text" id="remotePubDate" name="remotePubDate" value="#rc.contentBean.getRemotePubDate()#"  maxlength="255">
+     	 	<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotesource')#</label>
+      		<input type="text" id="remoteSource" name="remoteSource" value="#rc.contentBean.getRemoteSource()#"  maxlength="255">
+		 </div>
 
-		<div class="mura-control-group">
-    	<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotesource')#</label>
-      <input type="text" id="remoteSource" name="remoteSource" value="#rc.contentBean.getRemoteSource()#"  maxlength="255">
-		</div>
-
-    <div class="mura-control-group">
-    	<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotesourceurl')#</label>
-    	<input type="text" id="remoteSourceURL" name="remoteSourceURL" value="#rc.contentBean.getRemoteSourceURL()#"  maxlength="255">
-    </div>
+    	<div class="mura-control-group">
+     	 	<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotesourceurl')#</label>
+      		<input type="text" id="remoteSourceURL" name="remoteSourceURL" value="#rc.contentBean.getRemoteSourceURL()#"  maxlength="255">
+    	</div>
 	</cfif>
-	<!--- /Remote Information --->
+	<!--- </div> --->
 
 	<span id="extendset-container-advanced" class="extendset-container"></span>
 	<span id="extendset-container-tabadvancedbottom" class="extendset-container"></span>

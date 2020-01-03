@@ -27,20 +27,14 @@
 
 		<cfif rc.moduleid eq '00000000000000000000000000000000000' and not len(tabAssignments) or listFindNocase(tabAssignments,'SEO')>
 			<div class="mura-control-group">
-				<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.description')#</label>
-				<textarea name="metadesc" rows="3" id="metadesc">#esapiEncode('html',rc.contentBean.getMETADesc())#</textarea>
-			</div>
-			<cfif application.configBean.getValue(property='keepMetaKeywords',defaultValue=false)>
-				<div class="mura-control-group">
-					<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.keywords')#</label>
-					<textarea name="metakeywords" rows="3" id="metakeywords">#esapiEncode('html',rc.contentBean.getMetaKeywords())#</textarea>
-				</div>
-			<cfelse>
-				<div class="mura-control-group">
-					<label>Canonical URL</label>
-					<input type="text" id="canonicalURL" name="canonicalURL" value="#esapiEncode('html_attr',rc.contentBean.getCanonicalURL())#"  maxlength="255">
-	  		</div>
-			</cfif>
+			<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.description')#</label>
+			  <textarea name="metadesc" rows="3" id="metadesc">#esapiEncode('html',rc.contentBean.getMETADesc())#</textarea>
+				    </div>
+
+			<div class="mura-control-group">
+			<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.keywords')#</label>
+			  <textarea name="metakeywords" rows="3" id="metakeywords">#esapiEncode('html',rc.contentBean.getMETAKEYWORDS())#</textarea>
+  		</div>
   	</cfif>
 
 		<cfif application.settingsManager.getSite(rc.siteid).getextranet()>
@@ -59,7 +53,7 @@
 				<cfif rsGroups.recordcount>
 					<optgroup label="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'user.membergroups'))#">
 					<cfloop query="rsGroups">
-						<option value="#rsGroups.userid#" <cfif listfind(rc.contentBean.getrestrictgroups(),rsGroups.groupname) or listfind(rc.contentBean.getrestrictgroups(),rsGroups.userid)>Selected</cfif>>#rsGroups.groupname#</option>
+						<option value="#rsGroups.groupname#" <cfif listfind(rc.contentBean.getrestrictgroups(),rsGroups.groupname)>Selected</cfif>>#rsGroups.groupname#</option>
 					</cfloop>
 					</optgroup>
 				</cfif>
@@ -67,7 +61,7 @@
 				<cfif rsGroups.recordcount>
 					<optgroup label="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'user.adminusergroups'))#">
 					<cfloop query="rsGroups">
-						<option value="#rsGroups.userid#" <cfif listfind(rc.contentBean.getrestrictgroups(),rsGroups.groupname) or listfind(rc.contentBean.getrestrictgroups(),rsGroups.userid)>Selected</cfif>>#rsGroups.groupname#</option>
+						<option value="#rsGroups.groupname#" <cfif listfind(rc.contentBean.getrestrictgroups(),rsGroups.groupname)>Selected</cfif>>#rsGroups.groupname#</option>
 					</cfloop>
 					</optgroup>
 				</cfif>
@@ -239,7 +233,7 @@
 		<label>
 			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.addnotes')#
 		</label>
-		<textarea name="notes" rows="8" id="abstract">#esapiEncode('html',rc.contentBean.getNotes())#</textarea>
+		<textarea name="notes" rows="8" id="abstract"></textarea>
 	</div> <!--- /end mura-control-group --->
 
    <span id="extendset-container-publishing" class="extendset-container"></span>

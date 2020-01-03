@@ -28,10 +28,13 @@
 	• May not alter the default display of the Mura CMS logo within Mura CMS and
 	• Must not alter any files in the following directories.
 
-	/admin/
-	/core/
-	/Application.cfc
-	/index.cfm
+	 /admin/
+	 /tasks/
+	 /config/
+	 /requirements/mura/
+	 /Application.cfc
+	 /index.cfm
+	 /MuraProxy.cfc
 
 	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
 	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
@@ -704,10 +707,6 @@ function preview(url, targetParams) {
 	} else {
 		newWindow = window.open(url, 'previewWin', targetParams);
 	}
-	if(!newWindow || newWindow.closed || typeof newWindow.closed=='undefined') {
-		alertDialog("pop-up window has been blocked for this site,Disable blocking pop-up windows to see the Site Preview");
-		return false;
-	}
 	newWindow.focus();
 	void(0);
 	return false;
@@ -718,15 +717,8 @@ function createCookie(name, value, days) {
 		var date = new Date();
 		date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
 		var expires = "; expires=" + date.toGMTString();
-	} else {
-		var expires = "";
-	}
-	if(typeof location != 'undefined' && location.protocol == 'https:'){
-		secure='; secure';
-	} else {
-		secure='';
-	}
-	document.cookie = name + "=" + value + expires + "; path=/" + secure;
+	} else var expires = "";
+	document.cookie = name + "=" + value + expires + "; path=/";
 }
 
 function readCookie(name) {
@@ -752,32 +744,20 @@ function setHTMLEditors() {
 	for(i = 0; i < allPageTags.length; i++) {
 		if(allPageTags[i].className == "htmlEditor") {
 
-			if(!allPageTags[i].getAttribute('mura-inprocess')){
-				allPageTags[i].setAttribute('mura-inprocess','true');
-
-				var instance = CKEDITOR.instances[allPageTags[i].id];
-				if(typeof(instance) != 'undefined' && instance != null) {
-					CKEDITOR.remove(instance);
-				}
-
-				if($(document.getElementById(allPageTags[i].id)).val() == '') {
-					$(document.getElementById(allPageTags[i].id)).val("<p></p>")
-				}
-
-				var toolbar= allPageTags[i].getAttribute('data-toolbar') || 'Default';
-
-				$(document.getElementById(allPageTags[i].id)).ckeditor({
-						toolbar: toolbar,
-						customConfig: 'config.js.cfm'
-					},
-					function(editorInstance){
-						if(typeof allPageTags[i] != 'undefined' && typeof allPageTags[i].removeAttribute != 'undefined'){
-							allPageTags[i].removeAttribute('mura-inprocess');
-						}
-						htmlEditorOnComplete(editorInstance)
-					}
-				);
+			var instance = CKEDITOR.instances[allPageTags[i].id];
+			if(typeof(instance) != 'undefined' && instance != null) {
+				CKEDITOR.remove(instance);
 			}
+
+			if($(document.getElementById(allPageTags[i].id)).val() == '') {
+				$(document.getElementById(allPageTags[i].id)).val("<p></p>")
+			}
+
+			$(document.getElementById(allPageTags[i].id)).ckeditor({
+				toolbar: 'Default',
+				customConfig: 'config.js.cfm'
+			}, htmlEditorOnComplete);
+
 		}
 	}
 }
@@ -791,7 +771,7 @@ function htmlEditorOnComplete(editorInstance) {
 	if(typeof CKFinder != 'undefined'){
 		CKFinder.setupCKEditor(
 			instance, {
-				basePath: context + '/core/vendor/ckfinder/',
+				basePath: context + '/requirements/ckfinder/',
 				rememberLastFolder: true
 			}
 		);
@@ -849,7 +829,6 @@ function setColorPickers(target) {
 		}).on('changeColor', function(e) {
 			var rgb=e.color.toRGB();
 			$(this).val('rgba('+rgb.r+','+rgb.g+','+rgb.b+','+rgb.a+')');
-			$(this).trigger('change')
 		});
 	});
 }
@@ -959,7 +938,7 @@ function setCheckboxTrees() {
 }
 
 function openFileMetaData(contenthistid,fileid,siteid,property) {
-	try{
+
 		if (typeof fileMetaDataAssign === 'undefined') {
 			fileMetaDataAssign={};
 		}
@@ -1007,8 +986,7 @@ function openFileMetaData(contenthistid,fileid,siteid,property) {
 				var pars = 'muraAction=cArch.loadfilemetadata&fileid=' + fileid + '&property=' + property  + '&contenthistid=' + contenthistid + '&siteid=' + siteid + '&cacheid=' + Math.random();
 				$("#newFileMetaContainer .load-inline").spin(spinnerArgs2);
 
-				Mura.get(url + "?" + pars).then(
-					function(data) {
+				$.get(url + "?" + pars).done(function(data) {
 
 					if(data.indexOf('mura-primary-login-token') != -1) {
 						location.href = './';
@@ -1046,11 +1024,10 @@ function openFileMetaData(contenthistid,fileid,siteid,property) {
 
 					$('.filemeta:first').focus();
 
-				},
-				function(data){
+				}).error(function(data){
 					$('#newFileMetaContainer').html(data.responseText);
 					$("#newFileMetaContainer").dialog("option", "position", getDialogPosition());
-				})
+				});
 
 			},
 			close: function() {
@@ -1059,9 +1036,7 @@ function openFileMetaData(contenthistid,fileid,siteid,property) {
 				$.ui.dialog.prototype._focusTabbable=_focusTabbable;
 			}
 		});
-	} catch(e){
-		console.log(e)
-	}
+
 		return false;
 	}
 
@@ -1095,7 +1070,7 @@ function openFileMetaData(contenthistid,fileid,siteid,property) {
 					setTabs('#selectAssocImageResults-' + $elm.attr('data-property'),0);
 				}
 			)
-			.fail(
+			.error(
 				function(data) {
 				$elm.find('.load-inline').spin(false);
 				$elm.find(".mura-file-existing").html(data.responseText);
@@ -1326,7 +1301,7 @@ function CountDown() {
 
 function fileManagerPopUp() {
 	var finder = new CKFinder();
-	finder.basePath = context + '/core/vendor/ckfinder/';
+	finder.basePath = context + '/requirements/ckfinder/';
 	finder.resourceType = '[Advanced] Mura Root';
 	finder.popup();
 	return false;
@@ -1334,7 +1309,7 @@ function fileManagerPopUp() {
 
 function fileManagerCreate() {
 	var finder = new CKFinder();
-	finder.basePath = context + '/core/vendor/ckfinder/';
+	finder.basePath = context + '/requirements/ckfinder/';
 	finder.create();
 	return false;
 }
@@ -1646,72 +1621,39 @@ function setLowerCaseKeys(obj) {
 }
 
 function setFinders(selector){
-	var targetFrame='sideBar';
-	if(window.self !== window.top){
-		var url=Mura.getQueryStringParams(location.search);
-		Mura(selector).click(function(){
-			var target=Mura(this);
-			if(Mura("#ProxyIFrame").length){
-				Mura("#ProxyIFrame").load(
-					function(){
-						frontEndProxy.post({
-							cmd:'openFileManager',
-							instanceid:url.instanceid,
-							target:target.data('target'),
-							completepath:target.data('completepath'),
-							targetFrame:targetFrame
-							}
-						);
-					}
-				);
+	if(typeof CKFinder != 'undefined'){
+		$(selector).unbind('click').on('click',function(){
+			var target=$(this).attr('data-target');
+			var finder = new CKFinder();
+			finder.basePath = context + '/requirements/ckfinder/';
+			var completepath=$(this).attr('data-completepath');
+
+			if(completepath.toLowerCase() == 'true'){
+				finder.selectActionFunction = function(fileUrl) {
+					var fs=jQuery('input[name="' + target + '"]');
+					fs.val(webroot + fileDelim + fileUrl);
+					fs.trigger('change');
+				};
 			} else {
-				frontEndProxy.post({
-					cmd:'openFileManager',
-					instanceid:url.instanceid,
-					target:target.data('target'),
-					completepath:target.data('completepath'),
-					targetFrame:targetFrame
-					}
-				);
+				finder.selectActionFunction = function(fileUrl) {
+					var fs=jQuery('input[name="' + target + '"]');
+					fs.val(fileUrl);
+					fs.trigger('change');
+				};
 			}
-		})
 
-	} else {
-		if(typeof CKFinder != 'undefined'){
-			$(selector).unbind('click').on('click',function(){
-				var target=$(this).attr('data-target');
-				var finder = new CKFinder();
-				finder.basePath = context + '/core/vendor/ckfinder/';
-				var completepath=$(this).attr('data-completepath');
+			if($(this).attr('data-resourcetype') =='root'){
+				finder.resourceType='Application_Root';
+			} else if($(this).attr('data-resourcetype') == 'site'){
+				finder.resourceType=siteid + '_Site_Files';
+			} else {
+				finder.resourceType=siteid + '_User_Assets';
+			}
 
-				if(completepath.toLowerCase() == 'true'){
-					finder.selectActionFunction = function(fileUrl) {
-						var fs=jQuery('input[name="' + target + '"]');
-						fs.val(webroot + fileDelim + fileUrl);
-						fs.trigger('change');
-					};
-				} else {
-					finder.selectActionFunction = function(fileUrl) {
-						var fs=jQuery('input[name="' + target + '"]');
-						fs.val(fileUrl);
-						fs.trigger('change');
-					};
-				}
+			finder.popup();
 
-				if($(this).attr('data-resourcetype') =='root'){
-					finder.resourceType='Application_Root';
-				} else if($(this).attr('data-resourcetype') == 'site'){
-					finder.resourceType=siteid + '_Site_Files';
-				} else {
-					finder.resourceType=siteid + '_User_Assets';
-				}
-
-				finder.popup();
-
-			});
-		}
+		});
 	}
-
 }
 
 

@@ -28,10 +28,13 @@
 	• May not alter the default display of the Mura CMS logo within Mura CMS and
 	• Must not alter any files in the following directories.
 
-	/admin/
-	/core/
-	/Application.cfc
-	/index.cfm
+	 /admin/
+	 /tasks/
+	 /config/
+	 /requirements/mura/
+	 /Application.cfc
+	 /index.cfm
+	 /MuraProxy.cfc
 
 	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
 	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
@@ -461,35 +464,20 @@
 				});
 			});
 
-			if (_templates[templateName] == undefined) {
+			if (_templates[templateName] == undefined)
 				goLoadTemplate(templateName);
-
-				setTimeout(function(){
-					if(fieldData.fieldtype.isdata == 1) {
-						if (fieldData.datasetid.length) {
-							doDataset();
-						}
-						else {
-							goLoadDataset();
-						}
-					}
-				},
-				100
-				)
-			} else {
+			else {
 				doRenderField();
-
-				if(fieldData.fieldtype.isdata == 1) {
-					if (fieldData.datasetid.length) {
-						doDataset();
-					}
-					else {
-						goLoadDataset();
-					}
-				}
 			}
 
-
+			if(fieldData.fieldtype.isdata == 1) {
+				if (fieldData.datasetid.length) {
+					doDataset();
+				}
+				else {
+					goLoadDataset();
+				}
+			}
 		}
 
 		function doRenderField() {
@@ -559,7 +547,7 @@
 			});
 
 			jQuery("#ui-tabs").tabs();
-//		jQuery("#ui-tabs").tabs('select',0);
+//			jQuery("#ui-tabs").tabs('select',0);
 
 			if(fieldData.fieldtype.fieldtype == "textblock") {
 				jQuery('#field_textblock').ckeditor( {toolbar: 'FormBuilder', customConfig: 'config.js.cfm'},onCKEditorChange );
@@ -684,16 +672,12 @@
 
 			jQuery(document).on('click',".mura-tb-grid-radio",function() {
 				id = jQuery(this).attr('data-id');
-				if(id){
-					_currentDataset.defaultid = id;
-				}
+				_currentDataset.defaultid = id;
 			});
 
 			jQuery(document).on('click',$_grid,function() {
 				id = jQuery(this).attr('data-id');
-				if(id){
-					_currentDataset.defaultid = id;
-				}
+				_currentDataset.defaultid = id;
 			});
 
 			$_grid.show();
@@ -854,7 +838,7 @@
 				jQuery('#mura-tb-grp-sourcetype').hide();
 				jQuery('.mura-tb-grp-entered').hide();
 				jQuery('.mura-tb-grp-source').hide();
-
+console.log("asdfw");
 				_currentDataset.sourcetype = 'muraorm';
 
 			}

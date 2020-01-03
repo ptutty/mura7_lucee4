@@ -28,10 +28,13 @@ Your custom code
 • May not alter the default display of the Mura CMS logo within Mura CMS and
 • Must not alter any files in the following directories.
 
-	/admin/
-	/core/
-	/Application.cfc
-	/index.cfm
+ /admin/
+ /tasks/
+ /config/
+ /requirements/mura/
+ /Application.cfc
+ /index.cfm
+ /MuraProxy.cfc
 
 You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
 under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
@@ -59,8 +62,6 @@ component extends="controller" {
         param name='arguments.rc.clientsecret' default='';
 		param name='arguments.rc.name' default='';
 		param name='arguments.rc.description' default='';
-		param name='arguments.rc.granttype' default='basic';
-		param name='arguments.rc.redirecturl' default='';
 		param name='arguments.rc.userid' default='';
 
 	}

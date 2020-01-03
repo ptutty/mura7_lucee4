@@ -28,10 +28,13 @@ Your custom code
 • May not alter the default display of the Mura CMS logo within Mura CMS and
 • Must not alter any files in the following directories.
 
-	/admin/
-	/core/
-	/Application.cfc
-	/index.cfm
+ /admin/
+ /tasks/
+ /config/
+ /requirements/mura/
+ /Application.cfc
+ /index.cfm
+ /MuraProxy.cfc
 
 You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
 under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
@@ -43,20 +46,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfset rc.formatsupported=true>
 <cfinclude template="js.cfm">
-
-<style type="text/css">
-	.mura-import-item img{
-		max-width: 200px !important;
-		margin-top: .5em !important;
-	}
-	.mura-import-item br:first-child,
-	.mura-import-item br:first-child + br{
-		display: none;
-	}
-</style>
-
-
 <cfoutput>
+
 <div class="mura-header">
 	<h1>#application.rbFactory.getKeyValue(session.rb,'collections.remotefeedimportselection')#</h1>
 	<cfinclude template="dsp_secondary_menu.cfm">
@@ -99,14 +90,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfset rc.rsCategoryAssign = application.contentManager.getCategoriesByHistID(rc.newBean.getcontenthistID()) />
 							
 								<cfoutput>
-									<div class="mura-layout-row mura-import-item clearfix">
-										<div class="mura-12">	
-											<label><input name="remoteID" value="#esapiEncode('html_attr',remoteID)#" type="checkbox" checked>&nbsp;&nbsp;#application.rbFactory.getKeyValue(session.rb,'collections.import')#&nbsp;&nbsp;</label>
-											<label><strong><a href="#esapiEncode('html_attr',items[i].link.xmlText)#" target="_blank">#esapiEncode('html',items[i].title.xmlText)#<cfif not rc.newBean.getIsNew()> [#application.rbFactory.getKeyValue(session.rb,'collections.update')#]</cfif></a></strong></label>
-										</div>
-										<div class="mura-12">#items[i].description.xmlText#</div>
-									</div>
-
+									<dl class="oneColumn">
+									<dt><a href="#esapiEncode('html_attr',items[i].link.xmlText)#" target="_blank">#esapiEncode('html',items[i].title.xmlText)#<cfif not rc.newBean.getIsNew()> [#application.rbFactory.getKeyValue(session.rb,'collections.update')#]</cfif></a>&nbsp;&nbsp;#application.rbFactory.getKeyValue(session.rb,'collections.import')# <input name="remoteID" value="#esapiEncode('html_attr',remoteID)#" type="checkbox" checked /></dt>
+									<dd>#items[i].description.xmlText#</dd>
+								<!---	<cfinclude template="dsp_categories_import_nest.cfm">--->
+									</dl>
 								</cfoutput>		
 							</cfif>
 							</cfloop>

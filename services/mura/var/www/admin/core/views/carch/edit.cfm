@@ -28,10 +28,13 @@ Your custom code
 • May not alter the default display of the Mura CMS logo within Mura CMS and
 • Must not alter any files in the following directories.
 
-	/admin/
-	/core/
-	/Application.cfc
-	/index.cfm
+ /admin/
+ /tasks/
+ /config/
+ /requirements/mura/
+ /Application.cfc
+ /index.cfm
+ /MuraProxy.cfc
 
 You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
 under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
@@ -127,9 +130,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					&& typeof(anchors[i].getAttribute('href')) == 'string'
 					&& anchors[i].getAttribute('href').indexOf('##') == -1
 					&& anchors[i].getAttribute('href').indexOf('mailto') == -1) {
-					if(!$(anchors[i]).hasClass("nav-submenu")){
-					   anchors[i].onclick = setRequestedURL;
-					}
+		   			anchors[i].onclick = setRequestedURL;
 				}
 			} catch(err){}
 		}
@@ -137,7 +138,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	});
 	</cfoutput>
 
-	$(document).on('unload',function(){
+	$(document).unload(function(){
 		if(!siteManager.formSubmitted && siteManager.requestedURL != '')
 		{
 			conditionalExit();
@@ -592,7 +593,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Tags')>
 				<cfinclude template="form/dsp_tab_tags.cfm">
 			</cfif>
-			<cfif application.configBean.getValue(property='showUsageTabs',defaultValue=true) and (not len(tabAssignments) or listFindNocase(tabAssignments,'Usage Report'))>
+			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Usage Report')>
 				<cfif not rc.contentBean.getIsNew()>
 					<cfinclude template="form/dsp_tab_usage.cfm">
 				</cfif>
@@ -607,7 +608,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Tags')>
 				<cfinclude template="form/dsp_tab_tags.cfm">
 			</cfif>
-			<cfif application.configBean.getValue(property='showUsageTabs',defaultValue=true) and (not len(tabAssignments) or listFindNocase(tabAssignments,'Usage Report'))>
+			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Usage Report')>
 				<cfif not rc.contentBean.getIsNew()>
 					<cfinclude template="form/dsp_tab_usage.cfm">
 				</cfif>
@@ -797,10 +798,9 @@ saveDraftPrompt=function(){
 	}
 }
 
-//This will throw an error under crossdomain
-try{
+//try{
 	window.top.document.addEventListener("keydown", checkForSave , false);
-} catch (e){};
+//} catch (e){};
 </script>
 	<input name="approved" type="hidden" value="0">
 	<input name="muraPreviouslyApproved" type="hidden" value="#rc.contentBean.getApproved()#">
@@ -845,7 +845,6 @@ try{
 	<input type="hidden" name="closeCompactDisplay" value="#esapiEncode('html_attr',rc.compactDisplay)#" />
 	<input type="hidden" name="compactDisplay" value="#esapiEncode('html_attr',rc.compactDisplay)#" />
 	<input type="hidden" name="instanceid" value="#esapiEncode('html_attr',rc.instanceid)#" />
-	<input type="hidden" name="parenthistid" value="#esapiEncode('html_attr',rc.parenthistid)#" />
 
 	#rc.$.renderCSRFTokens(context=rc.contentBean.getContentHistID() & "add",format="form")#
 
